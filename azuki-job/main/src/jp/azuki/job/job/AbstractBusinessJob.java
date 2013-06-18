@@ -13,6 +13,7 @@ import jp.azuki.job.result.JobResult;
 import jp.azuki.persistence.context.ContextSupport;
 import jp.azuki.persistence.database.DatabaseSupport;
 import jp.azuki.persistence.exception.PersistenceServiceException;
+import jp.azuki.persistence.proterty.Property;
 import jp.azuki.persistence.proterty.PropertyManager;
 import jp.azuki.persistence.proterty.PropertySupport;
 
@@ -127,11 +128,11 @@ public abstract class AbstractBusinessJob extends AbstractDatabaseJob {
 						((ContextSupport) logic).setContext(getContext());
 					}
 					if (logic instanceof PropertySupport) {
-						Map<String, Object> properties = PropertyManager.get(logic.getClass());
-						if (null == properties) {
-							properties = PropertyManager.load(logic.getClass(), getContext());
+						Property property = PropertyManager.get(logic.getClass());
+						if (null == property) {
+							property = PropertyManager.load(logic.getClass(), getContext());
 						}
-						((PropertySupport) logic).setProperties(properties);
+						((PropertySupport) logic).setProperty(property);
 					}
 					if (logic instanceof DatabaseSupport) {
 						((DatabaseSupport) logic).setConnection(getConnection());

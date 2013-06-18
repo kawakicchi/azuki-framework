@@ -14,6 +14,7 @@ import jp.azuki.core.lang.LoggingObject;
 import jp.azuki.core.util.StringUtility;
 import jp.azuki.persistence.context.Context;
 import jp.azuki.persistence.proterty.Property;
+import jp.azuki.persistence.proterty.PropertyFile;
 
 import org.apache.commons.digester3.Digester;
 import org.xml.sax.SAXException;
@@ -169,10 +170,11 @@ public final class LogicManager extends LoggingObject {
 
 					Class<Logic> clazz = (Class<Logic>) Class.forName(logic.getLogic());
 
+					// XXX プロパティ情報取得してるが設定してない
 					Map<String, Object> properties = new HashMap<String, Object>();
-					Property anProperty = clazz.getAnnotation(Property.class);
-					if (null != anProperty) {
-						String property = anProperty.value();
+					PropertyFile propertyFile = clazz.getAnnotation(PropertyFile.class);
+					if (null != propertyFile) {
+						String property = propertyFile.value();
 						if (StringUtility.isNotEmpty(property)) {
 							InputStream is = aContext.getResourceAsStream(property);
 							if (null != is) {

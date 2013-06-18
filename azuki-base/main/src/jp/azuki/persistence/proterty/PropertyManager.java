@@ -27,7 +27,7 @@ public final class PropertyManager extends LoggingObject {
 	/**
 	 * Properties
 	 */
-	private Map<Class<?>, Map<String, Object>> properties;
+	private Map<Class<?>, Property> properties;
 
 	/**
 	 * コンストラクタ
@@ -37,64 +37,67 @@ public final class PropertyManager extends LoggingObject {
 	 */
 	private PropertyManager() {
 		super(PropertyManager.class);
-		properties = new HashMap<Class<?>, Map<String, Object>>();
+		properties = new HashMap<Class<?>, Property>();
 	}
 
 	/**
-	 * プロパティを取得する。
+	 * プロパティ情報を取得する。
 	 * 
 	 * @param aClass クラス
-	 * @return プロパティ。未読み込みの場合、<code>null</code>を返す。
+	 * @return プロパティ情報。未読み込みの場合、<code>null</code>を返す。
 	 */
-	public static Map<String, Object> get(final Class<?> aClass) {
+	public static Property get(final Class<?> aClass) {
 		return INSTANCE.doGet(aClass);
 	}
 
 	/**
-	 * プロパティをロードする。
+	 * プロパティ情報をロードする。
 	 * 
 	 * @param aClass クラス
 	 * @param aContext コンテキスト
-	 * @return プロパティ
+	 * @return プロパティ情報
 	 */
-	public synchronized static Map<String, Object> load(final Class<?> aClass, final Context aContext) {
+	public synchronized static Property load(final Class<?> aClass, final Context aContext) {
 		return INSTANCE.doLoad(aClass, aContext);
 	}
 
-	private Map<String, Object> doGet(final Class<?> aClass) {
+	private Property doGet(final Class<?> aClass) {
 		return properties.get(aClass);
 	}
 
-	private Map<String, Object> doLoad(final Class<?> aClass, final Context aContext) {
-		Map<String, Object> m = doGet(aClass);
-		if (null == m) {
-			m = new HashMap<String, Object>();
-			Property aProperty = aClass.getAnnotation(Property.class);
-			if (null != aProperty) {
-				String value = aProperty.value();
+	private Property doLoad(final Class<?> aClass, final Context aContext) {
+		Property property = doGet(aClass);
+		if (null == property) {
+			PropertyFile propertyFile = aClass.getAnnotation(PropertyFile.class);
+			if (null != propertyFile) {
+				String value = propertyFile.value();
 				if (StringUtility.isNotEmpty(value)) {
 					InputStream stream = aContext.getResourceAsStream(value);
 					if (null != stream) {
 						try {
 							Properties p = new Properties();
 							p.load(stream);
+							Map<String, Object> m = new HashMap<>();
 							for (Object key : p.keySet()) {
 								m.put(key.toString(), p.get(key));
 							}
+							property = new Property(m);
 						} catch (IOException ex) {
 							error(ex);
+							property = new Property();
 						}
 					} else {
 						error("Not found property file.[" + value + "]");
+						property = new Property();
 					}
 				} else {
-
+					property = new Property();
 				}
 			} else {
 
 			}
-			properties.put(aClass, m);
+			properties.put(aClass, property);
 		}
-		return m;
+		return property;
 	}
 }
