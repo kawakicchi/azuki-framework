@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Properties;
 
 import jp.azuki.core.util.StringUtility;
@@ -19,6 +18,7 @@ import jp.azuki.job.worker.JobWorker;
 import jp.azuki.persistence.context.Context;
 import jp.azuki.persistence.context.ContextSupport;
 import jp.azuki.persistence.proterty.Property;
+import jp.azuki.persistence.proterty.PropertyFile;
 import jp.azuki.persistence.proterty.PropertyManager;
 import jp.azuki.persistence.proterty.PropertySupport;
 import jp.azuki.persistence.session.SessionSupport;
@@ -196,14 +196,14 @@ public final class StandardJobServer extends AbstractJobServer {
 
 	private void createWorker(final Class<? extends Job> aJob, final int aCount) throws IllegalAccessException, InstantiationException {
 		info("Create worker.[count: " + aCount + "]");
-		Map<String, Object> properties = null;
-		Property aProperty = aJob.getAnnotation(Property.class);
-		if (null != aProperty) {
-			String property = aProperty.value();
-			if (StringUtility.isNotEmpty(property)) {
-				properties = PropertyManager.get(aJob);
-				if (null == properties) {
-					properties = PropertyManager.load(aJob, context);
+		Property property = null;
+		PropertyFile propertyFile = aJob.getAnnotation(PropertyFile.class);
+		if (null != propertyFile) {
+			String value = propertyFile.value();
+			if (StringUtility.isNotEmpty(value)) {
+				property = PropertyManager.get(aJob);
+				if (null == property) {
+					property = PropertyManager.load(aJob, context);
 				}
 			}
 		}
@@ -216,9 +216,9 @@ public final class StandardJobServer extends AbstractJobServer {
 			if (job instanceof ContextSupport) {
 				((ContextSupport) job).setContext(context);
 			}
-			if (null != properties) {
+			if (null != property) {
 				if (job instanceof PropertySupport) {
-					((PropertySupport) job).setProperties(properties);
+					((PropertySupport) job).setProperty(property);
 				} else {
 					warn("This job is not property support.[" + job.getClass().getName() + "]");
 				}

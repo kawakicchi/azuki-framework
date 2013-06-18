@@ -1,6 +1,5 @@
 package jp.azuki.persistence.proterty;
 
-import java.util.Map;
 
 /**
  * このインターフェースは、プロパティ機能のサポートを行うためのインターフェースです。
@@ -12,20 +11,10 @@ import java.util.Map;
 public interface PropertySupport {
 
 	/**
-	 * プロパティを設定する。
+	 * プロパティ情報を設定する。
 	 * 
-	 * @param aKey キー
-	 * @param aValue 値
+	 * @param aProperty プロパティ情報
 	 */
-	public void setProperty(final String aKey, final Object aValue);
+	public void setProperty(final Property aProperty);
 
-	/**
-	 * プロパティを設定する。
-	 * <p>
-	 * マップの情報を設定する。
-	 * </p>
-	 * 
-	 * @param aValues マップ
-	 */
-	public void setProperties(final Map<String, Object> aValues);
 }

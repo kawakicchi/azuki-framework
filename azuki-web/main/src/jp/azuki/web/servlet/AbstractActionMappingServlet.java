@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import jp.azuki.persistence.context.ContextSupport;
+import jp.azuki.persistence.proterty.Property;
 import jp.azuki.persistence.proterty.PropertyManager;
 import jp.azuki.persistence.proterty.PropertySupport;
 import jp.azuki.persistence.session.SessionSupport;
@@ -111,11 +112,11 @@ public abstract class AbstractActionMappingServlet extends AbstractServlet {
 				((ContextSupport) action).setContext(getContext());
 			}
 			if (action instanceof PropertySupport) {
-				Map<String, Object> properties = PropertyManager.get(action.getClass());
-				if (null == properties) {
-					properties = PropertyManager.load(action.getClass(), getContext());
+				Property property = PropertyManager.get(action.getClass());
+				if (null == property) {
+					property = PropertyManager.load(action.getClass(), getContext());
 				}
-				((PropertySupport) action).setProperties(properties);
+				((PropertySupport) action).setProperty(property);
 			}
 
 			View view = null;
@@ -175,11 +176,11 @@ public abstract class AbstractActionMappingServlet extends AbstractServlet {
 						((ContextSupport) filter).setContext(getContext());
 					}
 					if (filter instanceof PropertySupport) {
-						Map<String, Object> properties = PropertyManager.get(clazz);
-						if (null == properties) {
-							properties = PropertyManager.load(clazz, getContext());
+						Property property = PropertyManager.get(clazz);
+						if (null == property) {
+							property = PropertyManager.load(clazz, getContext());
 						}
-						((PropertySupport) filter).setProperties(properties);
+						((PropertySupport) filter).setProperty(property);
 					}
 					filter.filter(aParameter);
 					if (null != filter.getView()) {
@@ -220,11 +221,11 @@ public abstract class AbstractActionMappingServlet extends AbstractServlet {
 						((ContextSupport) filter).setContext(getContext());
 					}
 					if (filter instanceof PropertySupport) {
-						Map<String, Object> properties = PropertyManager.get(clazz);
-						if (null == properties) {
-							properties = PropertyManager.load(clazz, getContext());
+						Property property = PropertyManager.get(clazz);
+						if (null == property) {
+							property = PropertyManager.load(clazz, getContext());
 						}
-						((PropertySupport) filter).setProperties(properties);
+						((PropertySupport) filter).setProperty(property);
 					}
 					filter.filter(aParameter);
 					if (null != filter.getView()) {
