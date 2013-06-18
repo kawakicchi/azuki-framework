@@ -3,8 +3,8 @@
 	<property name="base_dir" location="${basedir}"/>
 	<property name="main_dir" location="${base_dir}/main" />
 	<property name="temp_dir" location="${base_dir}/temp" />
-	<property name="lib_dir"  location="${base_dir}/lib" />
 	<property name="main_sources_dir" location="${main_dir}/src" />
+	<property name="main_lib_dir"     location="${main_dir}/lib" />
 	<property name="temp_sources_dir" location="${temp_dir}/sources" />
 	<property name="temp_classes_dir" location="${temp_dir}/classes" />
 	<property name="temp_javadoc_dir" location="${temp_dir}/javadoc" />
@@ -29,7 +29,7 @@
 			</fileset>
 		</copy>
 
-		<fileset id="common.library" dir="${lib_dir}">
+		<fileset id="common.library" dir="${main_lib_dir}">
 			<include name="*.jar"/>
 		</fileset>
 		<path id="common.classpath">

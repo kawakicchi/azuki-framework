@@ -1,13 +1,1 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<classpath>
-	<classpathentry kind="src" path="main/src"/>
-	<classpathentry kind="src" path="azuki-base"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>
-	<classpathentry kind="lib" path="lib/commons-beanutils-1.8.3.jar"/>
-	<classpathentry kind="lib" path="lib/commons-dbcp-1.4.jar"/>
-	<classpathentry kind="lib" path="lib/commons-digester3-3.2.jar"/>
-	<classpathentry kind="lib" path="lib/commons-logging-1.1.1.jar"/>
-	<classpathentry kind="lib" path="lib/commons-pool-1.5.5.jar"/>
-	<classpathentry kind="lib" path="lib/log4j-1.2.16.jar"/>
-	<classpathentry kind="output" path="bin"/>
-</classpath>
+<?xml version="1.0" encoding="UTF-8"?><classpath>	<classpathentry kind="src" path="main/src"/>	<classpathentry kind="src" path="azuki-base"/>	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>	<classpathentry kind="lib" path="main/lib/commons-beanutils-1.8.3.jar"/>	<classpathentry kind="lib" path="main/lib/commons-dbcp-1.4.jar"/>	<classpathentry kind="lib" path="main/lib/commons-digester3-3.2.jar"/>	<classpathentry kind="lib" path="main/lib/commons-logging-1.1.1.jar"/>	<classpathentry kind="lib" path="main/lib/commons-pool-1.5.5.jar"/>	<classpathentry kind="lib" path="main/lib/log4j-1.2.16.jar"/>	<classpathentry kind="output" path="bin"/></classpath>
