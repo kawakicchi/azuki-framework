@@ -22,8 +22,16 @@ import jp.azuki.core.util.StringUtility;
  */
 public class DynamicSQLAccessObject extends AbstractDatabaseAccessObject {
 
+	/**
+	 * DynamicSQL情報
+	 */
 	private DynamicSQL dsql;
 
+	/**
+	 * コンストラクタ
+	 * 
+	 * @param aDynamicSQL DynamicSQL情報
+	 */
 	public DynamicSQLAccessObject(final DynamicSQL aDynamicSQL) {
 		super(DynamicSQLAccessObject.class);
 		dsql = aDynamicSQL;

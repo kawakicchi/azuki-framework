@@ -3,6 +3,7 @@ package jp.azuki.job.worker;
 import jp.azuki.core.lang.LoggingObject;
 import jp.azuki.job.exception.JobServiceException;
 import jp.azuki.job.job.Job;
+import jp.azuki.job.parameter.Parameter;
 import jp.azuki.job.result.JobResult;
 
 /**
@@ -18,6 +19,11 @@ public class JobWorker extends LoggingObject implements Runnable {
 	 * ジョブ
 	 */
 	private Job job;
+
+	/**
+	 * パラメータ情報
+	 */
+	private Parameter parameter;
 
 	/**
 	 * 稼働フラグ
@@ -39,6 +45,20 @@ public class JobWorker extends LoggingObject implements Runnable {
 		job = aJob;
 		working = false;
 		stop = false;
+		parameter = new Parameter();
+	}
+
+	/**
+	 * コンストラクタ
+	 * 
+	 * @param aJob ジョブ
+	 */
+	public JobWorker(final Job aJob, final Parameter aParameter) {
+		super(JobWorker.class);
+		job = aJob;
+		working = false;
+		stop = false;
+		parameter = aParameter;
 	}
 
 	public void stop() {
@@ -57,9 +77,13 @@ public class JobWorker extends LoggingObject implements Runnable {
 		info("Worker start.[job: \"" + job.getClass().getName() + "\"]");
 
 		try {
+
 			job.initialize();
+
 			while (!stop) {
-				JobResult rslt = job.execute();
+
+				JobResult rslt = job.execute(parameter);
+
 				if (null == rslt) {
 					error("JobResult is null.");
 					break;
@@ -77,6 +101,7 @@ public class JobWorker extends LoggingObject implements Runnable {
 				}
 				Thread.sleep(rslt.getWait());
 			}
+
 		} catch (JobServiceException ex) {
 			fatal(ex);
 		} catch (InterruptedException ex) {
@@ -84,6 +109,7 @@ public class JobWorker extends LoggingObject implements Runnable {
 		} catch (Exception ex) {
 			fatal(ex);
 		} finally {
+
 			job.destroy();
 		}
 

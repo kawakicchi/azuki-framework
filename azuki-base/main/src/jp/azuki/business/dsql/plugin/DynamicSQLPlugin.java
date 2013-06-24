@@ -14,7 +14,14 @@ import jp.azuki.plugin.exception.PluginServiceException;
  * @version 1.0.0 2013/02/05
  * @author Kawakicchi
  */
-public class DynamicSQLPlugin extends AbstractPlugin {
+public final class DynamicSQLPlugin extends AbstractPlugin {
+
+	/**
+	 * コンストラクタ
+	 */
+	public DynamicSQLPlugin() {
+
+	}
 
 	@Override
 	protected void doInitialize() throws PluginServiceException {

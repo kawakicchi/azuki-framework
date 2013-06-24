@@ -15,7 +15,14 @@ import jp.azuki.plugin.exception.PluginServiceException;
  * @version 1.0.0 2013/02/15
  * @author Kawakicchi
  */
-public class DatabasePlugin extends AbstractPlugin {
+public final class DatabasePlugin extends AbstractPlugin {
+
+	/**
+	 * コンストラクタ
+	 */
+	public DatabasePlugin() {
+
+	}
 
 	@Override
 	protected void doInitialize() throws PluginServiceException {

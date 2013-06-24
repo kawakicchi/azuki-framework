@@ -2,7 +2,7 @@ package jp.azuki.business.dao;
 
 import java.sql.Connection;
 
-import jp.azuki.persistence.database.DatabaseSupport;
+import jp.azuki.persistence.database.DatabaseConnectionSupport;
 
 /**
  * このクラスは、データベース機能を備えたデータアクセスオブジェクトクラスです。
@@ -11,7 +11,7 @@ import jp.azuki.persistence.database.DatabaseSupport;
  * @version 1.0.0 2013/02/14
  * @author Kawakicchi
  */
-public abstract class AbstractDatabaseAccessObject extends AbstractDataAccessObject implements DatabaseSupport {
+public abstract class AbstractDatabaseAccessObject extends AbstractDataAccessObject implements DatabaseConnectionSupport {
 
 	/**
 	 * コネクション
@@ -28,7 +28,7 @@ public abstract class AbstractDatabaseAccessObject extends AbstractDataAccessObj
 	/**
 	 * コンストラクタ
 	 * 
-	 * @param aName Name
+	 * @param aName 名前
 	 */
 	public AbstractDatabaseAccessObject(final String aName) {
 		super(aName);
@@ -37,7 +37,7 @@ public abstract class AbstractDatabaseAccessObject extends AbstractDataAccessObj
 	/**
 	 * コンストラクタ
 	 * 
-	 * @param aClass Class
+	 * @param aClass クラス
 	 */
 	public AbstractDatabaseAccessObject(final Class<?> aClass) {
 		super(aClass);

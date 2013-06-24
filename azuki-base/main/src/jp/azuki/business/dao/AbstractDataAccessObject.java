@@ -25,7 +25,7 @@ public abstract class AbstractDataAccessObject extends LoggingObject implements 
 	/**
 	 * コンストラクタ
 	 * 
-	 * @param aName Name
+	 * @param aName 名前
 	 */
 	public AbstractDataAccessObject(final String aName) {
 		super(aName);
@@ -34,7 +34,7 @@ public abstract class AbstractDataAccessObject extends LoggingObject implements 
 	/**
 	 * コンストラクタ
 	 * 
-	 * @param aClass Class
+	 * @param aClass クラス
 	 */
 	public AbstractDataAccessObject(final Class<?> aClass) {
 		super(aClass);

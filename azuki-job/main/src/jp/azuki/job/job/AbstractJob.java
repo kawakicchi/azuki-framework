@@ -2,6 +2,7 @@ package jp.azuki.job.job;
 
 import jp.azuki.core.lang.LoggingObject;
 import jp.azuki.job.exception.JobServiceException;
+import jp.azuki.job.parameter.Parameter;
 import jp.azuki.job.result.JobResult;
 
 /**
@@ -42,18 +43,18 @@ public abstract class AbstractJob extends LoggingObject implements Job {
 	}
 
 	@Override
-	public final void initialize() {
+	public void initialize() {
 		doInitialize();
 	}
 
 	@Override
-	public final void destroy() {
+	public void destroy() {
 		doDestroy();
 	}
 
 	@Override
-	public final JobResult execute() throws JobServiceException {
-		return doExecute();
+	public JobResult execute(final Parameter aParameter) throws JobServiceException {
+		return doExecute(aParameter);
 	}
 
 	/**
@@ -69,9 +70,10 @@ public abstract class AbstractJob extends LoggingObject implements Job {
 	/**
 	 * ジョブを実行する。
 	 * 
+	 * @param aParameter パラメータ情報
 	 * @return 結果
 	 * @throws JobServiceException ジョブ機能に起因する問題が発生した場合
 	 */
-	protected abstract JobResult doExecute() throws JobServiceException;
+	protected abstract JobResult doExecute(final Parameter aParameter) throws JobServiceException;
 
 }

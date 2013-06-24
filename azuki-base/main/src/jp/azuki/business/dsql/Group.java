@@ -1,6 +1,7 @@
 package jp.azuki.business.dsql;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -25,6 +26,41 @@ public final class Group {
 	}
 
 	/**
+	 * コンストラクタ
+	 * 
+	 * @param aGroups グループ
+	 */
+	public Group(final String... aGroups) {
+		groups = new HashSet<>();
+		for (String group : aGroups) {
+			groups.add(group);
+		}
+	}
+
+	/**
+	 * コンストラクタ
+	 * 
+	 * @param aGroups グループ
+	 */
+	public Group(final List<String> aGroups) {
+		groups = new HashSet<>();
+		for (String group : aGroups) {
+			groups.add(group);
+		}
+	}
+
+	/**
+	 * コンストラクタ
+	 * 
+	 * @param aGroup グループ
+	 */
+	public Group(final Group aGroup) {
+		for (String group : aGroup.groups) {
+			groups.add(group);
+		}
+	}
+
+	/**
 	 * グループを追加する。
 	 * 
 	 * @param aGroup グループ
@@ -42,5 +78,4 @@ public final class Group {
 	public boolean is(final String aGroup) {
 		return groups.contains(aGroup);
 	}
-
 }

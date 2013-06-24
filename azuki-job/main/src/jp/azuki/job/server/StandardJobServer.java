@@ -4,7 +4,9 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 
 import jp.azuki.core.util.StringUtility;
@@ -13,6 +15,7 @@ import jp.azuki.job.commandline.CommandLineArgumentPurser;
 import jp.azuki.job.commandline.StandardCommandLineArgumentPurser;
 import jp.azuki.job.context.JobContext;
 import jp.azuki.job.job.Job;
+import jp.azuki.job.parameter.Parameter;
 import jp.azuki.job.store.JobSessionStore;
 import jp.azuki.job.worker.JobWorker;
 import jp.azuki.persistence.context.Context;
@@ -55,6 +58,9 @@ public final class StandardJobServer extends AbstractJobServer {
 		if (StringUtility.isNotEmpty(config)) {
 			server.setConfig(config);
 		}
+		// TODO パラメータ
+		// server.setParameter();
+
 		server.run();
 	}
 
@@ -76,6 +82,8 @@ public final class StandardJobServer extends AbstractJobServer {
 	private String stopFile;
 
 	private boolean stopRequest = false;
+
+	private Map<String, Object> params;
 
 	/**
 	 * コンストラクタ
@@ -104,6 +112,15 @@ public final class StandardJobServer extends AbstractJobServer {
 	 */
 	public void setConfig(final String aConfig) {
 		config = aConfig;
+	}
+
+	/**
+	 * パラメータを設定する。
+	 * 
+	 * @param aParams パラメータ
+	 */
+	public void setParameter(final Map<String, Object> aParams) {
+		params = new HashMap<String, Object>(aParams);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -158,7 +175,7 @@ public final class StandardJobServer extends AbstractJobServer {
 		}
 
 		try {
-			createWorker(jobClass, workerCount);
+			createWorker(jobClass, params, workerCount);
 			startWorker();
 			Thread.sleep(1 * 1000);
 			while (!isStopWorker()) {
@@ -194,7 +211,8 @@ public final class StandardJobServer extends AbstractJobServer {
 		}
 	}
 
-	private void createWorker(final Class<? extends Job> aJob, final int aCount) throws IllegalAccessException, InstantiationException {
+	private void createWorker(final Class<? extends Job> aJob, final Map<String, Object> aParams, final int aCount) throws IllegalAccessException,
+			InstantiationException {
 		info("Create worker.[count: " + aCount + "]");
 		Property property = null;
 		PropertyFile propertyFile = aJob.getAnnotation(PropertyFile.class);
@@ -208,8 +226,11 @@ public final class StandardJobServer extends AbstractJobServer {
 			}
 		}
 
+		Parameter parameter = new Parameter(aParams);
+
 		for (int i = 0; i < aCount; i++) {
 			Job job = aJob.newInstance();
+
 			if (job instanceof SessionSupport) {
 				((SessionSupport) job).setSession(new JobSessionStore());
 			}
@@ -223,7 +244,8 @@ public final class StandardJobServer extends AbstractJobServer {
 					warn("This job is not property support.[" + job.getClass().getName() + "]");
 				}
 			}
-			JobWorker worker = new JobWorker(job);
+
+			JobWorker worker = new JobWorker(job, parameter);
 			workers.add(worker);
 		}
 	}

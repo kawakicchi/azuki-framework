@@ -1,6 +1,7 @@
 package jp.azuki.job.job;
 
 import jp.azuki.job.exception.JobServiceException;
+import jp.azuki.job.parameter.Parameter;
 import jp.azuki.job.result.JobResult;
 import jp.azuki.persistence.context.Context;
 import jp.azuki.persistence.context.ContextSupport;
@@ -62,10 +63,10 @@ public abstract class AbstractPersistenceJob extends AbstractJob implements Sess
 	}
 
 	@Override
-	protected final JobResult doExecute() throws JobServiceException {
+	protected final JobResult doExecute(final Parameter aParameter) throws JobServiceException {
 		JobResult result = null;
 		try {
-			result = doPersistenceExecute();
+			result = doPersistenceExecute(aParameter);
 		} catch (PersistenceServiceException ex) {
 			throw new JobServiceException(ex);
 		}
@@ -75,11 +76,12 @@ public abstract class AbstractPersistenceJob extends AbstractJob implements Sess
 	/**
 	 * ジョブを実行する。
 	 * 
+	 * @param aParameter パラメータ情報
 	 * @return 結果
 	 * @throws JobServiceException ジョブ機能に起因する問題が発生した場合
 	 * @throws PersistenceServiceException 永続化層に起因する問題が発生した場合
 	 */
-	protected abstract JobResult doPersistenceExecute() throws JobServiceException, PersistenceServiceException;
+	protected abstract JobResult doPersistenceExecute(final Parameter aParameter) throws JobServiceException, PersistenceServiceException;
 
 	@Override
 	public final void setSession(final Store<String, Object> aSession) {

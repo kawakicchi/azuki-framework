@@ -14,10 +14,21 @@ import jp.azuki.business.dsql.manager.DynamicSQLManager;
  * @version 1.0.0 2013/02/14
  * @author Kawakicchi
  */
-public class DynamicSQL {
+public final class DynamicSQL {
 
+	/**
+	 * DynamicSQL名
+	 */
 	private String name;
+
+	/**
+	 * SQL
+	 */
 	private String sql;
+
+	/**
+	 * パラメータ
+	 */
 	private List<Object> parameters;
 
 	/**
@@ -38,7 +49,7 @@ public class DynamicSQL {
 	 * 
 	 * @return 名前
 	 */
-	public final String getName() {
+	public String getName() {
 		return name;
 	}
 
@@ -47,7 +58,7 @@ public class DynamicSQL {
 	 * 
 	 * @return SQL文
 	 */
-	public final String getSQL() {
+	public String getSQL() {
 		return sql;
 	}
 

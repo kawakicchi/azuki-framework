@@ -16,6 +16,13 @@ import jp.azuki.plugin.exception.PluginServiceException;
  */
 public final class MessagePlugin extends AbstractPlugin {
 
+	/**
+	 * コンストラクタ
+	 */
+	public MessagePlugin() {
+
+	}
+
 	@Override
 	protected void doInitialize() throws PluginServiceException {
 		MessageManager.initialize();
