@@ -1,6 +1,7 @@
 package jp.azuki.job.job;
 
 import jp.azuki.job.exception.JobServiceException;
+import jp.azuki.job.parameter.Parameter;
 import jp.azuki.job.result.JobResult;
 
 /**
@@ -25,8 +26,9 @@ public interface Job {
 	/**
 	 * ジョブを実行する。
 	 * 
+	 * @param aParameter パラメータ情報
 	 * @return 結果
 	 * @throws ジョブ機能に起因する問題が発生した場合
 	 */
-	public JobResult execute() throws JobServiceException;
+	public JobResult execute(final Parameter aParameter) throws JobServiceException;
 }

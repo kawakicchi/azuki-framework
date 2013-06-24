@@ -9,7 +9,7 @@ import jp.azuki.business.logic.Logic;
 import jp.azuki.business.logic.manager.LogicManager;
 import jp.azuki.core.util.StringUtility;
 import jp.azuki.persistence.context.ContextSupport;
-import jp.azuki.persistence.database.DatabaseSupport;
+import jp.azuki.persistence.database.DatabaseConnectionSupport;
 import jp.azuki.persistence.exception.PersistenceServiceException;
 import jp.azuki.persistence.proterty.Property;
 import jp.azuki.persistence.proterty.PropertyManager;
@@ -136,8 +136,8 @@ public abstract class AbstractBusinessAction extends AbstractDatabaseAction {
 						}
 						((PropertySupport) logic).setProperty(property);
 					}
-					if (logic instanceof DatabaseSupport) {
-						((DatabaseSupport) logic).setConnection(getConnection());
+					if (logic instanceof DatabaseConnectionSupport) {
+						((DatabaseConnectionSupport) logic).setConnection(getConnection());
 					}
 
 					logic.initialize();

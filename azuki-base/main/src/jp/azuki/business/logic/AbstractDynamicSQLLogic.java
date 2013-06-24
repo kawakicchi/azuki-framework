@@ -5,7 +5,7 @@ import jp.azuki.business.dao.DynamicSQLAccessObject;
 import jp.azuki.business.dsql.DynamicSQL;
 import jp.azuki.business.dsql.Group;
 import jp.azuki.business.dsql.Parameter;
-import jp.azuki.persistence.database.DatabaseSupport;
+import jp.azuki.persistence.database.DatabaseConnectionSupport;
 
 /**
  * このクラスは、ダイナミックSQL機能を実装したロジッククラスです。
@@ -86,8 +86,8 @@ public abstract class AbstractDynamicSQLLogic extends AbstractDatabaseLogic {
 		DynamicSQL dsql = DynamicSQL.generate(aName, aGroup, aParameter);
 		if (null != dsql) {
 			dao = new DynamicSQLAccessObject(dsql);
-			if (dao instanceof DatabaseSupport) {
-				((DatabaseSupport) dao).setConnection(getConnection());
+			if (dao instanceof DatabaseConnectionSupport) {
+				((DatabaseConnectionSupport) dao).setConnection(getConnection());
 			}
 		}
 		return dao;

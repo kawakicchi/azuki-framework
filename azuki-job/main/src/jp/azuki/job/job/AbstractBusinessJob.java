@@ -9,9 +9,10 @@ import jp.azuki.business.logic.Logic;
 import jp.azuki.business.logic.manager.LogicManager;
 import jp.azuki.core.util.StringUtility;
 import jp.azuki.job.exception.JobServiceException;
+import jp.azuki.job.parameter.Parameter;
 import jp.azuki.job.result.JobResult;
 import jp.azuki.persistence.context.ContextSupport;
-import jp.azuki.persistence.database.DatabaseSupport;
+import jp.azuki.persistence.database.DatabaseConnectionSupport;
 import jp.azuki.persistence.exception.PersistenceServiceException;
 import jp.azuki.persistence.proterty.Property;
 import jp.azuki.persistence.proterty.PropertyManager;
@@ -60,10 +61,10 @@ public abstract class AbstractBusinessJob extends AbstractDatabaseJob {
 	}
 
 	@Override
-	protected final JobResult doDatabaseExecute() throws JobServiceException, PersistenceServiceException, SQLException {
+	protected final JobResult doDatabaseExecute(final Parameter aParameter) throws JobServiceException, PersistenceServiceException, SQLException {
 		JobResult result = null;
 		try {
-			result = doBusinessExecute();
+			result = doBusinessExecute(aParameter);
 			for (String namespace : logics.keySet()) {
 				Map<String, Logic> ls = logics.get(namespace);
 				for (String name : ls.keySet()) {
@@ -80,13 +81,15 @@ public abstract class AbstractBusinessJob extends AbstractDatabaseJob {
 	/**
 	 * ジョブを実行する。
 	 * 
+	 * @param aParameter パラメータ情報
 	 * @return 結果
 	 * @throws JobServiceException ジョブ機能に起因する問題が発生した場合
 	 * @throws PersistenceServiceException 永続化層に起因する問題が発生した場合
 	 * @throws BusinessServiceException ビジネスサービス層に起因する問題が発生した場合
 	 * @throws SQLException SQL操作時に問題が発生した場合
 	 */
-	protected abstract JobResult doBusinessExecute() throws JobServiceException, PersistenceServiceException, BusinessServiceException, SQLException;
+	protected abstract JobResult doBusinessExecute(final Parameter aParameter) throws JobServiceException, PersistenceServiceException,
+			BusinessServiceException, SQLException;
 
 	/**
 	 * ロジックを取得する。
@@ -134,8 +137,8 @@ public abstract class AbstractBusinessJob extends AbstractDatabaseJob {
 						}
 						((PropertySupport) logic).setProperty(property);
 					}
-					if (logic instanceof DatabaseSupport) {
-						((DatabaseSupport) logic).setConnection(getConnection());
+					if (logic instanceof DatabaseConnectionSupport) {
+						((DatabaseConnectionSupport) logic).setConnection(getConnection());
 					}
 
 					logic.initialize();

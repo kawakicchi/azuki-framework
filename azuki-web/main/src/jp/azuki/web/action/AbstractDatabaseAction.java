@@ -5,7 +5,7 @@ import java.sql.SQLException;
 import java.util.Map;
 
 import jp.azuki.persistence.database.DatabaseConnectionManager;
-import jp.azuki.persistence.database.DatabaseSupport;
+import jp.azuki.persistence.database.DatabaseConnectionSupport;
 import jp.azuki.persistence.exception.PersistenceServiceException;
 import jp.azuki.web.constant.WebServiceException;
 import jp.azuki.web.view.View;
@@ -17,7 +17,7 @@ import jp.azuki.web.view.View;
  * @version 1.0.0 2013/02/13
  * @author Kawakicchi
  */
-public abstract class AbstractDatabaseAction extends AbstractPersistenceAction implements DatabaseSupport {
+public abstract class AbstractDatabaseAction extends AbstractPersistenceAction implements DatabaseConnectionSupport {
 
 	/**
 	 * コネクション

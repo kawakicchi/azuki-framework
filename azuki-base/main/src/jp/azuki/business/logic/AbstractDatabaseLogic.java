@@ -3,7 +3,7 @@ package jp.azuki.business.logic;
 import java.sql.Connection;
 import java.sql.SQLException;
 
-import jp.azuki.persistence.database.DatabaseSupport;
+import jp.azuki.persistence.database.DatabaseConnectionSupport;
 
 /**
  * このクラスは、データベース機能を実装するロジッククラスです。
@@ -12,7 +12,7 @@ import jp.azuki.persistence.database.DatabaseSupport;
  * @version 1.0.0 2013/02/05
  * @author Kawakicchi
  */
-public abstract class AbstractDatabaseLogic extends AbstractPersistenceLogic implements DatabaseSupport {
+public abstract class AbstractDatabaseLogic extends AbstractPersistenceLogic implements DatabaseConnectionSupport {
 
 	/**
 	 * コネクション
