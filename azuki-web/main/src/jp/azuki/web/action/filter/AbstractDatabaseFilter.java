@@ -1,11 +1,12 @@
 package jp.azuki.web.action.filter;
 
-import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Map;
 
+import jp.azuki.persistence.database.DatabaseConnection;
 import jp.azuki.persistence.database.DatabaseConnectionManager;
 import jp.azuki.persistence.database.DatabaseConnectionSupport;
+import jp.azuki.persistence.database.DatabaseSource;
 import jp.azuki.persistence.exception.PersistenceServiceException;
 import jp.azuki.web.constant.WebServiceException;
 
@@ -18,14 +19,19 @@ import jp.azuki.web.constant.WebServiceException;
 public abstract class AbstractDatabaseFilter extends AbstractPersistenceFilter implements DatabaseConnectionSupport {
 
 	/**
+	 * データベースソース
+	 */
+	private DatabaseSource source;
+
+	/**
 	 * コネクション
 	 */
-	private Connection myConnection;
+	private DatabaseConnection myConnection;
 
 	/**
 	 * チェーンコネクション
 	 */
-	private Connection chainConnection;
+	private DatabaseConnection chainConnection;
 
 	/**
 	 * コンストラクタ
@@ -57,18 +63,19 @@ public abstract class AbstractDatabaseFilter extends AbstractPersistenceFilter i
 		try {
 			doDatabaseFilter(aParameter);
 			if (null != myConnection) {
-				myConnection.commit();
+				myConnection.getConnection().commit();
 			}
 		} catch (SQLException ex) {
 			throw new WebServiceException(ex);
 		} finally {
-			if (null != myConnection) {
+			if (null != source && null != myConnection) {
 				try {
-					DatabaseConnectionManager.returnConnection(myConnection);
+					source.returnConnection(myConnection);
 				} catch (SQLException ex) {
 					warn(ex);
 				}
 				myConnection = null;
+				source = null;
 			}
 		}
 	}
@@ -85,7 +92,7 @@ public abstract class AbstractDatabaseFilter extends AbstractPersistenceFilter i
 			SQLException;
 
 	@Override
-	public final void setConnection(final Connection aConnection) {
+	public final void setConnection(final DatabaseConnection aConnection) {
 		if (null == chainConnection) {
 			chainConnection = aConnection;
 		} else {
@@ -99,14 +106,17 @@ public abstract class AbstractDatabaseFilter extends AbstractPersistenceFilter i
 	 * @return コネクション
 	 * @throws SQL実行時に問題が発生した場合
 	 */
-	protected final Connection getConnection() throws SQLException {
+	protected final DatabaseConnection getConnection() throws SQLException {
 		if (null != chainConnection) {
 			return chainConnection;
 		}
 		if (null == myConnection) {
 			info("Create my connection.");
-			myConnection = DatabaseConnectionManager.getConnection();
-			myConnection.setAutoCommit(false);
+			source = DatabaseConnectionManager.getSource();
+			myConnection = source.getConnection();
+			if (null != myConnection) {
+				myConnection.getConnection().setAutoCommit(false);
+			}
 		}
 		return myConnection;
 	}
@@ -117,7 +127,10 @@ public abstract class AbstractDatabaseFilter extends AbstractPersistenceFilter i
 	 * @throws SQLException SQL実行中に問題が発生した場合
 	 */
 	protected final void commit() throws SQLException {
-		getConnection().commit();
+		DatabaseConnection connection = getConnection();
+		if (null != connection) {
+			connection.getConnection().commit();
+		}
 	}
 
 	/**
@@ -126,6 +139,9 @@ public abstract class AbstractDatabaseFilter extends AbstractPersistenceFilter i
 	 * @throws SQLException SQL実行中に問題が発生した場合
 	 */
 	protected final void rollback() throws SQLException {
-		getConnection().rollback();
+		DatabaseConnection connection = getConnection();
+		if (null != connection) {
+			connection.getConnection().rollback();
+		}
 	}
 }

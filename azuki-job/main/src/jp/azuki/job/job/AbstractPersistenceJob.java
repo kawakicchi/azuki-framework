@@ -12,20 +12,16 @@ import jp.azuki.persistence.session.SessionSupport;
 import jp.azuki.persistence.store.Store;
 
 /**
+ * このクラスは、永続化層の機能を実装したジョブクラスです。
  * 
  * @since 1.0.0
  * @version 1.0.0 2013/02/21
  * @author Kawakicchi
  */
-public abstract class AbstractPersistenceJob extends AbstractJob implements SessionSupport, ContextSupport, PropertySupport {
+public abstract class AbstractPersistenceJob extends AbstractJob implements ContextSupport, PropertySupport, SessionSupport {
 
 	/**
-	 * Session store
-	 */
-	private Store<String, Object> session;
-
-	/**
-	 * コンテキスト
+	 * コンテキスト情報
 	 */
 	private Context context;
 
@@ -35,66 +31,34 @@ public abstract class AbstractPersistenceJob extends AbstractJob implements Sess
 	private Property property;
 
 	/**
+	 * セッション情報
+	 */
+	private Store<String, Object> session;
+
+	/**
 	 * コンストラクタ
 	 */
 	public AbstractPersistenceJob() {
 		super();
-		property = new Property();
 	}
 
 	/**
 	 * コンストラクタ
 	 * 
-	 * @param aName Name
+	 * @param aName 名前
 	 */
 	public AbstractPersistenceJob(final String aName) {
 		super(aName);
-		property = new Property();
 	}
 
 	/**
 	 * コンストラクタ
 	 * 
-	 * @param aClass Class
+	 * @param aClass クラス
 	 */
 	public AbstractPersistenceJob(final Class<?> aClass) {
 		super(aClass);
 		property = new Property();
-	}
-
-	@Override
-	protected final JobResult doExecute(final Parameter aParameter) throws JobServiceException {
-		JobResult result = null;
-		try {
-			result = doPersistenceExecute(aParameter);
-		} catch (PersistenceServiceException ex) {
-			throw new JobServiceException(ex);
-		}
-		return result;
-	}
-
-	/**
-	 * ジョブを実行する。
-	 * 
-	 * @param aParameter パラメータ情報
-	 * @return 結果
-	 * @throws JobServiceException ジョブ機能に起因する問題が発生した場合
-	 * @throws PersistenceServiceException 永続化層に起因する問題が発生した場合
-	 */
-	protected abstract JobResult doPersistenceExecute(final Parameter aParameter) throws JobServiceException, PersistenceServiceException;
-
-	@Override
-	public final void setSession(final Store<String, Object> aSession) {
-		session = aSession;
-	}
-
-	/**
-	 * セッション情報を取得する。
-	 * 
-	 * @return セッション情報
-	 */
-	protected final Store<String, Object> getSession() {
-		return session;
 	}
 
 	@Override
@@ -124,4 +88,40 @@ public abstract class AbstractPersistenceJob extends AbstractJob implements Sess
 	protected final Property getProperty() {
 		return property;
 	}
+
+	@Override
+	public final void setSession(final Store<String, Object> aSession) {
+		session = aSession;
+	}
+
+	/**
+	 * セッション情報を取得する。
+	 * 
+	 * @return セッション情報
+	 */
+	protected final Store<String, Object> getSession() {
+		return session;
+	}
+
+	@Override
+	protected final JobResult doExecute(final Parameter aParameter) throws JobServiceException {
+		JobResult result = null;
+		try {
+			result = doPersistenceExecute(aParameter);
+		} catch (PersistenceServiceException ex) {
+			throw new JobServiceException(ex);
+		}
+		return result;
+	}
+
+	/**
+	 * ジョブを実行する。
+	 * 
+	 * @param aParameter パラメータ情報
+	 * @return 結果
+	 * @throws JobServiceException ジョブ機能に起因する問題が発生した場合
+	 * @throws PersistenceServiceException 永続化層に起因する問題が発生した場合
+	 */
+	protected abstract JobResult doPersistenceExecute(final Parameter aParameter) throws JobServiceException, PersistenceServiceException;
+
 }

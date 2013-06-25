@@ -22,8 +22,16 @@ import jp.azuki.core.util.StringUtility;
  */
 public class DynamicSQLAccessObject extends AbstractDatabaseAccessObject {
 
+	/**
+	 * DynamicSQL情報
+	 */
 	private DynamicSQL dsql;
 
+	/**
+	 * コンストラクタ
+	 * 
+	 * @param aDynamicSQL DynamicSQL情報
+	 */
 	public DynamicSQLAccessObject(final DynamicSQL aDynamicSQL) {
 		super(DynamicSQLAccessObject.class);
 		dsql = aDynamicSQL;
@@ -35,7 +43,7 @@ public class DynamicSQLAccessObject extends AbstractDatabaseAccessObject {
 
 		PreparedStatement stat = null;
 		try {
-			stat = getConnection().prepareStatement(dsql.getSQL());
+			stat = getConnection().getConnection().prepareStatement(dsql.getSQL());
 			List<Object> parameters = dsql.getParameters();
 			if (null != parameters) {
 				for (int i = 0; i < parameters.size(); i++) {
@@ -66,7 +74,7 @@ public class DynamicSQLAccessObject extends AbstractDatabaseAccessObject {
 
 		PreparedStatement stat = null;
 		try {
-			stat = getConnection().prepareStatement(dsql.getSQL());
+			stat = getConnection().getConnection().prepareStatement(dsql.getSQL());
 			List<Object> parameters = dsql.getParameters();
 			if (null != parameters) {
 				for (int i = 0; i < parameters.size(); i++) {
@@ -98,7 +106,7 @@ public class DynamicSQLAccessObject extends AbstractDatabaseAccessObject {
 		PreparedStatement stat = null;
 		ResultSet rs = null;
 		try {
-			stat = getConnection().prepareStatement(dsql.getSQL());
+			stat = getConnection().getConnection().prepareStatement(dsql.getSQL());
 			List<Object> parameters = dsql.getParameters();
 			if (null != parameters) {
 				for (int i = 0; i < parameters.size(); i++) {
@@ -141,7 +149,7 @@ public class DynamicSQLAccessObject extends AbstractDatabaseAccessObject {
 		PreparedStatement stat = null;
 		ResultSet rs = null;
 		try {
-			stat = getConnection().prepareStatement(dsql.getSQL());
+			stat = getConnection().getConnection().prepareStatement(dsql.getSQL());
 			List<Object> parameters = dsql.getParameters();
 			if (null != parameters) {
 				for (int i = 0; i < parameters.size(); i++) {
@@ -200,7 +208,7 @@ public class DynamicSQLAccessObject extends AbstractDatabaseAccessObject {
 		PreparedStatement stat = null;
 		ResultSet rs = null;
 		try {
-			stat = getConnection().prepareStatement(dsql.getSQL());
+			stat = getConnection().getConnection().prepareStatement(dsql.getSQL());
 			List<Object> parameters = dsql.getParameters();
 			if (null != parameters) {
 				for (int i = 0; i < parameters.size(); i++) {

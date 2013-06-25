@@ -17,6 +17,13 @@ import jp.azuki.plugin.exception.PluginServiceException;
  */
 public final class LogicPlugin extends AbstractPlugin {
 
+	/**
+	 * コンストラクタ
+	 */
+	public LogicPlugin() {
+
+	}
+
 	@Override
 	protected void doInitialize() throws PluginServiceException {
 		LogicManager.initialize();

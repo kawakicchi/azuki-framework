@@ -1,8 +1,8 @@
 package jp.azuki.business.logic;
 
-import java.sql.Connection;
 import java.sql.SQLException;
 
+import jp.azuki.persistence.database.DatabaseConnection;
 import jp.azuki.persistence.database.DatabaseConnectionSupport;
 
 /**
@@ -15,9 +15,9 @@ import jp.azuki.persistence.database.DatabaseConnectionSupport;
 public abstract class AbstractDatabaseLogic extends AbstractPersistenceLogic implements DatabaseConnectionSupport {
 
 	/**
-	 * コネクション
+	 * コネクション情報
 	 */
-	private Connection connection;
+	private DatabaseConnection connection;
 
 	/**
 	 * コンストラクタ
@@ -45,7 +45,7 @@ public abstract class AbstractDatabaseLogic extends AbstractPersistenceLogic imp
 	}
 
 	@Override
-	public final void setConnection(final Connection aConnection) {
+	public final void setConnection(final DatabaseConnection aConnection) {
 		connection = aConnection;
 	}
 
@@ -54,7 +54,7 @@ public abstract class AbstractDatabaseLogic extends AbstractPersistenceLogic imp
 	 * 
 	 * @return コネクション
 	 */
-	protected final Connection getConnection() {
+	protected final DatabaseConnection getConnection() {
 		return connection;
 	}
 
@@ -64,7 +64,7 @@ public abstract class AbstractDatabaseLogic extends AbstractPersistenceLogic imp
 	 * @throws SQLException SQL実行中に問題が発生した場合
 	 */
 	protected final void commit() throws SQLException {
-		connection.commit();
+		connection.getConnection().commit();
 	}
 
 	/**
@@ -73,6 +73,6 @@ public abstract class AbstractDatabaseLogic extends AbstractPersistenceLogic imp
 	 * @throws SQLException SQL実行中に問題が発生した場合
 	 */
 	protected final void rollback() throws SQLException {
-		connection.rollback();
+		connection.getConnection().rollback();
 	}
 }

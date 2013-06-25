@@ -26,6 +26,24 @@ public final class Parameter {
 	}
 
 	/**
+	 * コンストラクタ
+	 * 
+	 * @param aParameter パラメータ
+	 */
+	public Parameter(final Map<String, Object> aParameter) {
+		params = new HashMap<String, Object>(aParameter);
+	}
+
+	/**
+	 * コンストラクタ
+	 * 
+	 * @param aParameter パラメータ
+	 */
+	public Parameter(final Parameter aParameter) {
+		params = new HashMap<String, Object>(aParameter.params);
+	}
+
+	/**
 	 * パラメータが存在するか判断する。
 	 * 
 	 * @param aKey キー

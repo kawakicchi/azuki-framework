@@ -8,12 +8,20 @@ import jp.azuki.plugin.AbstractPlugin;
 import jp.azuki.plugin.exception.PluginServiceException;
 
 /**
+ * このクラスは、ロギング機能をサポートするためのプラグインクラスです。
  * 
  * @since 1.0.0
  * @version 1.0.0 2013/02/22
  * @author Kawakicchi
  */
-public class LoggerPlugin extends AbstractPlugin {
+public final class LoggerPlugin extends AbstractPlugin {
+
+	/**
+	 * コンストラクタ
+	 */
+	public LoggerPlugin() {
+
+	}
 
 	@Override
 	protected void doInitialize() throws PluginServiceException {

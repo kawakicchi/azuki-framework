@@ -1,5 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?><!--
+################################################################################
+# Azuki Base Library ant build file
+# 
+#   Version : 1.0.0 2013/06/25
+#   Author  : Kawakicchi
+#
+################################################################################
+-->
 <project name="azuki-base" default="default" basedir=".">
-
 	<property name="base_dir" location="${basedir}"/>
 	<property name="main_dir" location="${base_dir}/main" />
 	<property name="temp_dir" location="${base_dir}/temp" />
