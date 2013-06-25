@@ -6,7 +6,6 @@ import java.io.InputStream;
 import jp.azuki.core.lang.LoggingObject;
 import jp.azuki.persistence.context.Context;
 import jp.azuki.persistence.context.ContextSupport;
-import jp.azuki.plugin.exception.PluginServiceException;
 
 /**
  * このクラスは、プラグイン機能の実装を行うための基底クラスです。
@@ -18,7 +17,7 @@ import jp.azuki.plugin.exception.PluginServiceException;
 public abstract class AbstractPlugin extends LoggingObject implements Plugin, ContextSupport {
 
 	/**
-	 * コンテキスト
+	 * コンテキスト情報
 	 */
 	private Context context;
 
@@ -50,6 +49,20 @@ public abstract class AbstractPlugin extends LoggingObject implements Plugin, Co
 	@Override
 	public String getName() {
 		return this.getClass().getSimpleName();
+	}
+
+	@Override
+	public final void setContext(final Context aContext) {
+		context = aContext;
+	}
+
+	/**
+	 * コンテキスト情報を取得する。
+	 * 
+	 * @return コンテキスト情報
+	 */
+	protected final Context getContext() {
+		return context;
 	}
 
 	@Override
@@ -93,17 +106,4 @@ public abstract class AbstractPlugin extends LoggingObject implements Plugin, Co
 	 */
 	protected abstract void doDestroy() throws PluginServiceException;
 
-	@Override
-	public final void setContext(final Context aContext) {
-		context = aContext;
-	}
-
-	/**
-	 * コンテキストを取得する。
-	 * 
-	 * @return コンテキスト
-	 */
-	protected final Context getContext() {
-		return context;
-	}
 }

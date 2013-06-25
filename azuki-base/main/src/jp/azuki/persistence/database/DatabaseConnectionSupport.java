@@ -1,7 +1,5 @@
 package jp.azuki.persistence.database;
 
-import java.sql.Connection;
-
 /**
  * このインターフェースは、データベースコネクション機能のサポートを行うためのインターフェースです。
  * 
@@ -12,9 +10,9 @@ import java.sql.Connection;
 public interface DatabaseConnectionSupport {
 
 	/**
-	 * コネクションを設定する。
+	 * コネクション情報を設定する。
 	 * 
-	 * @param aConnection コネクション
+	 * @param aConnection コネクション情報
 	 */
-	public void setConnection(final Connection aConnection);
+	public void setConnection(final DatabaseConnection aConnection);
 }

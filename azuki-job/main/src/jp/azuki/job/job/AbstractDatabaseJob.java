@@ -1,13 +1,14 @@
 package jp.azuki.job.job;
 
-import java.sql.Connection;
 import java.sql.SQLException;
 
 import jp.azuki.job.exception.JobServiceException;
 import jp.azuki.job.parameter.Parameter;
 import jp.azuki.job.result.JobResult;
+import jp.azuki.persistence.database.DatabaseConnection;
 import jp.azuki.persistence.database.DatabaseConnectionManager;
 import jp.azuki.persistence.database.DatabaseConnectionSupport;
+import jp.azuki.persistence.database.DatabaseSource;
 import jp.azuki.persistence.exception.PersistenceServiceException;
 
 /**
@@ -20,14 +21,19 @@ import jp.azuki.persistence.exception.PersistenceServiceException;
 public abstract class AbstractDatabaseJob extends AbstractPersistenceJob implements DatabaseConnectionSupport {
 
 	/**
+	 * データベースソース
+	 */
+	private DatabaseSource source;
+
+	/**
 	 * コネクション
 	 */
-	private Connection myConnection;
+	private DatabaseConnection myConnection;
 
 	/**
 	 * チェーンコネクション
 	 */
-	private Connection chainConnection;
+	private DatabaseConnection chainConnection;
 
 	/**
 	 * コンストラクタ
@@ -60,18 +66,19 @@ public abstract class AbstractDatabaseJob extends AbstractPersistenceJob impleme
 		try {
 			result = doDatabaseExecute(aParameter);
 			if (null != myConnection) {
-				myConnection.commit();
+				myConnection.getConnection().commit();
 			}
 		} catch (SQLException ex) {
 			throw new JobServiceException(ex);
 		} finally {
-			if (null != myConnection) {
+			if (null != source && null != myConnection) {
 				try {
-					DatabaseConnectionManager.returnConnection(myConnection);
+					source.returnConnection(myConnection);
 				} catch (SQLException ex) {
 					warn(ex);
 				}
 				myConnection = null;
+				source = null;
 			}
 		}
 		return result;
@@ -89,7 +96,7 @@ public abstract class AbstractDatabaseJob extends AbstractPersistenceJob impleme
 	protected abstract JobResult doDatabaseExecute(final Parameter aParameter) throws JobServiceException, PersistenceServiceException, SQLException;
 
 	@Override
-	public final void setConnection(final Connection aConnection) {
+	public final void setConnection(final DatabaseConnection aConnection) {
 		if (null == chainConnection) {
 			chainConnection = aConnection;
 		} else {
@@ -103,15 +110,16 @@ public abstract class AbstractDatabaseJob extends AbstractPersistenceJob impleme
 	 * @return コネクション
 	 * @throws SQL実行時に問題が発生した場合
 	 */
-	protected final Connection getConnection() throws SQLException {
+	protected final DatabaseConnection getConnection() throws SQLException {
 		if (null != chainConnection) {
 			return chainConnection;
 		}
 		if (null == myConnection) {
 			info("Create my connection.");
-			myConnection = DatabaseConnectionManager.getConnection();
+			source = DatabaseConnectionManager.getSource();
+			myConnection = source.getConnection();
 			if (null != myConnection) {
-				myConnection.setAutoCommit(false);
+				myConnection.getConnection().setAutoCommit(false);
 			}
 		}
 		return myConnection;
@@ -123,9 +131,9 @@ public abstract class AbstractDatabaseJob extends AbstractPersistenceJob impleme
 	 * @throws SQLException SQL実行中に問題が発生した場合
 	 */
 	protected final void commit() throws SQLException {
-		Connection conntion = getConnection();
-		if (null != conntion) {
-			conntion.commit();
+		DatabaseConnection connection = getConnection();
+		if (null != connection) {
+			connection.getConnection().commit();
 		}
 	}
 
@@ -135,9 +143,9 @@ public abstract class AbstractDatabaseJob extends AbstractPersistenceJob impleme
 	 * @throws SQLException SQL実行中に問題が発生した場合
 	 */
 	protected final void rollback() throws SQLException {
-		Connection conntion = getConnection();
-		if (null != conntion) {
-			conntion.rollback();
+		DatabaseConnection connection = getConnection();
+		if (null != connection) {
+			connection.getConnection().rollback();
 		}
 	}
 }

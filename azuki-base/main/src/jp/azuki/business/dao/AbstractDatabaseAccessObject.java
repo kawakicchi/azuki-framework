@@ -1,7 +1,6 @@
 package jp.azuki.business.dao;
 
-import java.sql.Connection;
-
+import jp.azuki.persistence.database.DatabaseConnection;
 import jp.azuki.persistence.database.DatabaseConnectionSupport;
 
 /**
@@ -16,7 +15,7 @@ public abstract class AbstractDatabaseAccessObject extends AbstractDataAccessObj
 	/**
 	 * コネクション
 	 */
-	private Connection connection;
+	private DatabaseConnection connection;
 
 	/**
 	 * コンストラクタ
@@ -44,7 +43,7 @@ public abstract class AbstractDatabaseAccessObject extends AbstractDataAccessObj
 	}
 
 	@Override
-	public final void setConnection(final Connection aConnection) {
+	public final void setConnection(final DatabaseConnection aConnection) {
 		connection = aConnection;
 	}
 
@@ -53,7 +52,7 @@ public abstract class AbstractDatabaseAccessObject extends AbstractDataAccessObj
 	 * 
 	 * @return コネクション
 	 */
-	protected final Connection getConnection() {
+	protected final DatabaseConnection getConnection() {
 		return connection;
 	}
 

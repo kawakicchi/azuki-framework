@@ -25,7 +25,6 @@ public final class LocalContext extends AbstractContext {
 	 * コンストラクタ
 	 */
 	public LocalContext() {
-		super(LocalContext.class);
 		baseDir = ".";
 	}
 
@@ -35,7 +34,6 @@ public final class LocalContext extends AbstractContext {
 	 * @param dir ベースディレクトリ
 	 */
 	public LocalContext(final String dir) {
-		super(LocalContext.class);
 		baseDir = dir;
 	}
 

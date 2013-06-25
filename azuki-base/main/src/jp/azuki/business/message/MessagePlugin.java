@@ -5,7 +5,7 @@ import java.io.InputStream;
 
 import jp.azuki.business.exception.BusinessServiceException;
 import jp.azuki.plugin.AbstractPlugin;
-import jp.azuki.plugin.exception.PluginServiceException;
+import jp.azuki.plugin.PluginServiceException;
 
 /**
  * このクラスは、メッセージ機能をサポートするためのプラグインクラスです。

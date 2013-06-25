@@ -1,6 +1,5 @@
 package jp.azuki.persistence.database;
 
-import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
@@ -27,7 +26,7 @@ public final class DatabaseConnectionManager {
 	/**
 	 * Connection map
 	 */
-	private final Map<String, DatabaseConnection> connections = new HashMap<String, DatabaseConnection>();
+	private final Map<String, DatabaseSource> connections = new HashMap<String, DatabaseSource>();
 
 	/**
 	 * コンストラクタ
@@ -36,10 +35,16 @@ public final class DatabaseConnectionManager {
 		;
 	}
 
+	/**
+	 * 初期化処理を行う。
+	 */
 	public static void initialize() {
 
 	}
 
+	/**
+	 * 解放処理を行う。
+	 */
 	public static void destroy() {
 
 	}
@@ -62,20 +67,12 @@ public final class DatabaseConnectionManager {
 		INSTANCE.doLoad(name, p);
 	}
 
-	public static Connection getConnection() throws SQLException {
-		return getConnection(StringUtility.EMPTY);
+	public static DatabaseSource getSource() throws SQLException {
+		return getSource(StringUtility.EMPTY);
 	}
 
-	public static Connection getConnection(final String name) throws SQLException {
-		return INSTANCE.doGetConnection(name);
-	}
-
-	public static void returnConnection(final Connection connection) throws SQLException {
-		returnConnection(StringUtility.EMPTY, connection);
-	}
-
-	public static void returnConnection(final String name, final Connection connection) throws SQLException {
-		INSTANCE.doReturnConnection(name, connection);
+	public static DatabaseSource getSource(final String name) throws SQLException {
+		return INSTANCE.doGetSource(name);
 	}
 
 	private void doLoad(final String name, final Properties p) throws PersistenceServiceException, ClassNotFoundException {
@@ -83,7 +80,7 @@ public final class DatabaseConnectionManager {
 			throw new PersistenceServiceException("Duplicate database connection name.[" + name + "]");
 		}
 
-		DatabaseConnection connection = new DatabaseConnection();
+		DatabaseSource connection = new DatabaseSource();
 		connection.load(p);
 
 		connections.put(name, connection);
@@ -95,23 +92,18 @@ public final class DatabaseConnectionManager {
 			throw new PersistenceServiceException("Duplicate database connection name.[" + name + "]");
 		}
 
-		DatabaseConnection connection = new DatabaseConnection();
+		DatabaseSource connection = new DatabaseSource();
 		connection.load(driver, uri, user, password);
 
 		connections.put(name, connection);
 	}
 
-	private Connection doGetConnection(final String name) throws SQLException {
-		Connection connection = null;
+	private DatabaseSource doGetSource(final String name) throws SQLException {
+		DatabaseSource connection = null;
 		if (connections.containsKey(name)) {
-			connection = connections.get(name).getConnection();
+			connection = connections.get(name);
 		}
 		return connection;
 	}
 
-	private void doReturnConnection(final String name, final Connection connection) throws SQLException {
-		if (connections.containsKey(name)) {
-			connections.get(name).returnConnection(connection);
-		}
-	}
 }

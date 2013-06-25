@@ -31,7 +31,7 @@ public final class Group {
 	 * @param aGroups グループ
 	 */
 	public Group(final String... aGroups) {
-		groups = new HashSet<>();
+		groups = new HashSet<String>();
 		for (String group : aGroups) {
 			groups.add(group);
 		}
@@ -43,7 +43,7 @@ public final class Group {
 	 * @param aGroups グループ
 	 */
 	public Group(final List<String> aGroups) {
-		groups = new HashSet<>();
+		groups = new HashSet<String>();
 		for (String group : aGroups) {
 			groups.add(group);
 		}

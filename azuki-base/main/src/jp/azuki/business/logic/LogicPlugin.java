@@ -1,12 +1,11 @@
-package jp.azuki.business.logic.plugin;
+package jp.azuki.business.logic;
 
 import java.io.IOException;
 import java.io.InputStream;
 
 import jp.azuki.business.exception.BusinessServiceException;
-import jp.azuki.business.logic.manager.LogicManager;
 import jp.azuki.plugin.AbstractPlugin;
-import jp.azuki.plugin.exception.PluginServiceException;
+import jp.azuki.plugin.PluginServiceException;
 
 /**
  * このクラスは、ロジック機能をサポートするためのプラグインクラスです。

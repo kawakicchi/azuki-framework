@@ -1,4 +1,4 @@
-package jp.azuki.plugin.exception;
+package jp.azuki.plugin;
 
 import jp.azuki.core.exception.PrimitiveException;
 

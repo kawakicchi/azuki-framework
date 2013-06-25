@@ -2,8 +2,6 @@ package jp.azuki.core.log;
 
 import jp.azuki.persistence.context.Context;
 
-import org.apache.log4j.xml.DOMConfigurator;
-
 /**
  * このクラスは、ログを生成するファクトリークラスです。
  * 
@@ -11,38 +9,65 @@ import org.apache.log4j.xml.DOMConfigurator;
  * @version 1.0.0 2012/08/12
  * @author Kawakicchi
  */
-public class LoggerFactory {
+public abstract class LoggerFactory {
 
-	public static final void load(final String aName, final Context aContext) {
-		DOMConfigurator.configure(aContext.getAbstractPath(aName));
+	private static LoggerFactory FACTORY;
+
+	protected abstract void doLoad(final String aName, final Context aContext);
+
+	protected abstract Logger doCreate();
+
+	protected abstract Logger doCreate(final String aName);
+
+	protected abstract Logger doCreate(final Class<?> aClass);
+
+	protected LoggerFactory() {
+
+	}
+
+	public static final void load(final String aFactoryClass, final String aName, final Context aContext) {
+		try {
+			Class<?> clazz = Class.forName(aFactoryClass);
+			Object obj = clazz.newInstance();
+			if (obj instanceof LoggerFactory) {
+				FACTORY = (LoggerFactory) obj;
+				FACTORY.doLoad(aName, aContext);
+			}
+		} catch (ClassNotFoundException ex) {
+
+		} catch (IllegalAccessException ex) {
+
+		} catch (InstantiationException ex) {
+
+		}
 	}
 
 	/**
 	 * ログインスタンスを生成します。
 	 * 
-	 * @return Logger
+	 * @return ログインスタンス
 	 */
 	public static final Logger create() {
-		return new Log4jLogger(LoggerFactory.class);
+		return FACTORY.doCreate();
 	}
 
 	/**
 	 * ログインスタンスを生成します。
 	 * 
-	 * @param name 名前
-	 * @return Logger
+	 * @param aName 名前
+	 * @return ログインスタンス
 	 */
-	public static final Logger create(final String name) {
-		return new Log4jLogger(name);
+	public static final Logger create(final String aName) {
+		return FACTORY.doCreate(aName);
 	}
 
 	/**
 	 * ログインスタンスを生成します。
 	 * 
-	 * @param clazz クラス
-	 * @return Logger
+	 * @param class クラス
+	 * @return ログインスタンス
 	 */
-	public static final Logger create(final Class<?> clazz) {
-		return new Log4jLogger(clazz);
+	public static final Logger create(final Class<?> aClass) {
+		return FACTORY.doCreate(aClass);
 	}
 }

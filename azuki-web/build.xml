@@ -1,3 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?><!--
+################################################################################
+# Azuki Web Library ant build file
+# 
+#   Version : 1.0.0 2013/06/25
+#   Author  : Kawakicchi
+#
+################################################################################
+-->
 <project name="azuki-web" default="default" basedir=".">
 
 	<property name="base_dir" location="${basedir}"/>
@@ -15,7 +24,8 @@
 
 	<property file="${base_dir}/build.properties"/>
 
-	<property name="tomcat_home" value="C:\Program Files\apache\Tomcat6.0"/>
+	<property environment="env"/>
+	<property name="tomcat_home" value="${env.CATALINA_HOME}"/>
 	
 	<target name="default">
 		<antcall target="build">

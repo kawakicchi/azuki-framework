@@ -1,4 +1,4 @@
-package jp.azuki.business.dsql.manager;
+package jp.azuki.business.dsql;
 
 import java.io.BufferedReader;
 import java.io.IOException;
