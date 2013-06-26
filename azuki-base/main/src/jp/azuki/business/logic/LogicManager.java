@@ -1,19 +1,17 @@
-package jp.azuki.business.logic.manager;
+package jp.azuki.business.logic;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
-import jp.azuki.business.exception.BusinessServiceException;
-import jp.azuki.business.logic.Logic;
-import jp.azuki.business.logic.entity.LogicEntity;
-import jp.azuki.business.logic.entity.LogicEntityList;
-import jp.azuki.core.lang.LoggingObject;
+import jp.azuki.business.BusinessServiceException;
+import jp.azuki.business.manager.AbstractManager;
 import jp.azuki.core.util.StringUtility;
 import jp.azuki.persistence.context.Context;
-import jp.azuki.persistence.proterty.Property;
 import jp.azuki.persistence.proterty.PropertyFile;
 
 import org.apache.commons.digester3.Digester;
@@ -26,7 +24,7 @@ import org.xml.sax.SAXException;
  * @version 1.0.0 2012/09/21
  * @author Kawakicchi
  */
-public final class LogicManager extends LoggingObject {
+public final class LogicManager extends AbstractManager {
 
 	/**
 	 * Instance
@@ -137,10 +135,10 @@ public final class LogicManager extends LoggingObject {
 	@SuppressWarnings("unchecked")
 	private void doLoad(final String aNamespace, final InputStream aStream, final Context aContext) throws BusinessServiceException, IOException {
 
-		LogicEntityList logicList = null;
+		List<LogicEntity> logicList = null;
 		try {
 			Digester digester = new Digester();
-			digester.addObjectCreate("azuki/logic-list", LogicEntityList.class);
+			digester.addObjectCreate("azuki/logic-list", ArrayList.class);
 			digester.addObjectCreate("azuki/logic-list/logic", LogicEntity.class);
 			digester.addSetProperties("azuki/logic-list/logic");
 			digester.addSetNext("azuki/logic-list/logic", "add");
@@ -257,4 +255,85 @@ public final class LogicManager extends LoggingObject {
 			return properties;
 		}
 	}
+
+	/**
+	 * このクラスは、ロジック情報を保持するエンティティクラスです。
+	 * 
+	 * @since 1.0.0
+	 * @version 1.0.0 12/09/21
+	 * @author Kawakicchi
+	 * 
+	 */
+	public static class LogicEntity {
+
+		/**
+		 * ロジック名
+		 */
+		private String name;
+
+		/**
+		 * ロジッククラス
+		 */
+		private String clazz;
+
+		/**
+		 * ロジックインターフェース
+		 */
+		private String inter;
+
+		/**
+		 * ロジック名を設定する。
+		 * 
+		 * @param aName ロジック名
+		 */
+		public void setName(final String aName) {
+			name = aName;
+		}
+
+		/**
+		 * ロジッククラスを設定する。
+		 * 
+		 * @param aClass ロジッククラス
+		 */
+		public void setLogic(final String aClass) {
+			clazz = aClass;
+		}
+
+		/**
+		 * ロジックインターフェースを設定する。
+		 * 
+		 * @param aInterface ロジックインターフェース
+		 */
+		public void setInterface(final String aInterface) {
+			inter = aInterface;
+		}
+
+		/**
+		 * ロジック名を取得する。
+		 * 
+		 * @return ロジック名
+		 */
+		public String getName() {
+			return name;
+		}
+
+		/**
+		 * プラグインクラスを取得する。
+		 * 
+		 * @return プラグインクラス
+		 */
+		public String getLogic() {
+			return clazz;
+		}
+
+		/**
+		 * インターフェースを取得する。
+		 * 
+		 * @return インターフェース
+		 */
+		public String getInterface() {
+			return inter;
+		}
+	}
+
 }

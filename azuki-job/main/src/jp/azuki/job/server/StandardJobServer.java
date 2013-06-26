@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
+import jp.azuki.core.log.LoggerFactory;
 import jp.azuki.core.util.StringUtility;
 import jp.azuki.job.commandline.CommandLineArgument;
 import jp.azuki.job.commandline.CommandLineArgumentPurser;
@@ -26,7 +27,7 @@ import jp.azuki.persistence.proterty.PropertyManager;
 import jp.azuki.persistence.proterty.PropertySupport;
 import jp.azuki.persistence.session.SessionSupport;
 import jp.azuki.plugin.PluginManager;
-import jp.azuki.plugin.exception.PluginServiceException;
+import jp.azuki.plugin.PluginServiceException;
 
 /**
  * このクラスは、標準のジョブサーバクラスです。
@@ -49,17 +50,24 @@ public final class StandardJobServer extends AbstractJobServer {
 		String baseDir = arg.getOptionValue("baseDir");
 		String config = arg.getOptionValue("config");
 
-		StandardJobServer server = null;
+		Context context = null;
 		if (StringUtility.isNotEmpty(baseDir)) {
-			server = new StandardJobServer(baseDir);
+			context = new JobContext(baseDir);
 		} else {
-			server = new StandardJobServer();
+			context = new JobContext();
 		}
+
+		// log
+		String logClass = arg.getOptionValue("logClass");
+		String logConfig = arg.getOptionValue("logConfig");
+		LoggerFactory.load(logClass, logConfig, context);
+
+		StandardJobServer server = new StandardJobServer(context);
 		if (StringUtility.isNotEmpty(config)) {
 			server.setConfig(config);
 		}
 		// TODO パラメータ
-		// server.setParameter();
+		server.setParameter(new HashMap<String, Object>());
 
 		server.run();
 	}
@@ -97,11 +105,11 @@ public final class StandardJobServer extends AbstractJobServer {
 	/**
 	 * コンストラクタ
 	 * 
-	 * @param aBaseDir ベースディレクトリ
+	 * @param aContext コンテキスト
 	 */
-	public StandardJobServer(final String aBaseDir) {
+	public StandardJobServer(final Context aContext) {
 		super(StandardJobServer.class);
-		context = new JobContext(aBaseDir);
+		context = aContext;
 		workers = new ArrayList<JobWorker>();
 	}
 

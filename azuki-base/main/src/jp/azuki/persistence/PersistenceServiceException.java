@@ -1,6 +1,6 @@
-package jp.azuki.persistence.exception;
+package jp.azuki.persistence;
 
-import jp.azuki.core.exception.PrimitiveException;
+import jp.azuki.core.lang.PrimitiveException;
 
 /**
  * このクラスは、永続化層機能の例外を表現する例外クラスです。

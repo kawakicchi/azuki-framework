@@ -1,6 +1,6 @@
 package jp.azuki.job.exception;
 
-import jp.azuki.core.exception.PrimitiveException;
+import jp.azuki.core.lang.PrimitiveException;
 
 /**
  * このクラスは、ジョブサービス層に起因する例外クラスです。

@@ -4,22 +4,21 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
-import jp.azuki.business.exception.BusinessServiceException;
+import jp.azuki.business.BusinessServiceException;
 import jp.azuki.business.logic.Logic;
-import jp.azuki.business.logic.manager.LogicManager;
+import jp.azuki.business.logic.LogicManager;
 import jp.azuki.core.util.StringUtility;
-import jp.azuki.job.exception.JobServiceException;
-import jp.azuki.job.parameter.Parameter;
-import jp.azuki.job.result.JobResult;
 import jp.azuki.persistence.context.ContextSupport;
 import jp.azuki.persistence.database.DatabaseConnectionSupport;
-import jp.azuki.persistence.exception.PersistenceServiceException;
 import jp.azuki.persistence.proterty.Property;
 import jp.azuki.persistence.proterty.PropertyManager;
 import jp.azuki.persistence.proterty.PropertySupport;
 
 /**
  * このクラスは、ビジネス機能を実装するジョブクラスです。
+ * <p>
+ * このクラスは、ロジック機能を提供します。
+ * </p>
  * 
  * @since 1.0.0
  * @version 1.0.0 2013/02/13
@@ -61,35 +60,24 @@ public abstract class AbstractBusinessJob extends AbstractDatabaseJob {
 	}
 
 	@Override
-	protected final JobResult doDatabaseExecute(final Parameter aParameter) throws JobServiceException, PersistenceServiceException, SQLException {
-		JobResult result = null;
-		try {
-			result = doBusinessExecute(aParameter);
-			for (String namespace : logics.keySet()) {
-				Map<String, Logic> ls = logics.get(namespace);
-				for (String name : ls.keySet()) {
-					ls.get(name).destroy();
-				}
-			}
-			logics = new HashMap<String, Map<String, Logic>>();
-		} catch (BusinessServiceException ex) {
-			throw new JobServiceException(ex);
-		}
-		return result;
+	protected void doBeforeExecute() {
+		super.doBeforeExecute();
+		// TODO Write doBeforeExecute code.
+
 	}
 
-	/**
-	 * ジョブを実行する。
-	 * 
-	 * @param aParameter パラメータ情報
-	 * @return 結果
-	 * @throws JobServiceException ジョブ機能に起因する問題が発生した場合
-	 * @throws PersistenceServiceException 永続化層に起因する問題が発生した場合
-	 * @throws BusinessServiceException ビジネスサービス層に起因する問題が発生した場合
-	 * @throws SQLException SQL操作時に問題が発生した場合
-	 */
-	protected abstract JobResult doBusinessExecute(final Parameter aParameter) throws JobServiceException, PersistenceServiceException,
-			BusinessServiceException, SQLException;
+	@Override
+	protected void doAfterExecute() {
+		for (String namespace : logics.keySet()) {
+			Map<String, Logic> ls = logics.get(namespace);
+			for (String name : ls.keySet()) {
+				ls.get(name).destroy();
+			}
+		}
+		logics.clear();
+
+		super.doAfterExecute();
+	}
 
 	/**
 	 * ロジックを取得する。
@@ -127,20 +115,7 @@ public abstract class AbstractBusinessJob extends AbstractDatabaseJob {
 			} else {
 				logic = LogicManager.create(aNamespace, aName);
 				if (null != logic) {
-					if (logic instanceof ContextSupport) {
-						((ContextSupport) logic).setContext(getContext());
-					}
-					if (logic instanceof PropertySupport) {
-						Property property = PropertyManager.get(logic.getClass());
-						if (null == property) {
-							property = PropertyManager.load(logic.getClass(), getContext());
-						}
-						((PropertySupport) logic).setProperty(property);
-					}
-					if (logic instanceof DatabaseConnectionSupport) {
-						((DatabaseConnectionSupport) logic).setConnection(getConnection());
-					}
-
+					doLogicSupport(logic);
 					logic.initialize();
 				}
 				ls.put(aName, logic);
@@ -150,5 +125,30 @@ public abstract class AbstractBusinessJob extends AbstractDatabaseJob {
 			throw new BusinessServiceException(ex);
 		}
 		return logic;
+	}
+
+	/**
+	 * ロジックにサポートを行う。
+	 * <p>
+	 * ロジックに新機能を追加したい場合、このメソッドをオーバーライドしスーパークラスの同メソッドを呼び出した後に追加機能をサポートすること。
+	 * </p>
+	 * 
+	 * @param aLogic ロジック
+	 * @throws SQLException SQL操作時に問題が発生した場合
+	 */
+	protected void doLogicSupport(final Logic aLogic) throws SQLException {
+		if (aLogic instanceof ContextSupport) {
+			((ContextSupport) aLogic).setContext(getContext());
+		}
+		if (aLogic instanceof PropertySupport) {
+			Property property = PropertyManager.get(aLogic.getClass());
+			if (null == property) {
+				property = PropertyManager.load(aLogic.getClass(), getContext());
+			}
+			((PropertySupport) aLogic).setProperty(property);
+		}
+		if (aLogic instanceof DatabaseConnectionSupport) {
+			((DatabaseConnectionSupport) aLogic).setConnection(getConnection());
+		}
 	}
 }

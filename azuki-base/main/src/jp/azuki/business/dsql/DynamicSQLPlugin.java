@@ -1,11 +1,10 @@
-package jp.azuki.business.dsql.plugin;
+package jp.azuki.business.dsql;
 
 import java.io.IOException;
 import java.io.InputStream;
 
-import jp.azuki.business.dsql.manager.DynamicSQLManager;
 import jp.azuki.plugin.AbstractPlugin;
-import jp.azuki.plugin.exception.PluginServiceException;
+import jp.azuki.plugin.PluginServiceException;
 
 /**
  * このクラスは、ダイナミックSQL機能をサポートするためのプラグインクラスです。

@@ -5,7 +5,7 @@ import java.io.InputStream;
 import java.util.Properties;
 
 import jp.azuki.plugin.AbstractPlugin;
-import jp.azuki.plugin.exception.PluginServiceException;
+import jp.azuki.plugin.PluginServiceException;
 
 /**
  * このクラスは、Web定数をサポートするためのプラグインクラスです。

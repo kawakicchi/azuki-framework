@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import jp.azuki.plugin.AbstractPlugin;
-import jp.azuki.plugin.exception.PluginServiceException;
+import jp.azuki.plugin.PluginServiceException;
 import jp.azuki.web.action.manager.ActionManager;
 
 /**

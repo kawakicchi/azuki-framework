@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
-import jp.azuki.core.lang.LoggingObject;
+import jp.azuki.business.manager.AbstractManager;
 import jp.azuki.core.util.StringUtility;
 import jp.azuki.persistence.context.Context;
 
@@ -17,7 +17,7 @@ import jp.azuki.persistence.context.Context;
  * @version 1.0.0 2013/02/13
  * @author Kawakicchi
  */
-public final class PropertyManager extends LoggingObject {
+public final class PropertyManager extends AbstractManager {
 
 	/**
 	 * Instance

@@ -5,7 +5,6 @@ import java.util.List;
 
 import jp.azuki.business.dsql.entity.DSQLEntity;
 import jp.azuki.business.dsql.entity.DSQLLineEntity;
-import jp.azuki.business.dsql.manager.DynamicSQLManager;
 
 /**
  * このクラスは、ダイナミックSQL情報を保持するクラスです。

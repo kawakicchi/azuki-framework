@@ -5,8 +5,8 @@ import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
-import jp.azuki.business.exception.BusinessServiceException;
-import jp.azuki.core.lang.LoggingObject;
+import jp.azuki.business.BusinessServiceException;
+import jp.azuki.business.manager.AbstractManager;
 import jp.azuki.core.util.StringUtility;
 import jp.azuki.persistence.context.Context;
 
@@ -17,7 +17,7 @@ import jp.azuki.persistence.context.Context;
  * @version 1.0.0 2013/01/11
  * @author Kawakicchi
  */
-public final class MessageManager extends LoggingObject {
+public final class MessageManager extends AbstractManager {
 
 	/**
 	 * Instance

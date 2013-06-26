@@ -1,0 +1,1 @@
+package jp.azuki.business.manager;/** * このインターフェースは、マネージャー機能を表現するインターフェースです。 *  * @since 1.0.0 * @version 1.0.0 2013/06/26 * @author Kawakicchi */public interface Manager {}

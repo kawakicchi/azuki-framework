@@ -9,8 +9,8 @@ import jp.azuki.core.log.LoggerFactory;
  * このクラスは、サーブレット機能を実装した基底クラスです。
  * 
  * @since 1.0.0
- * @version 1.0.0 12/02/01
- * @author N.Kawakita
+ * @version 1.0.0 2013/06/26
+ * @author Kawakicchi
  */
 public abstract class PrimitiveServlet extends HttpServlet {
 

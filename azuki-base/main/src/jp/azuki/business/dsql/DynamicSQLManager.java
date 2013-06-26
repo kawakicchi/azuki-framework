@@ -1,4 +1,4 @@
-package jp.azuki.business.dsql.manager;
+package jp.azuki.business.dsql;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -12,9 +12,10 @@ import java.util.regex.Pattern;
 
 import jp.azuki.business.dsql.entity.DSQLEntity;
 import jp.azuki.business.dsql.entity.DSQLLineEntity;
-import jp.azuki.business.dsql.entity.DynamicSQLEntity;
-import jp.azuki.core.lang.LoggingObject;
+import jp.azuki.business.manager.AbstractManager;
+import jp.azuki.core.util.StringUtility;
 import jp.azuki.persistence.context.Context;
+import jp.azuki.persistence.entity.Entity;
 
 import org.apache.commons.digester3.Digester;
 import org.xml.sax.SAXException;
@@ -26,7 +27,7 @@ import org.xml.sax.SAXException;
  * @version 1.0.0 2013/02/14
  * @author Kawakicchi
  */
-public final class DynamicSQLManager extends LoggingObject {
+public final class DynamicSQLManager extends AbstractManager {
 
 	/**
 	 * Dyanamic pattern
@@ -216,4 +217,49 @@ public final class DynamicSQLManager extends LoggingObject {
 	private DSQLEntity doGet(final String aName) {
 		return dynamicSQLs.get(aName);
 	}
+
+	/**
+	 * このクラスは、ダイナミックSQL情報を保持するエンティティクラスです。
+	 * 
+	 * @since 1.0.0
+	 * @version 1.0.0 2013/02/15
+	 * @author Kawakicchi
+	 */
+	public static class DynamicSQLEntity implements Entity {
+
+		private String name;
+
+		private String file;
+
+		public DynamicSQLEntity() {
+
+		}
+
+		public void setName(final String aName) {
+			name = aName;
+		}
+
+		public String getName() {
+			return name;
+		}
+
+		public void setFile(final String aFile) {
+			file = aFile;
+		}
+
+		public String getFile() {
+			return file;
+		}
+
+		public boolean isEmpty() {
+			if (StringUtility.isNotEmpty(name)) {
+				return false;
+			}
+			if (StringUtility.isNotEmpty(file)) {
+				return false;
+			}
+			return true;
+		}
+	}
+
 }

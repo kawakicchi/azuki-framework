@@ -1,6 +1,6 @@
 package jp.azuki.web.constant;
 
-import jp.azuki.core.exception.PrimitiveException;
+import jp.azuki.core.lang.PrimitiveException;
 
 /**
  * 

@@ -2,14 +2,9 @@ package jp.azuki.job.job;
 
 import java.sql.SQLException;
 
-import jp.azuki.job.exception.JobServiceException;
-import jp.azuki.job.parameter.Parameter;
-import jp.azuki.job.result.JobResult;
 import jp.azuki.persistence.database.DatabaseConnection;
 import jp.azuki.persistence.database.DatabaseConnectionManager;
-import jp.azuki.persistence.database.DatabaseConnectionSupport;
 import jp.azuki.persistence.database.DatabaseSource;
-import jp.azuki.persistence.exception.PersistenceServiceException;
 
 /**
  * このクラスは、データベース機能を実装するジョブクラスです。
@@ -18,7 +13,7 @@ import jp.azuki.persistence.exception.PersistenceServiceException;
  * @version 1.0.0 2013/02/13
  * @author Kawakicchi
  */
-public abstract class AbstractDatabaseJob extends AbstractPersistenceJob implements DatabaseConnectionSupport {
+public abstract class AbstractDatabaseJob extends AbstractPersistenceJob {
 
 	/**
 	 * データベースソース
@@ -29,11 +24,6 @@ public abstract class AbstractDatabaseJob extends AbstractPersistenceJob impleme
 	 * コネクション
 	 */
 	private DatabaseConnection myConnection;
-
-	/**
-	 * チェーンコネクション
-	 */
-	private DatabaseConnection chainConnection;
 
 	/**
 	 * コンストラクタ
@@ -61,47 +51,31 @@ public abstract class AbstractDatabaseJob extends AbstractPersistenceJob impleme
 	}
 
 	@Override
-	protected final JobResult doPersistenceExecute(final Parameter aParameter) throws JobServiceException, PersistenceServiceException {
-		JobResult result = null;
+	protected void doBeforeExecute() {
+		super.doBeforeExecute();
+
+	}
+
+	@Override
+	protected void doAfterExecute() {
 		try {
-			result = doDatabaseExecute(aParameter);
 			if (null != myConnection) {
 				myConnection.getConnection().commit();
 			}
 		} catch (SQLException ex) {
-			throw new JobServiceException(ex);
-		} finally {
-			if (null != source && null != myConnection) {
-				try {
-					source.returnConnection(myConnection);
-				} catch (SQLException ex) {
-					warn(ex);
-				}
-				myConnection = null;
-				source = null;
+			fatal(ex);
+		}
+		if (null != source && null != myConnection) {
+			try {
+				source.returnConnection(myConnection);
+			} catch (SQLException ex) {
+				warn(ex);
 			}
+			myConnection = null;
+			source = null;
 		}
-		return result;
-	}
 
-	/**
-	 * ジョブを実行する。
-	 * 
-	 * @param aParameter パラメータ情報
-	 * @return 結果
-	 * @throws JobServiceException ジョブ機能に起因する問題が発生した場合
-	 * @throws PersistenceServiceException 永続化層に起因する問題が発生した場合
-	 * @throws SQLException SQL操作時に問題が発生した場合
-	 */
-	protected abstract JobResult doDatabaseExecute(final Parameter aParameter) throws JobServiceException, PersistenceServiceException, SQLException;
-
-	@Override
-	public final void setConnection(final DatabaseConnection aConnection) {
-		if (null == chainConnection) {
-			chainConnection = aConnection;
-		} else {
-			warn("exist connection.");
-		}
+		super.doAfterExecute();
 	}
 
 	/**
@@ -111,9 +85,6 @@ public abstract class AbstractDatabaseJob extends AbstractPersistenceJob impleme
 	 * @throws SQL実行時に問題が発生した場合
 	 */
 	protected final DatabaseConnection getConnection() throws SQLException {
-		if (null != chainConnection) {
-			return chainConnection;
-		}
 		if (null == myConnection) {
 			info("Create my connection.");
 			source = DatabaseConnectionManager.getSource();

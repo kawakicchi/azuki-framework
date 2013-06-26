@@ -4,9 +4,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
-import jp.azuki.persistence.exception.PersistenceServiceException;
+import jp.azuki.persistence.PersistenceServiceException;
 import jp.azuki.plugin.AbstractPlugin;
-import jp.azuki.plugin.exception.PluginServiceException;
+import jp.azuki.plugin.PluginServiceException;
 
 /**
  * このクラスは、データベース機能をサポートするためのプラグインクラスです。
