@@ -43,18 +43,30 @@ public abstract class AbstractJob extends LoggingObject implements Job {
 	}
 
 	@Override
-	public void initialize() {
+	public final void initialize() {
 		doInitialize();
 	}
 
 	@Override
-	public void destroy() {
+	public final void destroy() {
 		doDestroy();
 	}
 
 	@Override
-	public JobResult execute(final Parameter aParameter) throws JobServiceException {
-		return doExecute(aParameter);
+	public final JobResult execute(final Parameter aParameter) throws JobServiceException {
+		JobResult result = null;
+
+		try {
+			doBeforeExecute();
+			result = doExecute(aParameter);
+			doAfterExecute();
+		} catch (JobServiceException ex) {
+			fatal(ex);
+		} finally {
+
+		}
+
+		return result;
 	}
 
 	/**
@@ -66,6 +78,26 @@ public abstract class AbstractJob extends LoggingObject implements Job {
 	 * 解放処理を行う。
 	 */
 	protected abstract void doDestroy();
+
+	/**
+	 * ジョブ実行直前の処理を行う。
+	 * <p>
+	 * ジョブ実行直前に処理を行いたい場合、このメソッドをオーバーライドしスーパークラスの同メソッドを呼び出した後で処理を記述すること。
+	 * </p>
+	 */
+	protected void doBeforeExecute() {
+
+	}
+
+	/**
+	 * ジョブ実行直後の処理を行う。
+	 * <p>
+	 * ジョブ実行直後に処理を行いたい場合、このメソッドをオーバーライドし処理を記述した後でスーバークラスの同メソッドを呼び出すこと。
+	 * </p>
+	 */
+	protected void doAfterExecute() {
+
+	}
 
 	/**
 	 * ジョブを実行する。

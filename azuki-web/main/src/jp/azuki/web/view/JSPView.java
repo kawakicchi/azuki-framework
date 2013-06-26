@@ -13,8 +13,8 @@ import javax.servlet.http.HttpServletResponse;
  * このクラスは、JSP表示機能を備えたビュークラスです。
  * 
  * @since 1.0.0
- * @version 1.0.0 12/04/01
- * @author N.Kawakita
+ * @version 1.0.0 2013/06/26
+ * @author Kawakicchi
  */
 public final class JSPView extends AbstractView {
 

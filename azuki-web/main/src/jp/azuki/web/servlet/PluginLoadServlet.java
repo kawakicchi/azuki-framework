@@ -6,7 +6,7 @@ import javax.servlet.ServletConfig;
 
 import jp.azuki.core.util.StringUtility;
 import jp.azuki.plugin.PluginManager;
-import jp.azuki.plugin.exception.PluginServiceException;
+import jp.azuki.plugin.PluginServiceException;
 
 import org.apache.log4j.xml.DOMConfigurator;
 

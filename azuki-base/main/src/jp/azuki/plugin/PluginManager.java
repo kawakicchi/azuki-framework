@@ -5,7 +5,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-import jp.azuki.core.lang.LoggingObject;
+import jp.azuki.business.manager.AbstractManager;
 import jp.azuki.core.util.StringUtility;
 import jp.azuki.persistence.context.Context;
 import jp.azuki.persistence.context.ContextSupport;
@@ -21,7 +21,7 @@ import org.xml.sax.SAXException;
  * @version 1.0.0 12/06/07
  * @author Kawakicchi
  */
-public final class PluginManager extends LoggingObject {
+public final class PluginManager extends AbstractManager {
 
 	/**
 	 * Instance

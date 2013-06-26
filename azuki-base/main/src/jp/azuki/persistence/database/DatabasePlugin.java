@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
-import jp.azuki.persistence.exception.PersistenceServiceException;
+import jp.azuki.persistence.PersistenceServiceException;
 import jp.azuki.plugin.AbstractPlugin;
 import jp.azuki.plugin.PluginServiceException;
 

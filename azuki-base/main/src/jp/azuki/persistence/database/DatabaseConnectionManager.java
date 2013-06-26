@@ -5,8 +5,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
+import jp.azuki.business.manager.AbstractManager;
 import jp.azuki.core.util.StringUtility;
-import jp.azuki.persistence.exception.PersistenceServiceException;
+import jp.azuki.persistence.PersistenceServiceException;
 
 /**
  * このクラスは、データベースの管理を行うマネージャークラスです。
@@ -16,7 +17,7 @@ import jp.azuki.persistence.exception.PersistenceServiceException;
  * @author Kawakicchi
  * 
  */
-public final class DatabaseConnectionManager {
+public final class DatabaseConnectionManager extends AbstractManager {
 
 	/**
 	 * Instance
@@ -32,7 +33,7 @@ public final class DatabaseConnectionManager {
 	 * コンストラクタ
 	 */
 	private DatabaseConnectionManager() {
-		;
+		super(DatabaseConnectionManager.class);
 	}
 
 	/**

@@ -8,8 +8,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
-import jp.azuki.business.exception.BusinessServiceException;
-import jp.azuki.core.lang.LoggingObject;
+import jp.azuki.business.BusinessServiceException;
+import jp.azuki.business.manager.AbstractManager;
 import jp.azuki.core.util.StringUtility;
 import jp.azuki.persistence.context.Context;
 import jp.azuki.persistence.proterty.PropertyFile;
@@ -24,7 +24,7 @@ import org.xml.sax.SAXException;
  * @version 1.0.0 2012/09/21
  * @author Kawakicchi
  */
-public final class LogicManager extends LoggingObject {
+public final class LogicManager extends AbstractManager {
 
 	/**
 	 * Instance

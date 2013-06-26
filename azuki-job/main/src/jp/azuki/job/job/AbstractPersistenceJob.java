@@ -1,11 +1,7 @@
 package jp.azuki.job.job;
 
-import jp.azuki.job.exception.JobServiceException;
-import jp.azuki.job.parameter.Parameter;
-import jp.azuki.job.result.JobResult;
 import jp.azuki.persistence.context.Context;
 import jp.azuki.persistence.context.ContextSupport;
-import jp.azuki.persistence.exception.PersistenceServiceException;
 import jp.azuki.persistence.proterty.Property;
 import jp.azuki.persistence.proterty.PropertySupport;
 import jp.azuki.persistence.session.SessionSupport;
@@ -58,7 +54,6 @@ public abstract class AbstractPersistenceJob extends AbstractJob implements Cont
 	 */
 	public AbstractPersistenceJob(final Class<?> aClass) {
 		super(aClass);
-		property = new Property();
 	}
 
 	@Override
@@ -104,24 +99,16 @@ public abstract class AbstractPersistenceJob extends AbstractJob implements Cont
 	}
 
 	@Override
-	protected final JobResult doExecute(final Parameter aParameter) throws JobServiceException {
-		JobResult result = null;
-		try {
-			result = doPersistenceExecute(aParameter);
-		} catch (PersistenceServiceException ex) {
-			throw new JobServiceException(ex);
-		}
-		return result;
+	protected void doBeforeExecute() {
+		super.doBeforeExecute();
+		// TODO Write doBeforeExecute code.
+
 	}
 
-	/**
-	 * ジョブを実行する。
-	 * 
-	 * @param aParameter パラメータ情報
-	 * @return 結果
-	 * @throws JobServiceException ジョブ機能に起因する問題が発生した場合
-	 * @throws PersistenceServiceException 永続化層に起因する問題が発生した場合
-	 */
-	protected abstract JobResult doPersistenceExecute(final Parameter aParameter) throws JobServiceException, PersistenceServiceException;
+	@Override
+	protected void doAfterExecute() {
+		// TODO Write doAfterExecute code.
 
+		super.doAfterExecute();
+	}
 }

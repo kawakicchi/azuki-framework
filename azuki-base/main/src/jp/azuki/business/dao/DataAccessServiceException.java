@@ -1,6 +1,6 @@
 package jp.azuki.business.dao;
 
-import jp.azuki.persistence.exception.PersistenceServiceException;
+import jp.azuki.persistence.PersistenceServiceException;
 
 /**
  * このクラスは、データアクセス機能の例外を表現する例外クラスです。

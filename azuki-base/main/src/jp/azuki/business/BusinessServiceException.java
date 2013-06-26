@@ -1,6 +1,6 @@
-package jp.azuki.business.exception;
+package jp.azuki.business;
 
-import jp.azuki.core.exception.PrimitiveException;
+import jp.azuki.core.lang.PrimitiveException;
 
 /**
  * このクラスは、ビジネスサービス層に起因する例外クラスです。

@@ -13,8 +13,8 @@ import net.arnx.jsonic.JSON;
  * このクラスは、JSONP表示機能を備えたビュークラスです。
  * 
  * @since 1.0.0
- * @version 1.0.0 12/04/01
- * @author N.Kawakita
+ * @version 1.0.0 2013/06/26
+ * @author Kawakicchi
  */
 public final class JSONPView extends AbstractView {
 

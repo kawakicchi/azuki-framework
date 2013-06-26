@@ -26,7 +26,6 @@ public final class JobContext extends AbstractContext {
 	 * コンストラクタ
 	 */
 	public JobContext() {
-		super(JobContext.class);
 		baseDir = ".";
 	}
 
@@ -36,7 +35,6 @@ public final class JobContext extends AbstractContext {
 	 * @param aBaseDir ベースディレクトリ
 	 */
 	public JobContext(final String aBaseDir) {
-		super(JobContext.class);
 		baseDir = aBaseDir;
 	}
 

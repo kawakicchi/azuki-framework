@@ -1,6 +1,6 @@
 package jp.azuki.plugin;
 
-import jp.azuki.core.exception.PrimitiveException;
+import jp.azuki.core.lang.PrimitiveException;
 
 /**
  * このクラスは、プラグイン機能の例外を表現する例外クラスです。

@@ -3,8 +3,6 @@ package jp.azuki.core.util;
 /**
  * このクラスは、パス操作をまとめたユーティリティクラスです。
  * 
- * @author N.Kawakita
- * 
  * @since 1.0.0
  * @version 1.0.0 2013/06/26
  * @author Kawakicchi

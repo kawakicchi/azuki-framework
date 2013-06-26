@@ -4,7 +4,7 @@ import java.util.Map;
 
 import jp.azuki.persistence.context.Context;
 import jp.azuki.persistence.context.ContextSupport;
-import jp.azuki.persistence.exception.PersistenceServiceException;
+import jp.azuki.persistence.PersistenceServiceException;
 import jp.azuki.persistence.proterty.Property;
 import jp.azuki.persistence.proterty.PropertySupport;
 import jp.azuki.persistence.session.SessionSupport;

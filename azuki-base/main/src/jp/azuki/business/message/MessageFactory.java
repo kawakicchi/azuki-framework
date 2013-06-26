@@ -1,6 +1,6 @@
 package jp.azuki.business.message;
 
-import jp.azuki.business.exception.BusinessServiceException;
+import jp.azuki.business.BusinessServiceException;
 import jp.azuki.core.util.StringUtility;
 
 /**

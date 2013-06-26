@@ -1,4 +1,4 @@
-package jp.azuki.core.exception;
+package jp.azuki.core.lang;
 
 /**
  * このクラスは、例外の基底となるクラスです。
