@@ -1,6 +1,5 @@
 package jp.azuki.core.lang;
 
-import jp.azuki.core.log.LoggerSupport;
 
 /**
  * このクラスは、オブジェクトの基底となるクラスです。
@@ -9,6 +8,6 @@ import jp.azuki.core.log.LoggerSupport;
  * @version 1.0.0 2012/08/12
  * @author Kawakicchi
  */
-public abstract class PrimitiveObject implements LoggerSupport {
+public abstract class PrimitiveObject {
 
 }
