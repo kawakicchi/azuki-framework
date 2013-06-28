@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import javax.servlet.ServletConfig;
 
+import jp.azuki.core.log.LoggerFactory;
 import jp.azuki.core.util.StringUtility;
 import jp.azuki.plugin.PluginManager;
 import jp.azuki.plugin.PluginServiceException;
@@ -37,8 +38,12 @@ public final class PluginLoadServlet extends AbstractServlet {
 	}
 
 	@Override
-	protected void doInitialize(final ServletConfig aConfit) {
-		plugin = aConfit.getInitParameter("plugin-config");
+	protected void doInitialize(final ServletConfig aConfig) {
+		String logClass = aConfig.getInitParameter("logger-class");
+		String logConfig = aConfig.getInitParameter("logger-config");
+		LoggerFactory.load(logClass, logConfig, getContext());
+
+		plugin = aConfig.getInitParameter("plugin-config");
 		PluginManager.initialize();
 		doLoad();
 	}

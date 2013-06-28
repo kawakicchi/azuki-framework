@@ -11,7 +11,7 @@ import jp.azuki.persistence.context.Context;
  */
 public abstract class LoggerFactory {
 
-	private static LoggerFactory FACTORY;
+	private static LoggerFactory FACTORY = new StdoutLoggerFactory();
 
 	protected abstract void doLoad(final String aName, final Context aContext);
 
