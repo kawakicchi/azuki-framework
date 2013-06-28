@@ -8,16 +8,15 @@
 ################################################################################
 -->
 <project name="azuki-web" default="default" basedir=".">
-
-	<property name="base_dir" location="${basedir}"/>
-	<property name="main_dir" location="${base_dir}/main" />
-	<property name="temp_dir" location="${base_dir}/temp" />
+	<property name="base_dir"         location="${basedir}"/>
+	<property name="main_dir"         location="${base_dir}/main" />
+	<property name="temp_dir"         location="${base_dir}/temp" />
 	<property name="main_sources_dir" location="${main_dir}/src" />
 	<property name="main_lib_dir"     location="${main_dir}/lib" />
 	<property name="temp_sources_dir" location="${temp_dir}/sources" />
 	<property name="temp_classes_dir" location="${temp_dir}/classes" />
 	<property name="temp_javadoc_dir" location="${temp_dir}/javadoc" />
-	<property name="release_dir" location="${base_dir}/release" />
+	<property name="release_dir"      location="${base_dir}/release" />
 
 	<property name="azuki_dir"     location="${base_dir}/azuki" />
 	<property name="azuki_lib_dir" location="${azuki_dir}/lib"  />
