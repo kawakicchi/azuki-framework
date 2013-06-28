@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?><!--
 ################################################################################
-# Azuki Web Library ant build file
+# Azuki Biz Library ant build file
 # 
-#   Version : 1.0.0 2013/06/25
+#   Version : 1.0.0 2013/06/28
 #   Author  : Kawakicchi
 #
 ################################################################################
 -->
-<project name="azuki-web" default="default" basedir=".">
+<project name="azuki-biz" default="default" basedir=".">
 	<property name="base_dir"         location="${basedir}"/>
 	<property name="main_dir"         location="${base_dir}/main" />
 	<property name="temp_dir"         location="${base_dir}/temp" />
@@ -20,11 +20,8 @@
 
 	<property name="azuki_dir"     location="${base_dir}/azuki" />
 	<property name="azuki_lib_dir" location="${azuki_dir}/lib"  />
-
+	
 	<property file="${base_dir}/build.properties"/>
-
-	<property environment="env"/>
-	<property name="tomcat_home" value="${env.CATALINA_HOME}"/>
 	
 	<target name="default">
 		<antcall target="build">
@@ -48,9 +45,6 @@
 		</fileset>
 		<path id="common.classpath">
 			<fileset refid="common.library"/>
-			<fileset dir="${tomcat_home}/lib">
-				<include name="**/*.jar" />
-			</fileset>
 		</path>
 		<fileset id="azuki.library" dir="${azuki_lib_dir}">
 			<include name="*.jar"/>
