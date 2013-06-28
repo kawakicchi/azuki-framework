@@ -51,10 +51,10 @@ public abstract class AbstractServlet extends PrimitiveServlet {
 	}
 
 	@Override
-	public final void init(final ServletConfig aConfit) throws ServletException {
-		super.init(aConfit);
-		context = new WebContext(aConfit.getServletContext());
-		doInitialize(aConfit);
+	public final void init(final ServletConfig aConfig) throws ServletException {
+		super.init(aConfig);
+		context = new WebContext(aConfig.getServletContext());
+		doInitialize(aConfig);
 	}
 
 	@Override
@@ -65,10 +65,10 @@ public abstract class AbstractServlet extends PrimitiveServlet {
 	/**
 	 * 初期化処理を行う。
 	 * 
-	 * @param aConfit コンフィグ情報
+	 * @param aConfig コンフィグ情報
 	 * @throws ServletException サーブレット機能に起因する問題が発生した場合
 	 */
-	protected abstract void doInitialize(final ServletConfig aConfit) throws ServletException;
+	protected abstract void doInitialize(final ServletConfig aConfig) throws ServletException;
 
 	/**
 	 * 解放処理を行う。
