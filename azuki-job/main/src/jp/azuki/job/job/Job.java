@@ -1,6 +1,6 @@
 package jp.azuki.job.job;
 
-import jp.azuki.job.exception.JobServiceException;
+import jp.azuki.job.JobServiceException;
 import jp.azuki.job.parameter.Parameter;
 import jp.azuki.job.result.JobResult;
 

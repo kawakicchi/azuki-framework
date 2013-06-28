@@ -1,4 +1,4 @@
-package jp.azuki.job.exception;
+package jp.azuki.job;
 
 import jp.azuki.core.lang.PrimitiveException;
 
