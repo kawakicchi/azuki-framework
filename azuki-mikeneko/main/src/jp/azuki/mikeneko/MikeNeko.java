@@ -1,0 +1,1 @@
+package jp.azuki.mikeneko;public class MikeNeko {}

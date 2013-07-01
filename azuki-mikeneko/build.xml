@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?><!--
+################################################################################
+# Azuki MikeNeko Library ant build file
+# 
+#   Version : 1.0.0 2013/07/01
+#   Author  : Kawakicchi
+#
+################################################################################
+-->
+<project name="azuki-mikeneko" default="default" basedir=".">
+	<property name="base_dir"         location="${basedir}"/>
+	<property name="main_dir"         location="${base_dir}/main" />
+	<property name="temp_dir"         location="${base_dir}/temp" />
+	<property name="main_sources_dir" location="${main_dir}/src" />
+	<property name="main_lib_dir"     location="${main_dir}/lib" />
+	<property name="temp_sources_dir" location="${temp_dir}/sources" />
+	<property name="temp_classes_dir" location="${temp_dir}/classes" />
+	<property name="temp_javadoc_dir" location="${temp_dir}/javadoc" />
+	<property name="release_dir"      location="${base_dir}/release" />
+
+	<property name="azuki_dir"     location="${base_dir}/azuki" />
+	<property name="azuki_lib_dir" location="${azuki_dir}/lib"  />
+
+	<property file="${base_dir}/build.properties"/>
+
+	<property environment="env"/>
+	<property name="tomcat_home" value="${env.CATALINA_HOME}"/>
+	
+	<target name="default">
+		<antcall target="build">
+		</antcall>
+	</target>
+	
+	<target name="build">
+		<delete dir="${temp_dir}" />
+		<mkdir  dir="${temp_dir}" />
+		
+		<mkdir dir="${temp_sources_dir}"/>
+		<copy todir="${temp_sources_dir}">
+			<fileset dir="${main_sources_dir}">
+				<include name="**/*.java" />
+				<exclude name="**/*Test.java" />
+			</fileset>
+		</copy>
+
+		<fileset id="common.library" dir="${main_lib_dir}">
+			<include name="*.jar"/>
+		</fileset>
+		<path id="common.classpath">
+			<fileset refid="common.library"/>
+			<fileset dir="${tomcat_home}/lib">
+				<include name="**/*.jar" />
+			</fileset>
+		</path>
+		<fileset id="azuki.library" dir="${azuki_lib_dir}">
+			<include name="*.jar"/>
+		</fileset>
+		<path id="azuki.classpath">
+			<fileset refid="azuki.library"/>
+		</path>
+
+		<mkdir dir="${temp_classes_dir}"/>
+		<javac destdir="${temp_classes_dir}" source="1.6" encoding="UTF-8">
+			<compilerarg value="-Xlint:unchecked" />
+			<src path="${temp_sources_dir}" />
+			<include name="**/*.java" />
+			<exclude name="**/*Test.java"/>
+			<classpath>
+				<path refid="common.classpath"/>
+				<path refid="azuki.classpath"/>
+			</classpath>
+		</javac>
+
+		<copy todir="${temp_classes_dir}">
+			<fileset dir="${main_sources_dir}">
+				<include name="**/*.properties" />
+				<include name="**/*.xml" />
+			</fileset>
+		</copy>
+		<jar jarfile="${release_dir}/${product.name}-${product.version}.jar">
+			<fileset dir="${temp_classes_dir}" />
+		</jar>
+
+		<jar jarfile="${release_dir}/${product.name}-${product.version}-sources.jar">
+			<fileset dir="${temp_sources_dir}">
+				<include name="**/*.java" />
+				<exclude name="**/*Test.java" />
+			</fileset>
+		</jar>
+
+		<javadoc
+				packagenames="*"
+				sourcepath="${temp_sources_dir}"
+				destdir="${temp_javadoc_dir}"
+				encoding="UTF-8"
+				charset="UTF-8">
+			<classpath>
+				<path refid="common.classpath"/>
+				<path refid="azuki.classpath"/>
+			</classpath>
+	    </javadoc>
+		<jar jarfile="${release_dir}/${product.name}-${product.version}-javadoc.jar">
+			<fileset dir="${temp_javadoc_dir}" />
+		</jar>
+
+	</target>
+
+</project>
