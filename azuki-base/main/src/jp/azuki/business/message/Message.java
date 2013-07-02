@@ -12,20 +12,20 @@ import java.util.Map;
 public final class Message {
 
 	/**
-	 * id
+	 * メッセージＩＤ
 	 */
 	private String id;
 
 	/**
-	 * message
+	 * メッセージ
 	 */
 	private String message;
 
 	/**
 	 * コンストラクタ
 	 * 
-	 * @param aId Id
-	 * @param aMessage Message
+	 * @param aId メッセージＩＤ
+	 * @param aMessage メッセージ
 	 */
 	public Message(final String aId, final String aMessage) {
 		id = aId;
@@ -33,12 +33,21 @@ public final class Message {
 	}
 
 	/**
-	 * IDを取得する。
+	 * メッセージIDを取得する。
 	 * 
-	 * @return ID
+	 * @return メッセージID
 	 */
 	public String getId() {
 		return id;
+	}
+
+	/**
+	 * メッセージを取得する。
+	 * 
+	 * @return メッセージ
+	 */
+	public String getMessage() {
+		return message;
 	}
 
 	/**
@@ -47,7 +56,7 @@ public final class Message {
 	 * @param args パラメーター
 	 * @return メッセージ
 	 */
-	public String getMessage(final String... args) {
+	public String generate(final String... args) {
 		String msg = message;
 		for (int i = 0; i < args.length; i++) {
 			String word = "¥¥$¥¥{" + (i + 1) + "¥¥}";
@@ -62,7 +71,7 @@ public final class Message {
 	 * @param args パラメーター
 	 * @return メッセージ
 	 */
-	public String getMessage(final Map<String, String> args) {
+	public String generate(final Map<String, String> args) {
 		String msg = message;
 		for (String key : args.keySet()) {
 			String word = "¥¥$¥¥{" + key + "¥¥}";

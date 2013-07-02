@@ -6,6 +6,7 @@ import javax.servlet.ServletConfig;
 
 import jp.azuki.core.log.LoggerFactory;
 import jp.azuki.core.util.StringUtility;
+import jp.azuki.persistence.ConfigurationFormatException;
 import jp.azuki.plugin.PluginManager;
 import jp.azuki.plugin.PluginServiceException;
 
@@ -64,6 +65,8 @@ public final class PluginLoadServlet extends AbstractServlet {
 			try {
 				PluginManager.load(plugin, getContext());
 			} catch (PluginServiceException ex) {
+				error(ex);
+			} catch (ConfigurationFormatException ex) {
 				error(ex);
 			} catch (IOException ex) {
 				error(ex);

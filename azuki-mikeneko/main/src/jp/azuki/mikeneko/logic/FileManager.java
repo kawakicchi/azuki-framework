@@ -1,0 +1,1 @@
+package jp.azuki.mikeneko.logic;import jp.azuki.business.logic.Logic;/** * このインターフェースは、ファイル管理機能を表現するインターフェースです。 *  * @since 1.0.0 * @version 1.0.0 2013/07/01 * @author Kawakicchi *  */public interface FileManager extends Logic {}

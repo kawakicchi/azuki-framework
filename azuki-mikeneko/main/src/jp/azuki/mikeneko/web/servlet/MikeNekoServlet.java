@@ -1,0 +1,1 @@
+package jp.azuki.mikeneko.web.servlet;import javax.servlet.http.HttpServlet;public class MikeNekoServlet extends HttpServlet {	/**	 * serialVersionUID	 */	private static final long serialVersionUID = -3145811643238326488L;}

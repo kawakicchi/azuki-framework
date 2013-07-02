@@ -1,4 +1,4 @@
-package jp.azuki.business.message;
+package jp.azuki.business.label;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -13,18 +13,18 @@ import jp.azuki.persistence.ConfigurationFormatException;
 import jp.azuki.persistence.context.Context;
 
 /**
- * このクラスは、メッセージの管理を行うマネージャークラスです。
+ * このクラスは、ラベルの管理を行うマネージャークラスです。
  * 
  * @since 1.0.0
- * @version 1.0.0 2013/01/11
+ * @version 1.0.0 2013/07/02
  * @author Kawakicchi
  */
-public final class MessageManager extends AbstractManager {
+public final class LabelManager extends AbstractManager {
 
 	/**
 	 * Instance
 	 */
-	private static final MessageManager INSTANCE = new MessageManager();
+	private static final LabelManager INSTANCE = new LabelManager();
 
 	/**
 	 * デフォルト名前空間
@@ -46,10 +46,10 @@ public final class MessageManager extends AbstractManager {
 	}
 
 	/**
-	 * メッセージ情報をロードします。
+	 * ラベル情報をロードします。
 	 * 
 	 * @param aNamespace 名前空間
-	 * @param aStream メッセージファイルストリーム
+	 * @param aStream ラベル「ファイルストリーム
 	 * @param aContext コンテキスト情報
 	 * @throws BusinessServiceException ビジネスサービスに起因する問題が発生した場合
 	 * @throws ConfigurationFormatException 設定ファイルに問題がある場合
@@ -61,9 +61,9 @@ public final class MessageManager extends AbstractManager {
 	}
 
 	/**
-	 * メッセージ情報をロードします。
+	 * ラベル情報をロードします。
 	 * 
-	 * @param aStream メッセージファイルストリーム
+	 * @param aStream ラベルファイルストリーム
 	 * @param aContext コンテキスト情報
 	 * @throws BusinessServiceException ビジネスサービスに起因する問題が発生した場合
 	 * @throws ConfigurationFormatException 設定ファイルに問題がある場合
@@ -71,34 +71,34 @@ public final class MessageManager extends AbstractManager {
 	 */
 	public static void load(final InputStream aStream, final Context aContext) throws BusinessServiceException, ConfigurationFormatException,
 			IOException {
-		INSTANCE.doLoad(MessageManager.NAMESPACE_DEFAULT, aStream, aContext);
+		INSTANCE.doLoad(LabelManager.NAMESPACE_DEFAULT, aStream, aContext);
 	}
 
 	/**
-	 * メッセージを取得する。
+	 * ラベルを取得する。
 	 * 
-	 * @param aId メッセージID
-	 * @return メッセージ情報。メッセージ情報が存在しない場合、<code>null</code>を返す。
+	 * @param aId ラベルID
+	 * @return ラベル情報。ラベル情報が存在しない場合、<code>null</code>を返す。
 	 */
-	public static Message getMessage(final String aId) {
-		return INSTANCE.doGetMessage(MessageManager.NAMESPACE_DEFAULT, aId);
+	public static Label getLabel(final String aId) {
+		return INSTANCE.doGetLabel(LabelManager.NAMESPACE_DEFAULT, aId);
 	}
 
 	/**
-	 * メッセージを取得する。
+	 * ラベルを取得する。
 	 * 
 	 * @param aNamespace 名前空間
-	 * @param aId メッセージID
-	 * @return メッセージ情報。メッセージ情報が存在しない場合、<code>null</code>を返す。
+	 * @param aId ラベルID
+	 * @return ラベル情報。ラベル情報が存在しない場合、<code>null</code>を返す。
 	 */
-	public static Message getMessage(final String aNamespace, final String aId) {
-		return INSTANCE.doGetMessage(aNamespace, aId);
+	public static Label getLabel(final String aNamespace, final String aId) {
+		return INSTANCE.doGetLabel(aNamespace, aId);
 	}
 
 	/**
-	 * メッセージ情報マップ
+	 * ラベル情報マップ
 	 */
-	private Map<String, Map<String, Message>> messages;
+	private Map<String, Map<String, Label>> labels;
 
 	/**
 	 * コンストラクタ
@@ -106,17 +106,17 @@ public final class MessageManager extends AbstractManager {
 	 * インスタンス生成を禁止する。
 	 * </p>
 	 */
-	private MessageManager() {
-		super(MessageManager.class);
-		messages = new HashMap<String, Map<String, Message>>();
+	private LabelManager() {
+		super(LabelManager.class);
+		labels = new HashMap<String, Map<String, Label>>();
 	}
 
 	/**
 	 * 処理化処理を行う。
 	 */
 	private void doInitialize() {
-		synchronized (messages) {
-			messages.clear();
+		synchronized (labels) {
+			labels.clear();
 		}
 	}
 
@@ -124,22 +124,22 @@ public final class MessageManager extends AbstractManager {
 	 * 解放処理を行う。
 	 */
 	private void doDestroy() {
-		synchronized (messages) {
-			messages.clear();
+		synchronized (labels) {
+			labels.clear();
 		}
 	}
 
 	/**
-	 * メッセージ情報をロードする。
+	 * ラベル情報をロードする。
 	 * 
 	 * @param aNamespace 名前空間
-	 * @param aStream メッセージファイルストリーム
+	 * @param aStream ラベルファイルストリーム
 	 * @param aContext コンテキスト情報
 	 * @throws ConfigurationFormatException 設定ファイルに問題がある場合
 	 * @throws IOException IO操作時に問題が発生した場合
 	 */
 	private void doLoad(final String aNamespace, final InputStream aStream, final Context aContext) throws ConfigurationFormatException, IOException {
-		synchronized (messages) {
+		synchronized (labels) {
 			Properties p = new Properties();
 			p.load(aStream);
 			for (Object key : p.keySet()) {
@@ -157,39 +157,39 @@ public final class MessageManager extends AbstractManager {
 					v = value.toString();
 				}
 
-				Map<String, Message> msgs = null;
-				if (messages.containsKey(aNamespace)) {
-					msgs = messages.get(aNamespace);
+				Map<String, Label> lbls = null;
+				if (labels.containsKey(aNamespace)) {
+					lbls = labels.get(aNamespace);
 				} else {
-					msgs = new HashMap<String, Message>();
-					messages.put(aNamespace, msgs);
+					lbls = new HashMap<String, Label>();
+					labels.put(aNamespace, lbls);
 				}
 
-				if (msgs.containsKey(k)) {
-					throw new ConfigurationFormatException("Duplicate　message key.[namespace=" + aNamespace + ", key=" + k + "]");
+				if (lbls.containsKey(k)) {
+					throw new ConfigurationFormatException("Duplicate　label key.[namespace=" + aNamespace + ", key=" + k + "]");
 				}
 
-				Message msg = new Message(k, v);
-				msgs.put(k, msg);
+				Label lbl = new Label(k, v);
+				lbls.put(k, lbl);
 			}
 		}
 	}
 
 	/**
-	 * メッセージを取得する。
+	 * ラベルを取得する。
 	 * 
 	 * @param aNamespace 名前空間
-	 * @param aId メッセージID
-	 * @return メッセージ情報。メッセージ情報が存在しない場合、<code>null</code>を返す。
+	 * @param aId ラベルID
+	 * @return ラベル情報。ラベル情報が存在しない場合、<code>null</code>を返す。
 	 */
-	private Message doGetMessage(final String aNamespace, final String aId) {
-		Message msg = null;
-		if (messages.containsKey(aNamespace)) {
-			Map<String, Message> ms = messages.get(aNamespace);
+	private Label doGetLabel(final String aNamespace, final String aId) {
+		Label lbl = null;
+		if (labels.containsKey(aNamespace)) {
+			Map<String, Label> ms = labels.get(aNamespace);
 			if (ms.containsKey(aId)) {
-				msg = ms.get(aId);
+				lbl = ms.get(aId);
 			}
 		}
-		return msg;
+		return lbl;
 	}
 }

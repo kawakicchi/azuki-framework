@@ -1,0 +1,1 @@
+package jp.azuki.web.pattern;/** * このインターフェースは、Webビジネスパターン機能を表現するインターフェースです。 *  * @since 1.0.0 * @version 1.0.0 2013/07/01 * @author Kawakicchi */public interface Pattern {	public void pattern();}

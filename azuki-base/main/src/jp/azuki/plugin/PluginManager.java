@@ -7,6 +7,7 @@ import java.util.List;
 
 import jp.azuki.business.manager.AbstractManager;
 import jp.azuki.core.util.StringUtility;
+import jp.azuki.persistence.ConfigurationFormatException;
 import jp.azuki.persistence.context.Context;
 import jp.azuki.persistence.context.ContextSupport;
 import jp.azuki.persistence.entity.Entity;
@@ -62,9 +63,11 @@ public final class PluginManager extends AbstractManager {
 	 * @param file プラグイン情報
 	 * @param context コンテキスト
 	 * @throws PluginServiceException プラグイン機能に起因する問題が発生した場合
+	 * @throws ConfigurationFormatException 設定ファイルに問題がある場合
 	 * @throws IOException 入出力操作に起因する問題が発生した場合
 	 */
-	public synchronized static void load(final String file, final Context context) throws PluginServiceException, IOException {
+	public synchronized static void load(final String file, final Context context) throws PluginServiceException, ConfigurationFormatException,
+			IOException {
 		INSTANCE.doLoad(context.getResourceAsStream(file), context);
 	}
 
@@ -74,9 +77,11 @@ public final class PluginManager extends AbstractManager {
 	 * @param stream プラグイン情報
 	 * @param context コンテキスト
 	 * @throws PluginServiceException プラグイン機能に起因する問題が発生した場合
+	 * @throws ConfigurationFormatException 設定ファイルに問題がある場合
 	 * @throws IOException 入出力操作に起因する問題が発生した場合
 	 */
-	public synchronized static void load(final InputStream stream, final Context context) throws PluginServiceException, IOException {
+	public synchronized static void load(final InputStream stream, final Context context) throws PluginServiceException,
+			ConfigurationFormatException, IOException {
 		INSTANCE.doLoad(stream, context);
 	}
 
@@ -99,10 +104,11 @@ public final class PluginManager extends AbstractManager {
 	 * @param aStream プラグイン情報
 	 * @param aContext コンテキスト
 	 * @throws PluginServiceException プラグイン機能に起因する問題が発生した場合
+	 * @throws ConfigurationFormatException 設定ファイルに問題がある場合
 	 * @throws IOException 入出力操作に起因する問題が発生した場合
 	 */
 	@SuppressWarnings("unchecked")
-	private void doLoad(final InputStream aStream, final Context aContext) throws PluginServiceException, IOException {
+	private void doLoad(final InputStream aStream, final Context aContext) throws PluginServiceException, ConfigurationFormatException, IOException {
 
 		try {
 			Digester digester = new Digester();

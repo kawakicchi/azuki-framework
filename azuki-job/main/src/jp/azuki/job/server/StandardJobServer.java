@@ -19,6 +19,7 @@ import jp.azuki.job.job.Job;
 import jp.azuki.job.parameter.Parameter;
 import jp.azuki.job.store.JobSessionStore;
 import jp.azuki.job.worker.JobWorker;
+import jp.azuki.persistence.ConfigurationFormatException;
 import jp.azuki.persistence.context.Context;
 import jp.azuki.persistence.context.ContextSupport;
 import jp.azuki.persistence.proterty.Property;
@@ -175,6 +176,9 @@ public final class StandardJobServer extends AbstractJobServer {
 			fatal(ex);
 			return false;
 		} catch (ClassNotFoundException ex) {
+			fatal(ex);
+			return false;
+		} catch (ConfigurationFormatException ex) {
 			fatal(ex);
 			return false;
 		} catch (PluginServiceException ex) {

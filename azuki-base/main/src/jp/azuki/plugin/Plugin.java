@@ -3,6 +3,8 @@ package jp.azuki.plugin;
 import java.io.IOException;
 import java.io.InputStream;
 
+import jp.azuki.persistence.ConfigurationFormatException;
+
 /**
  * このインターフェースは、プラグイン機能を表現するインターフェースです。
  * 
@@ -38,7 +40,8 @@ public interface Plugin {
 	 * 
 	 * @param aStream 設定ストリーム
 	 * @throws PluginServiceException プラグイン機能に起因する問題が発生した場合
+	 * @throws ConfigurationFormatException 設定ファイルに問題がある場合
 	 * @throws IOException IO操作時に問題が発生した場合
 	 */
-	public void load(final InputStream aStream) throws PluginServiceException, IOException;
+	public void load(final InputStream aStream) throws PluginServiceException, ConfigurationFormatException, IOException;
 }
