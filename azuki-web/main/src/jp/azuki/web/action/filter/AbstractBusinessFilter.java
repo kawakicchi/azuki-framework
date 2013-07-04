@@ -59,9 +59,9 @@ public abstract class AbstractBusinessFilter extends AbstractDatabaseFilter {
 	}
 
 	@Override
-	protected final void doDatabaseFilter(final Map<String, Object> aParameter) throws WebServiceException, PersistenceServiceException, SQLException {
+	protected final void doDatabaseFilter() throws WebServiceException, PersistenceServiceException, SQLException {
 		try {
-			doBusinessFilter(aParameter);
+			doBusinessFilter();
 			for (String namespace : logics.keySet()) {
 				Map<String, Logic> ls = logics.get(namespace);
 				for (String name : ls.keySet()) {
@@ -77,14 +77,12 @@ public abstract class AbstractBusinessFilter extends AbstractDatabaseFilter {
 	/**
 	 * フィルター処理を行う。
 	 * 
-	 * @param aParameter パラメーター
 	 * @throws WebServiceException ウェブサービス層に起因する問題が発生した場合
 	 * @throws PersistenceServiceException 永続化層に起因する問題が発生した場合
 	 * @throws BusinessServiceException ビジネスサービス層に起因する問題が発生した場合
 	 * @throws SQLException SQL操作時に問題が発生した場合
 	 */
-	protected abstract void doBusinessFilter(final Map<String, Object> aParameter) throws WebServiceException, PersistenceServiceException,
-			BusinessServiceException, SQLException;
+	protected abstract void doBusinessFilter() throws WebServiceException, PersistenceServiceException, BusinessServiceException, SQLException;
 
 	/**
 	 * ロジックを取得する。

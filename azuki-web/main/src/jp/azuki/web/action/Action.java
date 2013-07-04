@@ -1,7 +1,5 @@
 package jp.azuki.web.action;
 
-import java.util.Map;
-
 import jp.azuki.web.constant.WebServiceException;
 import jp.azuki.web.view.View;
 
@@ -27,10 +25,9 @@ public interface Action {
 	/**
 	 * アクションを実行する。
 	 * 
-	 * @param aParameter パラメーター
 	 * @return ビュー
 	 * @throws WebServiceException ウェブサービス層に起因する問題が発生した場合
 	 */
-	public View action(final Map<String, Object> aParameter) throws WebServiceException;
+	public View action() throws WebServiceException;
 
 }

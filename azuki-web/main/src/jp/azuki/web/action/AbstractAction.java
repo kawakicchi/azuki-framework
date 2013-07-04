@@ -1,7 +1,5 @@
 package jp.azuki.web.action;
 
-import java.util.Map;
-
 import jp.azuki.core.lang.LoggingObject;
 import jp.azuki.web.constant.WebServiceException;
 import jp.azuki.web.view.View;
@@ -51,8 +49,8 @@ public abstract class AbstractAction extends LoggingObject implements Action {
 	}
 
 	@Override
-	public final View action(final Map<String, Object> aParameter) throws WebServiceException {
-		return doAction(aParameter);
+	public final View action() throws WebServiceException {
+		return doAction();
 	}
 
 	/**
@@ -68,10 +66,9 @@ public abstract class AbstractAction extends LoggingObject implements Action {
 	/**
 	 * アクションを実行する。
 	 * 
-	 * @param aParameter パラメーター
 	 * @return ビュー
 	 * @throws WebServiceException ウェブサービス層に起因する問題が発生した場合
 	 */
-	protected abstract View doAction(final Map<String, Object> aParameter) throws WebServiceException;
+	protected abstract View doAction() throws WebServiceException;
 
 }

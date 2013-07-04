@@ -1,8 +1,10 @@
-package jp.azuki.web.tags.base;
+package jp.azuki.web.tags.biz;
 
 import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.Date;
+
+import jp.azuki.web.tags.base.AbstractValuePrintTag;
 
 /**
  * このクラスは、URLをレンダリングするタグクラスです。
@@ -11,7 +13,7 @@ import java.util.Date;
  * @version 1.0.0 2012/10/18
  * @author Kawakicchi
  */
-public class PrintDateTag extends AbstractValuePrintTag {
+public class PrintTimeTag extends AbstractValuePrintTag {
 
 	@Override
 	protected final void doReadering(final Object aValue, final StringBuffer aBuffer) {
@@ -33,7 +35,7 @@ public class PrintDateTag extends AbstractValuePrintTag {
 		}
 
 		if (null != cln) {
-			String str = String.format("%04d年%02d月%02d日", cln.get(Calendar.YEAR), cln.get(Calendar.MONTH) + 1, cln.get(Calendar.DAY_OF_MONTH));
+			String str = String.format("%02d時%02d分%02d秒", cln.get(Calendar.HOUR_OF_DAY), cln.get(Calendar.MINUTE), cln.get(Calendar.SECOND));
 			aBuffer.append(str);
 		}
 	}

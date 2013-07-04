@@ -60,10 +60,10 @@ public abstract class AbstractBusinessAction extends AbstractDatabaseAction {
 	}
 
 	@Override
-	protected final View doDatabaseAction(final Map<String, Object> aParameter) throws WebServiceException, PersistenceServiceException, SQLException {
+	protected final View doDatabaseAction() throws WebServiceException, PersistenceServiceException, SQLException {
 		View view = null;
 		try {
-			view = doBusinessAction(aParameter);
+			view = doBusinessAction();
 			for (String namespace : logics.keySet()) {
 				Map<String, Logic> ls = logics.get(namespace);
 				for (String name : ls.keySet()) {
@@ -80,15 +80,13 @@ public abstract class AbstractBusinessAction extends AbstractDatabaseAction {
 	/**
 	 * アクションを実行する。
 	 * 
-	 * @param aParameter パラメーター
 	 * @return ビュー
 	 * @throws WebServiceException ウェブサービス層に起因する問題が発生した場合
 	 * @throws PersistenceServiceException 永続化層に起因する問題が発生した場合
 	 * @throws BusinessServiceException ビジネスサービス層に起因する問題が発生した場合
 	 * @throws SQLException SQL操作時に問題が発生した場合
 	 */
-	protected abstract View doBusinessAction(final Map<String, Object> aParameter) throws WebServiceException, PersistenceServiceException,
-			BusinessServiceException, SQLException;
+	protected abstract View doBusinessAction() throws WebServiceException, PersistenceServiceException, BusinessServiceException, SQLException;
 
 	/**
 	 * ロジックを取得する。

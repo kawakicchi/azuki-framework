@@ -1,8 +1,5 @@
 package jp.azuki.web.tags.html;
 
-import javax.servlet.jsp.JspException;
-import javax.servlet.jsp.tagext.Tag;
-
 import jp.azuki.web.constant.WebConstant;
 
 /**
@@ -64,20 +61,10 @@ public class LinkTag extends AbstractHtmlTag {
 	}
 
 	@Override
-	public int doStartTag() throws JspException {
-		StringBuffer s = new StringBuffer();
-		s.append("<link");
-		appendAttribute("rel", getRel(), s);
-		appendAttribute("href", WebConstant.getUrl(getHref(), isAbsolute()), s);
-		appendAttribute("type", getType(), s);
-		s.append("/>");
-
-		write(s.toString());
-		return (Tag.SKIP_BODY);
-	}
-
-	@Override
-	public int doEndTag() throws JspException {
-		return (Tag.EVAL_PAGE);
+	protected void doCreate() {
+		setTagName("link");
+		addAttribute("rel", getRel());
+		addAttribute("href", WebConstant.getUrl(getHref(), isAbsolute()));
+		addAttribute("type", getType());
 	}
 }

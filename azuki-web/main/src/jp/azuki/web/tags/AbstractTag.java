@@ -107,40 +107,4 @@ public abstract class AbstractTag extends LoggingObject implements Tag {
 		}
 		return value;
 	}
-
-	/**
-	 * オブジェクト型を文字列型として取得する。
-	 * 
-	 * @param aObj オブジェクト
-	 * @return 文字列。オブジェクトが<code>null</code>の場合、空の文字列を返す。
-	 */
-	protected static final String s(final Object aObj) {
-		String value = "";
-		if (null != aObj) {
-			if (aObj instanceof String) {
-				value = ((String) aObj);
-			} else {
-				value = aObj.toString();
-			}
-		}
-		return value;
-	}
-
-	/**
-	 * オブジェクト型を文字列型として取得する。
-	 * 
-	 * @param aObj オブジェクト
-	 * @return 文字列。オブジェクトが<code>null</code>の場合、<code>null</code>を返す。
-	 */
-	protected static final String sn(final Object aObj) {
-		String value = null;
-		if (null != aObj) {
-			if (aObj instanceof String) {
-				value = ((String) aObj);
-			} else {
-				value = aObj.toString();
-			}
-		}
-		return value;
-	}
 }

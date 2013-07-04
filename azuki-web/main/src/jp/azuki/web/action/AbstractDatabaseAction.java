@@ -1,13 +1,12 @@
 package jp.azuki.web.action;
 
 import java.sql.SQLException;
-import java.util.Map;
 
+import jp.azuki.persistence.PersistenceServiceException;
 import jp.azuki.persistence.database.DatabaseConnection;
 import jp.azuki.persistence.database.DatabaseConnectionManager;
 import jp.azuki.persistence.database.DatabaseConnectionSupport;
 import jp.azuki.persistence.database.DatabaseSource;
-import jp.azuki.persistence.PersistenceServiceException;
 import jp.azuki.web.constant.WebServiceException;
 import jp.azuki.web.view.View;
 
@@ -61,10 +60,10 @@ public abstract class AbstractDatabaseAction extends AbstractPersistenceAction i
 	}
 
 	@Override
-	protected final View doPersistenceAction(final Map<String, Object> aParameter) throws WebServiceException, PersistenceServiceException {
+	protected final View doPersistenceAction() throws WebServiceException, PersistenceServiceException {
 		View result = null;
 		try {
-			result = doDatabaseAction(aParameter);
+			result = doDatabaseAction();
 			if (null != myConnection) {
 				myConnection.getConnection().commit();
 			}
@@ -87,14 +86,12 @@ public abstract class AbstractDatabaseAction extends AbstractPersistenceAction i
 	/**
 	 * アクションを実行する。
 	 * 
-	 * @param aParameter パラメーター
 	 * @return ビュー
 	 * @throws WebServiceException ウェブサービス層に起因する問題が発生した場合
 	 * @throws PersistenceServiceException 永続化層に起因する問題が発生した場合
 	 * @throws SQLException SQL操作時に問題が発生した場合
 	 */
-	protected abstract View doDatabaseAction(final Map<String, Object> aParameter) throws WebServiceException, PersistenceServiceException,
-			SQLException;
+	protected abstract View doDatabaseAction() throws WebServiceException, PersistenceServiceException, SQLException;
 
 	@Override
 	public final void setConnection(final DatabaseConnection aConnection) {

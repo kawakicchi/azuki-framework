@@ -1,7 +1,5 @@
 package jp.azuki.web.action.filter;
 
-import java.util.Map;
-
 import jp.azuki.core.lang.LoggingObject;
 import jp.azuki.web.constant.WebServiceException;
 import jp.azuki.web.view.View;
@@ -56,8 +54,8 @@ public abstract class AbstractFilter extends LoggingObject implements Filter {
 	}
 
 	@Override
-	public final void filter(final Map<String, Object> aParameter) throws WebServiceException {
-		doFilter(aParameter);
+	public final void filter() throws WebServiceException {
+		doFilter();
 	}
 
 	/**
@@ -73,10 +71,9 @@ public abstract class AbstractFilter extends LoggingObject implements Filter {
 	/**
 	 * フィルター処理を行う。
 	 * 
-	 * @param aParameter パラメーター
 	 * @throws WebServiceException ウェブサービス層に起因する問題が発生した場合
 	 */
-	protected abstract void doFilter(final Map<String, Object> aParameter) throws WebServiceException;
+	protected abstract void doFilter() throws WebServiceException;
 
 	@Override
 	public final View getView() {

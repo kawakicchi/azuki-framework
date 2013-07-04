@@ -1,7 +1,6 @@
 package jp.azuki.web.servlet;
 
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.ServletException;
@@ -9,6 +8,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import jp.azuki.persistence.context.ContextSupport;
+import jp.azuki.persistence.parameter.Parameter;
+import jp.azuki.persistence.parameter.ParameterSupport;
 import jp.azuki.persistence.proterty.Property;
 import jp.azuki.persistence.proterty.PropertyManager;
 import jp.azuki.persistence.proterty.PropertySupport;
@@ -83,6 +84,7 @@ public abstract class AbstractActionMappingServlet extends AbstractServlet {
 	 */
 	protected final void doTask(final HttpServletRequest aReq, final HttpServletResponse aRes) throws ServletException, IOException {
 		Action action = createAction(aReq, aRes);
+
 		if (null == action) {
 			aRes.sendError(404);
 			return;
@@ -90,7 +92,7 @@ public abstract class AbstractActionMappingServlet extends AbstractServlet {
 
 		try {
 			ActionContext actionContext = new ActionContext(aReq, aRes);
-			Map<String, Object> parameter = new HashMap<String, Object>();
+			Parameter parameter = new Parameter();
 			Store<String, Object> session = new HttpSessionStore(aReq.getSession(true));
 
 			// purser
@@ -100,11 +102,10 @@ public abstract class AbstractActionMappingServlet extends AbstractServlet {
 				for (Class<? extends HttpServletPurser> clazz : classes) {
 					HttpServletPurser purser = clazz.newInstance();
 					Map<String, Object> m = purser.purse(aReq, aRes);
-					parameter.putAll(m);
+					parameter = new Parameter(m);
 				}
 			}
 
-			// setting
 			if (action instanceof SessionSupport) {
 				((SessionSupport) action).setSession(session);
 			}
@@ -118,16 +119,21 @@ public abstract class AbstractActionMappingServlet extends AbstractServlet {
 				}
 				((PropertySupport) action).setProperty(property);
 			}
+			if (action instanceof ParameterSupport) {
+				((ParameterSupport) action).setParameter(parameter);
+			}
 
 			View view = null;
 			view = doBeforeFilter(action, parameter, session, actionContext);
+
 			if (null == view) {
-				view = action.action(parameter);
+				view = action.action();
 				if (null == view) {
 					fatal("No return view.[" + action.getClass().getName() + "]");
 					throw new WebServiceException("No View.");
 				}
 			}
+
 			View bufView = doAfterFilter(action, parameter, session, actionContext);
 			if (null != bufView) {
 				view = bufView;
@@ -160,8 +166,8 @@ public abstract class AbstractActionMappingServlet extends AbstractServlet {
 	 * @throws InstantiationException {@link InstantiationException}
 	 * @throws WebServiceException {@link WebServiceException}
 	 */
-	private View doAfterFilter(final Action aAction, final Map<String, Object> aParameter, final Store<String, Object> aSession,
-			final ActionContext aContext) throws IllegalAccessException, InstantiationException, WebServiceException {
+	private View doAfterFilter(final Action aAction, final Parameter aParameter, final Store<String, Object> aSession, final ActionContext aContext)
+			throws IllegalAccessException, InstantiationException, WebServiceException {
 		View view = null;
 		ActionAfterFilter aFilter = aAction.getClass().getAnnotation(ActionAfterFilter.class);
 		if (null != aFilter) {
@@ -182,7 +188,10 @@ public abstract class AbstractActionMappingServlet extends AbstractServlet {
 						}
 						((PropertySupport) filter).setProperty(property);
 					}
-					filter.filter(aParameter);
+					if (filter instanceof ParameterSupport) {
+						((ParameterSupport) filter).setParameter(aParameter);
+					}
+					filter.filter();
 					if (null != filter.getView()) {
 						view = filter.getView();
 						break;
@@ -205,8 +214,8 @@ public abstract class AbstractActionMappingServlet extends AbstractServlet {
 	 * @throws InstantiationException {@link InstantiationException}
 	 * @throws WebServiceException {@link WebServiceException}
 	 */
-	private View doBeforeFilter(final Action aAction, final Map<String, Object> aParameter, final Store<String, Object> aSession,
-			final ActionContext aContext) throws IllegalAccessException, InstantiationException, WebServiceException {
+	private View doBeforeFilter(final Action aAction, final Parameter aParameter, final Store<String, Object> aSession, final ActionContext aContext)
+			throws IllegalAccessException, InstantiationException, WebServiceException {
 		View view = null;
 		ActionBeforeFilter aFilter = aAction.getClass().getAnnotation(ActionBeforeFilter.class);
 		if (null != aFilter) {
@@ -227,7 +236,10 @@ public abstract class AbstractActionMappingServlet extends AbstractServlet {
 						}
 						((PropertySupport) filter).setProperty(property);
 					}
-					filter.filter(aParameter);
+					if (filter instanceof ParameterSupport) {
+						((ParameterSupport) filter).setParameter(aParameter);
+					}
+					filter.filter();
 					if (null != filter.getView()) {
 						view = filter.getView();
 						break;

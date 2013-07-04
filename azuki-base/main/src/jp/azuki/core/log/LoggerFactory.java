@@ -64,7 +64,7 @@ public abstract class LoggerFactory {
 	/**
 	 * ログインスタンスを生成します。
 	 * 
-	 * @param class クラス
+	 * @param aClass クラス
 	 * @return ログインスタンス
 	 */
 	public static final Logger create(final Class<?> aClass) {

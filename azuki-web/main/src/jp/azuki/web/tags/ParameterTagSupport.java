@@ -7,7 +7,7 @@ package jp.azuki.web.tags;
  * @version 1.0.0 2013/01/31
  * @author Kawakicchi
  */
-public interface ParameterSupportTag {
+public interface ParameterTagSupport {
 
 	/**
 	 * パラメーターを設定する。

@@ -1,4 +1,6 @@
-package jp.azuki.web.tags.base;
+package jp.azuki.web.tags.biz;
+
+import jp.azuki.web.tags.base.AbstractValuePrintTag;
 
 
 /**

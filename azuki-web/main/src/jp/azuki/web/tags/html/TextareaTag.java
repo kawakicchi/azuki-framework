@@ -1,8 +1,5 @@
 package jp.azuki.web.tags.html;
 
-import javax.servlet.jsp.JspException;
-import javax.servlet.jsp.tagext.Tag;
-
 import jp.azuki.core.util.StringUtility;
 
 /**
@@ -12,7 +9,7 @@ import jp.azuki.core.util.StringUtility;
  * @version 1.0.0 2012/10/18
  * @author Kawakicchi
  */
-public class TextareaTag extends AbstractHtmlTag {
+public class TextareaTag extends AbstractBodyHtmlTag {
 
 	/**
 	 * id
@@ -67,30 +64,18 @@ public class TextareaTag extends AbstractHtmlTag {
 	}
 
 	@Override
-	public int doStartTag() throws JspException {
+	protected void doCreate() {
 		Object value = null;
 		if (StringUtility.isNotEmpty(getName())) {
 			value = getAttribute(getName());
 		}
 
-		StringBuffer s = new StringBuffer();
-		s.append("<textarea");
-		//
-		appendAttribute("id", getId(), s);
-		appendAttribute("name", getName(), s);
-		appendAttribute("css", getCss(), s);
-		appendAttribute("style", getStyle(), s);
-		//
-		s.append(">");
-		s.append(convertTextareaValue(s(value)));
-		s.append("</textarea>");
+		setTagName("textarea");
+		addAttribute("id", getId());
+		addAttribute("name", getName());
+		addAttribute("css", getCss());
+		addAttribute("style", getStyle());
 
-		write(s.toString());
-		return (Tag.SKIP_BODY);
-	}
-
-	@Override
-	public int doEndTag() throws JspException {
-		return (Tag.EVAL_PAGE);
+		setBodyString(StringUtility.toStringEmpty(value));
 	}
 }

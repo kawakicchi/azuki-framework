@@ -1,6 +1,5 @@
 package jp.azuki.business.label;
 
-import jp.azuki.business.BusinessServiceException;
 import jp.azuki.core.util.StringUtility;
 
 /**
@@ -27,9 +26,8 @@ public final class LabelFactory {
 	 * 
 	 * @param aId ラベルID
 	 * @return ラベル情報。ラベル情報が存在しない場合、<code>null</code>を返す。
-	 * @throws BusinessServiceException ビジネスサービス層に起因する問題が発生した場合
 	 */
-	public static Label create(final String aId) throws BusinessServiceException {
+	public static Label create(final String aId) {
 		return create(StringUtility.EMPTY, aId);
 	}
 
@@ -39,9 +37,8 @@ public final class LabelFactory {
 	 * @param aNamespace 名前空間
 	 * @param aId ラベルID
 	 * @return ラベル情報。ラベル情報が存在しない場合、<code>null</code>を返す。
-	 * @throws BusinessServiceException ビジネスサービス層に起因する問題が発生した場合
 	 */
-	public static Label create(final String aNamespace, final String aId) throws BusinessServiceException {
+	public static Label create(final String aNamespace, final String aId) {
 		return LabelManager.getLabel(aNamespace, aId);
 	}
 }

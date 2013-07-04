@@ -1,8 +1,5 @@
 package jp.azuki.web.tags.html;
 
-import javax.servlet.jsp.JspException;
-import javax.servlet.jsp.tagext.Tag;
-
 import jp.azuki.core.util.StringUtility;
 
 /**
@@ -67,30 +64,19 @@ public class PasswordTag extends AbstractHtmlTag {
 	}
 
 	@Override
-	public int doStartTag() throws JspException {
+	protected void doCreate() {
 		Object value = null;
 		if (StringUtility.isNotEmpty(getName())) {
 			value = getAttribute(getName());
 		}
 
-		StringBuffer s = new StringBuffer();
-		s.append("<input");
-		//
-		appendAttribute("id", getId(), s);
-		appendAttribute("name", getName(), s);
-		appendAttribute("css", getCss(), s);
-		appendAttribute("style", getStyle(), s);
-		//
-		appendAttribute("type", "password", s);
-		appendAttribute("value", convertAttributeValue(s(value)), s);
-		s.append("/>");
+		setTagName("input");
+		addAttribute("id", getId());
+		addAttribute("name", getName());
+		addAttribute("css", getCss());
+		addAttribute("style", getStyle());
 
-		write(s.toString());
-		return (Tag.SKIP_BODY);
-	}
-
-	@Override
-	public int doEndTag() throws JspException {
-		return (Tag.EVAL_PAGE);
+		addAttribute("type", "password");
+		addAttribute("value", StringUtility.toStringEmpty(value));
 	}
 }

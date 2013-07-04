@@ -2,6 +2,8 @@ package jp.azuki.business.message;
 
 import java.util.Map;
 
+import jp.azuki.core.util.StringUtility;
+
 /**
  * このクラスは、メッセージ情報を保持するクラスです。
  * 
@@ -56,11 +58,11 @@ public final class Message {
 	 * @param args パラメーター
 	 * @return メッセージ
 	 */
-	public String generate(final String... args) {
+	public String generate(final Object... args) {
 		String msg = message;
 		for (int i = 0; i < args.length; i++) {
-			String word = "¥¥$¥¥{" + (i + 1) + "¥¥}";
-			msg = msg.replaceAll(word, args[i]);
+			String word = "\\$\\{" + (i + 1) + "\\}";
+			msg = msg.replaceAll(word, StringUtility.toStringEmpty(args[i]));
 		}
 		return msg;
 	}
@@ -71,11 +73,11 @@ public final class Message {
 	 * @param args パラメーター
 	 * @return メッセージ
 	 */
-	public String generate(final Map<String, String> args) {
+	public String generate(final Map<String, Object> args) {
 		String msg = message;
 		for (String key : args.keySet()) {
-			String word = "¥¥$¥¥{" + key + "¥¥}";
-			msg = msg.replaceAll(word, args.get(key));
+			String word = "\\$\\{" + key + "\\}";
+			msg = msg.replaceAll(word, StringUtility.toStringEmpty(args.get(key)));
 		}
 		return msg;
 	}

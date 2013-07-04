@@ -126,6 +126,17 @@
 	</tag>
 
 	<tag>
+		<name>script</name>
+		<tag-class>jp.azuki.web.tags.html.ScriptTag</tag-class>
+		<body-content>empty</body-content>
+		<attribute>
+			<name>src</name>
+			<required>true</required>
+			<rtexprvalue>false</rtexprvalue>
+		</attribute>
+	</tag>
+
+	<tag>
 		<name>textbox</name>
 		<tag-class>jp.azuki.web.tags.html.TextboxTag</tag-class>
 		<body-content>empty</body-content>

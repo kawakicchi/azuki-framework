@@ -1,5 +1,11 @@
 package jp.azuki.web.tags;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.servlet.jsp.JspException;
+
+import jp.azuki.core.util.StringUtility;
 import jp.azuki.web.constant.WebConstant;
 
 /**
@@ -9,22 +15,35 @@ import jp.azuki.web.constant.WebConstant;
  * @version 1.0.0 2012/10/18
  * @author Kawakicchi
  */
-public class UrlTag extends ReaderingTag {
+public class UrlTag extends AbstractBodyRenderingTag implements ParameterTagSupport {
 
 	/**
-	 * alias
+	 * エイリアス
 	 */
 	private String alias = "";
 
 	/**
-	 * absolute
+	 * 絶対パスフラグ
 	 */
 	private boolean absolute = false;
 
 	/**
+	 * パラメータ情報
+	 */
+	private Map<String, Object> parameter;
+
+	/**
+	 * コンストラクタ
+	 */
+	public UrlTag() {
+		super(UrlTag.class);
+		parameter = new HashMap<String, Object>();
+	}
+
+	/**
 	 * エイリアスを設定する。
 	 * 
-	 * @param aAlias
+	 * @param aAlias エイリアス
 	 */
 	public final void setAlias(final String aAlias) {
 		alias = aAlias;
@@ -37,6 +56,11 @@ public class UrlTag extends ReaderingTag {
 	 */
 	public final void setAbsolute(final boolean aAbsolute) {
 		absolute = aAbsolute;
+	}
+
+	@Override
+	public void setParameter(final String aKey, final Object aValue) {
+		parameter.put(aKey, aValue);
 	}
 
 	/**
@@ -58,7 +82,13 @@ public class UrlTag extends ReaderingTag {
 	}
 
 	@Override
-	protected final void doReadering(final StringBuffer reader) {
-		reader.append(WebConstant.getUrl(getAlias(), isAbsolute()));
+	protected final void doRendering(final StringBuffer aRender, final String aBody) throws JspException {
+		String str = WebConstant.getUrl(getAlias(), isAbsolute());
+		for (String key : parameter.keySet()) {
+			String word = "\\$\\{" + key + "\\}";
+			str = str.replaceAll(word, StringUtility.toStringEmpty(parameter.get(key)));
+		}
+
+		aRender.append(str);
 	}
 }

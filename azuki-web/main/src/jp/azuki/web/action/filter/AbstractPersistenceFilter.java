@@ -1,10 +1,8 @@
 package jp.azuki.web.action.filter;
 
-import java.util.Map;
-
+import jp.azuki.persistence.PersistenceServiceException;
 import jp.azuki.persistence.context.Context;
 import jp.azuki.persistence.context.ContextSupport;
-import jp.azuki.persistence.PersistenceServiceException;
 import jp.azuki.persistence.proterty.Property;
 import jp.azuki.persistence.proterty.PropertySupport;
 import jp.azuki.persistence.session.SessionSupport;
@@ -63,9 +61,9 @@ public abstract class AbstractPersistenceFilter extends AbstractFilter implement
 	}
 
 	@Override
-	protected final void doFilter(final Map<String, Object> aParameter) throws WebServiceException {
+	protected final void doFilter() throws WebServiceException {
 		try {
-			doPersistenceFilter(aParameter);
+			doPersistenceFilter();
 		} catch (PersistenceServiceException ex) {
 			throw new WebServiceException(ex);
 		}
@@ -74,11 +72,10 @@ public abstract class AbstractPersistenceFilter extends AbstractFilter implement
 	/**
 	 * フィルター処理を行う。
 	 * 
-	 * @param aParameter パラメーター
 	 * @throws WebServiceException ウェブサービス層に起因する問題が発生した場合
 	 * @throws PersistenceServiceException 永続化層に起因する問題が発生した場合
 	 */
-	protected abstract void doPersistenceFilter(final Map<String, Object> aParameter) throws WebServiceException, PersistenceServiceException;
+	protected abstract void doPersistenceFilter() throws WebServiceException, PersistenceServiceException;
 
 	@Override
 	public final void setSession(final Store<String, Object> aSession) {

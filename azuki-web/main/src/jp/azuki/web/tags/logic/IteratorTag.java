@@ -1,4 +1,4 @@
-package jp.azuki.web.tags;
+package jp.azuki.web.tags.logic;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -9,6 +9,7 @@ import javax.servlet.jsp.tagext.IterationTag;
 import javax.servlet.jsp.tagext.Tag;
 
 import jp.azuki.core.util.StringUtility;
+import jp.azuki.web.tags.AbstractTag;
 
 /**
  * このクラスは、繰り返し処理を行うタグクラスです。

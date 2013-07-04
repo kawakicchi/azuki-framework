@@ -1,10 +1,10 @@
 package jp.azuki.web.action;
 
-import java.util.Map;
-
+import jp.azuki.persistence.PersistenceServiceException;
 import jp.azuki.persistence.context.Context;
 import jp.azuki.persistence.context.ContextSupport;
-import jp.azuki.persistence.PersistenceServiceException;
+import jp.azuki.persistence.parameter.Parameter;
+import jp.azuki.persistence.parameter.ParameterSupport;
 import jp.azuki.persistence.proterty.Property;
 import jp.azuki.persistence.proterty.PropertySupport;
 import jp.azuki.persistence.session.SessionSupport;
@@ -18,7 +18,7 @@ import jp.azuki.web.view.View;
  * @version 1.0.0 2013/02/21
  * @author Kawakicchi
  */
-public abstract class AbstractPersistenceAction extends AbstractAction implements SessionSupport, ContextSupport, PropertySupport {
+public abstract class AbstractPersistenceAction extends AbstractAction implements SessionSupport, ContextSupport, PropertySupport, ParameterSupport {
 
 	/**
 	 * Session store
@@ -36,11 +36,15 @@ public abstract class AbstractPersistenceAction extends AbstractAction implement
 	private Property property;
 
 	/**
+	 * パラメータ情報
+	 */
+	private Parameter parameter;
+
+	/**
 	 * コンストラクタ
 	 */
 	public AbstractPersistenceAction() {
 		super();
-		property = new Property();
 	}
 
 	/**
@@ -50,7 +54,6 @@ public abstract class AbstractPersistenceAction extends AbstractAction implement
 	 */
 	public AbstractPersistenceAction(final String aName) {
 		super(aName);
-		property = new Property();
 	}
 
 	/**
@@ -60,14 +63,13 @@ public abstract class AbstractPersistenceAction extends AbstractAction implement
 	 */
 	public AbstractPersistenceAction(final Class<?> aClass) {
 		super(aClass);
-		property = new Property();
 	}
 
 	@Override
-	protected final View doAction(final Map<String, Object> aParameter) throws WebServiceException {
+	protected final View doAction() throws WebServiceException {
 		View view = null;
 		try {
-			view = doPersistenceAction(aParameter);
+			view = doPersistenceAction();
 		} catch (PersistenceServiceException ex) {
 			throw new WebServiceException(ex);
 		}
@@ -77,12 +79,11 @@ public abstract class AbstractPersistenceAction extends AbstractAction implement
 	/**
 	 * アクションを実行する。
 	 * 
-	 * @param aParameter パラメーター
 	 * @return ビュー
 	 * @throws WebServiceException ウェブサービス層に起因する問題が発生した場合
 	 * @throws PersistenceServiceException 永続化層に起因する問題が発生した場合
 	 */
-	protected abstract View doPersistenceAction(final Map<String, Object> aParameter) throws WebServiceException, PersistenceServiceException;
+	protected abstract View doPersistenceAction() throws WebServiceException, PersistenceServiceException;
 
 	@Override
 	public final void setSession(final Store<String, Object> aSession) {
@@ -124,5 +125,19 @@ public abstract class AbstractPersistenceAction extends AbstractAction implement
 	 */
 	protected final Property getProperty() {
 		return property;
+	}
+
+	@Override
+	public final void setParameter(final Parameter aParameter) {
+		parameter = aParameter;
+	}
+
+	/**
+	 * パラメータ情報を取得する。
+	 * 
+	 * @return パラメータ情報
+	 */
+	protected final Parameter getParameter() {
+		return parameter;
 	}
 }

@@ -1,8 +1,5 @@
 package jp.azuki.web.tags.html;
 
-import javax.servlet.jsp.JspException;
-import javax.servlet.jsp.tagext.Tag;
-
 import jp.azuki.web.constant.WebConstant;
 
 /**
@@ -91,23 +88,10 @@ public class ImageTag extends AbstractHtmlTag {
 		return source;
 	}
 
-	@Override
-	public int doStartTag() throws JspException {
-		StringBuffer s = new StringBuffer();
-		s.append("<img");
-		appendAttribute("class", getCss(), s);
-		appendAttribute("style", getStyle(), s);
-		appendAttribute("src", getSource(), s);
-		s.append("/>");
-
-		write(s.toString());
-		
-		return (Tag.SKIP_BODY);
+	protected void doCreate() {
+		setTagName("img");
+		addAttribute("class", getCss());
+		addAttribute("style", getStyle());
+		addAttribute("src", getSource());
 	}
-
-	@Override
-	public int doEndTag() throws JspException {
-		return (Tag.EVAL_PAGE);
-	}
-
 }

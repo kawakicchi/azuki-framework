@@ -59,7 +59,7 @@ public class ActionEntity implements Entity {
 	/**
 	 * アクションクラスを取得する。
 	 * 
-	 * @return
+	 * @return アクションクラス
 	 */
 	public String getAction() {
 		return action;

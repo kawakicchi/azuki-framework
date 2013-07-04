@@ -1,5 +1,7 @@
 package jp.azuki.web.tags.base;
 
+import jp.azuki.core.util.StringUtility;
+
 /**
  * このクラスは、URLをレンダリングするタグクラスです。
  * 
@@ -11,6 +13,6 @@ public class PrintTag extends AbstractValuePrintTag {
 
 	@Override
 	protected final void doReadering(final Object aValue, final StringBuffer aBuffer) {
-		aBuffer.append(s(aValue));
+		aBuffer.append(StringUtility.toStringEmpty(aValue));
 	}
 }

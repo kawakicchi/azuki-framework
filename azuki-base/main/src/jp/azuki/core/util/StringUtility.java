@@ -1,6 +1,5 @@
 package jp.azuki.core.util;
 
-
 /**
  * このクラスは、文字列操作を行うユーティリティクラスです。
  * 
@@ -46,6 +45,36 @@ public final class StringUtility {
 	 */
 	public static boolean isEmpty(final String aString) {
 		return !(isNotEmpty(aString));
+	}
+
+	/**
+	 * オブジェクトを文字列として取得する。
+	 * オブジェクトが<code>null</code>の場合、空文字を返す。
+	 * 
+	 * @param aObject オブジェクト
+	 * @return 文字列
+	 */
+	public static String toStringEmpty(final Object aObject) {
+		String string = EMPTY;
+		if (null != aObject) {
+			string = aObject.toString();
+		}
+		return string;
+	}
+
+	/**
+	 * オブジェクトを文字列として取得する。
+	 * オブジェクトが<code>null</code>の場合、<code>null</code>を返す。
+	 * 
+	 * @param aObject オブジェクト
+	 * @return 空文字
+	 */
+	public static String toStringNull(final Object aObject) {
+		String string = null;
+		if (null != aObject) {
+			string = aObject.toString();
+		}
+		return string;
 	}
 
 	/**

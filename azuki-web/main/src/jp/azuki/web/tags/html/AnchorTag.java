@@ -1,8 +1,5 @@
 package jp.azuki.web.tags.html;
 
-import javax.servlet.jsp.JspException;
-import javax.servlet.jsp.tagext.Tag;
-
 import jp.azuki.web.constant.WebConstant;
 
 /**
@@ -12,7 +9,7 @@ import jp.azuki.web.constant.WebConstant;
  * @version 1.0.0 2013/01/15
  * @author Kawakicchi
  */
-public class AnchorTag extends AbstractHtmlTag {
+public class AnchorTag extends AbstractBodyHtmlTag {
 
 	/**
 	 * Href
@@ -40,26 +37,9 @@ public class AnchorTag extends AbstractHtmlTag {
 		return absolute;
 	}
 
-	protected String getUrl() {
-		String url = WebConstant.getUrl(getHref(), isAbsolute());
-		return url;
-	}
-
 	@Override
-	public int doStartTag() throws JspException {
-		StringBuffer s = new StringBuffer();
-		s.append("<a");
-		appendAttribute("href", WebConstant.getUrl(getHref(), isAbsolute()), s);
-		s.append(">");
-		
-		write(s.toString());
-		
-		return (Tag.EVAL_BODY_INCLUDE);
-	}
-
-	@Override
-	public int doEndTag() throws JspException {
-		write("</a>");
-		return (Tag.EVAL_PAGE);
+	protected void doCreate() {
+		setTagName("a");
+		addAttribute("href", WebConstant.getUrl(getHref(), isAbsolute()));
 	}
 }

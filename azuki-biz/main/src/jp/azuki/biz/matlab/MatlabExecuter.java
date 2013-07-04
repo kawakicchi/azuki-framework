@@ -19,19 +19,48 @@ import jp.azuki.core.util.StringUtility;
  */
 public class MatlabExecuter {
 
+	/**
+	 * このEnumは、MATLABのからの実行結果を表現するEnumです。
+	 * 
+	 * @author N.Kawakita
+	 * 
+	 */
 	public static enum Result {
 		/**
 		 * 実行結果 - 成功
 		 */
-		success,
+		success(1),
 		/**
 		 * 実行結果 - キャンセル
 		 */
-		cancel,
+		cancel(2),
 		/**
 		 * 実行結果 - 失敗
 		 */
-		error;
+		error(3);
+
+		/**
+		 * タイプ
+		 */
+		private int type;
+
+		/**
+		 * コンストラクタ
+		 * 
+		 * @param aType タイプ
+		 */
+		private Result(final int aType) {
+			type = aType;
+		}
+
+		/**
+		 * タイプを取得する。
+		 * 
+		 * @return タイプ
+		 */
+		public int getType() {
+			return type;
+		}
 	}
 
 	/**

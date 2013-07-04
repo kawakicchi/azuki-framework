@@ -1,7 +1,5 @@
 package jp.azuki.web.action.filter;
 
-import java.util.Map;
-
 import jp.azuki.web.constant.WebServiceException;
 import jp.azuki.web.view.View;
 
@@ -34,9 +32,8 @@ public interface Filter {
 	/**
 	 * フィルター処理を行う。
 	 * 
-	 * @param aParameter パラメーター
 	 * @throws WebServiceException ウェブサービス層に起因する問題が発生した場合
 	 */
-	void filter(final Map<String, Object> aParameter) throws WebServiceException;
+	void filter() throws WebServiceException;
 
 }

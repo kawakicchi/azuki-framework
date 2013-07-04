@@ -1,13 +1,12 @@
 package jp.azuki.web.action.filter;
 
 import java.sql.SQLException;
-import java.util.Map;
 
+import jp.azuki.persistence.PersistenceServiceException;
 import jp.azuki.persistence.database.DatabaseConnection;
 import jp.azuki.persistence.database.DatabaseConnectionManager;
 import jp.azuki.persistence.database.DatabaseConnectionSupport;
 import jp.azuki.persistence.database.DatabaseSource;
-import jp.azuki.persistence.PersistenceServiceException;
 import jp.azuki.web.constant.WebServiceException;
 
 /**
@@ -59,9 +58,9 @@ public abstract class AbstractDatabaseFilter extends AbstractPersistenceFilter i
 	}
 
 	@Override
-	protected final void doPersistenceFilter(final Map<String, Object> aParameter) throws WebServiceException, PersistenceServiceException {
+	protected final void doPersistenceFilter() throws WebServiceException, PersistenceServiceException {
 		try {
-			doDatabaseFilter(aParameter);
+			doDatabaseFilter();
 			if (null != myConnection) {
 				myConnection.getConnection().commit();
 			}
@@ -83,13 +82,11 @@ public abstract class AbstractDatabaseFilter extends AbstractPersistenceFilter i
 	/**
 	 * フィルター処理を行う。
 	 * 
-	 * @param aParameter パラメーター
 	 * @throws WebServiceException ウェブサービス層に起因する問題が発生した場合
 	 * @throws PersistenceServiceException 永続化層に起因する問題が発生した場合
 	 * @throws SQLException SQL操作時に問題が発生した場合
 	 */
-	protected abstract void doDatabaseFilter(final Map<String, Object> aParameter) throws WebServiceException, PersistenceServiceException,
-			SQLException;
+	protected abstract void doDatabaseFilter() throws WebServiceException, PersistenceServiceException, SQLException;
 
 	@Override
 	public final void setConnection(final DatabaseConnection aConnection) {

@@ -2,6 +2,8 @@ package jp.azuki.business.label;
 
 import java.util.Map;
 
+import jp.azuki.core.util.StringUtility;
+
 /**
  * このクラスは、ラベル情報を保持するクラスです。
  * 
@@ -56,11 +58,11 @@ public final class Label {
 	 * @param args パラメーター
 	 * @return ラベル
 	 */
-	public String generate(final String... args) {
+	public String generate(final Object... args) {
 		String lbl = label;
 		for (int i = 0; i < args.length; i++) {
-			String word = "¥¥$¥¥{" + (i + 1) + "¥¥}";
-			lbl = lbl.replaceAll(word, args[i]);
+			String word = "\\$\\{" + (i + 1) + "\\}";
+			lbl = lbl.replaceAll(word, StringUtility.toStringEmpty(args[i]));
 		}
 		return lbl;
 	}
@@ -71,11 +73,11 @@ public final class Label {
 	 * @param args パラメーター
 	 * @return ラベル
 	 */
-	public String generate(final Map<String, String> args) {
+	public String generate(final Map<String, Object> args) {
 		String lbl = label;
 		for (String key : args.keySet()) {
-			String word = "¥¥$¥¥{" + key + "¥¥}";
-			lbl = lbl.replaceAll(word, args.get(key));
+			String word = "\\$\\{" + key + "\\}";
+			lbl = lbl.replaceAll(word, StringUtility.toStringEmpty(args.get(key)));
 		}
 		return lbl;
 	}
