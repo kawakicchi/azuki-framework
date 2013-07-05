@@ -1,0 +1,1 @@
+package jp.azuki.mikeneko.web.action;import jp.azuki.web.action.AbstractAction;public abstract class MikeNekoAction extends AbstractAction {}

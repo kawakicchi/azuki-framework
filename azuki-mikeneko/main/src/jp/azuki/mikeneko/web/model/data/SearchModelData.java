@@ -1,0 +1,1 @@
+package jp.azuki.mikeneko.web.model.data;public class SearchModelData extends AbstractBusinessModelData {}

@@ -1,0 +1,1 @@
+package jp.azuki.mikeneko.web.model;/** * このインターフェースは、ビジネスモデルを表現するインターフェースです。 *  * @since 1.0.0 * @version 1.0.0 2013/07/05 * @author Kawakicchi */public interface BusinessModel {	/**	 * モデルを実行する。	 */	public void execute();}

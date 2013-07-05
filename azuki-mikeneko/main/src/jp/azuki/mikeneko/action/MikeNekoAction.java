@@ -1,1 +1,0 @@
-package jp.azuki.mikeneko.action;public abstract class MikeNekoAction {}

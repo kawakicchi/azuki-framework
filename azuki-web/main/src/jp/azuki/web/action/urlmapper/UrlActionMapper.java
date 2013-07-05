@@ -6,7 +6,7 @@ import javax.servlet.http.HttpServletResponse;
 import jp.azuki.web.action.Action;
 
 /**
- * このインターフェースは、URLのマッピング機能を表現するインターフェースです。
+ * このインターフェースは、URLとアクションのマッピング機能を表現するインターフェースです。
  * 
  * @since 1.0.0
  * @version 1.0.0 2013/01/14

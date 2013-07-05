@@ -7,7 +7,7 @@ import jp.azuki.core.lang.LoggingObject;
 import jp.azuki.web.action.Action;
 
 /**
- * このクラスは、URLマッピング機能の実装を行うための基底クラスです。
+ * このクラスは、URLとアクションのマッピング機能の実装を行うための基底クラスです。
  * 
  * @since 1.0.0
  * @version 1.0.0 2013/01/17
@@ -25,7 +25,7 @@ public abstract class AbstractUrlActionMapper extends LoggingObject implements U
 	/**
 	 * コンストラクタ
 	 * 
-	 * @param aName Name
+	 * @param aName 名前
 	 */
 	public AbstractUrlActionMapper(final String aName) {
 		super(aName);
@@ -34,7 +34,7 @@ public abstract class AbstractUrlActionMapper extends LoggingObject implements U
 	/**
 	 * コンストラクタ
 	 * 
-	 * @param aClass Class
+	 * @param aClass クラス
 	 */
 	public AbstractUrlActionMapper(final Class<?> aClass) {
 		super(aClass);
