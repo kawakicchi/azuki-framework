@@ -1,5 +1,6 @@
 package jp.azuki.web.tags.html;
 
+import jp.azuki.web.constant.WebConstant;
 
 /**
  * このクラスは、URLをレンダリングするタグクラスです。
@@ -36,6 +37,6 @@ public class ScriptTag extends AbstractBodyHtmlTag {
 	@Override
 	protected void doCreate() {
 		setTagName("script");
-		addAttribute("src", getSrc());
+		addAttribute("src", WebConstant.getUrl(getSrc(), isAbsolute()));
 	}
 }

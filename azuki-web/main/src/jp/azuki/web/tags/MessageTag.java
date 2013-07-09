@@ -60,8 +60,13 @@ public class MessageTag extends AbstractBodyRenderingTag implements ParameterTag
 	}
 
 	@Override
-	public void setParameter(final String aKey, final Object aValue) {
+	public final void setParameter(final String aKey, final Object aValue) {
 		parameter.put(aKey, aValue);
+	}
+
+	@Override
+	public final void setParameters(final Map<String, Object> aParams) {
+		parameter.putAll(aParams);
 	}
 
 	/**
@@ -83,7 +88,7 @@ public class MessageTag extends AbstractBodyRenderingTag implements ParameterTag
 	}
 
 	@Override
-	protected void doRendering(final StringBuffer aReader, final String aBody) throws JspException {
+	protected void doRendering(final StringBuffer aReader) throws JspException {
 		String ns = getNamespace();
 		String nm = getName();
 

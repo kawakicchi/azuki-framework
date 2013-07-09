@@ -1,5 +1,7 @@
 package jp.azuki.web.tags;
 
+import java.util.Map;
+
 /**
  * このインターフェースは、パラメーター機能のサポートを行うためのインターフェースです。
  * 
@@ -16,4 +18,11 @@ public interface ParameterTagSupport {
 	 * @param aValue 値
 	 */
 	public void setParameter(final String aKey, final Object aValue);
+
+	/**
+	 * パラメータを設定する。
+	 * 
+	 * @param aParams パラメータ
+	 */
+	public void setParameters(final Map<String, Object> aParams);
 }

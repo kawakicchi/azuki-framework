@@ -107,17 +107,24 @@ public final class WebConstant {
 			if (StringUtility.isNotEmpty(getHostPort())) {
 				s.append(":").append(getHostPort());
 			}
-		}
-		if (StringUtility.isNotEmpty(getWebApp())) {
-			s.append("/").append(getWebApp());
-		}
-		if (StringUtility.isNotEmpty(aAlias)) {
-			if (!aAlias.startsWith("/")) {
+			if (StringUtility.isNotEmpty(getWebApp())) {
+				s.append("/").append(getWebApp());
+			}
+			if (StringUtility.isNotEmpty(aAlias)) {
+				if (!aAlias.startsWith("/")) {
+					s.append("/");
+				}
+				s.append(aAlias);
+			} else {
 				s.append("/");
 			}
-			s.append(aAlias);
 		} else {
-			s.append("/");
+			if (aAlias.startsWith("/")) {
+				if (StringUtility.isNotEmpty(getWebApp())) {
+					s.append("/").append(getWebApp());
+				}
+			}
+			s.append(aAlias);
 		}
 		return s.toString();
 	}

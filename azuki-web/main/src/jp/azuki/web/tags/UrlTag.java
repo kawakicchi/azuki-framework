@@ -59,8 +59,13 @@ public class UrlTag extends AbstractBodyRenderingTag implements ParameterTagSupp
 	}
 
 	@Override
-	public void setParameter(final String aKey, final Object aValue) {
+	public final void setParameter(final String aKey, final Object aValue) {
 		parameter.put(aKey, aValue);
+	}
+
+	@Override
+	public final void setParameters(final Map<String, Object> aParams) {
+		parameter.putAll(aParams);
 	}
 
 	/**
@@ -82,7 +87,7 @@ public class UrlTag extends AbstractBodyRenderingTag implements ParameterTagSupp
 	}
 
 	@Override
-	protected final void doRendering(final StringBuffer aRender, final String aBody) throws JspException {
+	protected final void doRendering(final StringBuffer aRender) throws JspException {
 		String str = WebConstant.getUrl(getAlias(), isAbsolute());
 		for (String key : parameter.keySet()) {
 			String word = "\\$\\{" + key + "\\}";

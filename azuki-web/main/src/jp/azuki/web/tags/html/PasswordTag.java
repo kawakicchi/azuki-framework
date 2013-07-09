@@ -25,19 +25,6 @@ public class PasswordTag extends AbstractHtmlTag {
 	}
 
 	/**
-	 * name
-	 */
-	private String name = null;
-
-	public final void setName(final String aName) {
-		name = aName;
-	}
-
-	protected final String getName() {
-		return name;
-	}
-
-	/**
 	 * css
 	 */
 	private String css = null;
@@ -63,6 +50,19 @@ public class PasswordTag extends AbstractHtmlTag {
 		return style;
 	}
 
+	/**
+	 * name
+	 */
+	private String name = null;
+
+	public final void setName(final String aName) {
+		name = aName;
+	}
+
+	protected final String getName() {
+		return name;
+	}
+
 	@Override
 	protected void doCreate() {
 		Object value = null;
@@ -71,11 +71,12 @@ public class PasswordTag extends AbstractHtmlTag {
 		}
 
 		setTagName("input");
+
 		addAttribute("id", getId());
-		addAttribute("name", getName());
-		addAttribute("css", getCss());
+		addAttribute("class", getCss());
 		addAttribute("style", getStyle());
 
+		addAttribute("name", getName());
 		addAttribute("type", "password");
 		addAttribute("value", StringUtility.toStringEmpty(value));
 	}

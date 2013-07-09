@@ -60,8 +60,13 @@ public class LabelTag extends AbstractBodyRenderingTag implements ParameterTagSu
 	}
 
 	@Override
-	public void setParameter(final String aKey, final Object aValue) {
+	public final void setParameter(final String aKey, final Object aValue) {
 		parameter.put(aKey, aValue);
+	}
+
+	@Override
+	public final void setParameters(final Map<String, Object> aParams) {
+		parameter.putAll(aParams);
 	}
 
 	/**
@@ -83,7 +88,7 @@ public class LabelTag extends AbstractBodyRenderingTag implements ParameterTagSu
 	}
 
 	@Override
-	protected void doRendering(final StringBuffer aRender, final String aBody) throws JspException {
+	protected void doRendering(final StringBuffer aRender) throws JspException {
 		String ns = getNamespace();
 		String nm = getName();
 
