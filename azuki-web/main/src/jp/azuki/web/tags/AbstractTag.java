@@ -80,7 +80,56 @@ public abstract class AbstractTag extends LoggingObject implements Tag {
 	}
 
 	/**
-	 * アトリビュートを取得します。
+	 * ページコンテキストに値を設定する。
+	 * 
+	 * @param aName 名前
+	 * @param aValue 値
+	 */
+	protected final void setPageAttribute(final String aName, final Object aValue) {
+		pageContext.setAttribute(aName, aValue);
+	}
+
+	/**
+	 * ページコンテキストから値を取得する。
+	 * 
+	 * @param aName 名前
+	 * @return 値
+	 */
+	protected final Object getPageAttribute(final String aName) {
+		return pageContext.getAttribute(aName);
+	}
+
+	/**
+	 * ページコンテキストから値を取得する。
+	 * 
+	 * @param aName 名前
+	 * @param aKey キー
+	 * @return 値
+	 */
+	@SuppressWarnings("unchecked")
+	protected final Object getPageAttribute(final String aName, final String aKey) {
+		Object value = null;
+		Object o = getPageAttribute(aName);
+		if (null != o) {
+			if (o instanceof Map<?, ?>) {
+				value = ((Map<String, Object>) o).get(aKey);
+			}
+		}
+		return value;
+	}
+
+	/**
+	 * リクエストコンテキストに値を設定する。
+	 * 
+	 * @param aName 名前
+	 * @param aValue 値
+	 */
+	protected final void setAttribute(final String aName, final Object aValue) {
+		pageContext.getRequest().setAttribute(aName, aValue);
+	}
+
+	/**
+	 * リクエストコンテキストから値を取得する。
 	 * 
 	 * @param aName 名前
 	 * @return 値
@@ -90,7 +139,7 @@ public abstract class AbstractTag extends LoggingObject implements Tag {
 	}
 
 	/**
-	 * アトリビュートを取得します。
+	 * リクエストコンテキストから値を取得する。
 	 * 
 	 * @param aName 名前
 	 * @param aKey キー

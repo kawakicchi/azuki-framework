@@ -66,7 +66,12 @@ public abstract class AbstractRenderingTag extends AbstractTag {
 	 */
 	protected abstract void doRendering(final StringBuffer aRender) throws JspException;
 
-	protected static final String toEscapeString(final String aString) {
+	/**
+	 * 
+	 * @param aString
+	 * @return
+	 */
+	protected static final String toStringEscapeHTML(final String aString) {
 		String s = aString;
 		return s;
 	}

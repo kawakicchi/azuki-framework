@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletResponse;
  * @version 1.0.0 2013/01/24
  * @author Kawakicchi
  */
-public class ActionContext {
+public final class ActionContext {
 
 	private Map<String, Object> attributes;
 
@@ -37,5 +37,13 @@ public class ActionContext {
 
 	public Map<String, Object> getAttributes() {
 		return attributes;
+	}
+
+	public HttpServletRequest getRequest() {
+		return request;
+	}
+
+	public HttpServletResponse getResponse() {
+		return response;
 	}
 }

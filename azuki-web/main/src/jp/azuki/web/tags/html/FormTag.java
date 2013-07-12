@@ -11,45 +11,6 @@ import jp.azuki.web.constant.WebConstant;
  */
 public class FormTag extends AbstractBodyHtmlTag {
 
-	/**
-	 * id
-	 */
-	private String id = null;
-
-	public final void setId(final String aId) {
-		id = aId;
-	}
-
-	protected final String getId() {
-		return id;
-	}
-
-	/**
-	 * css
-	 */
-	private String css = null;
-
-	public final void setCss(final String aCss) {
-		css = aCss;
-	}
-
-	protected final String getCss() {
-		return css;
-	}
-
-	/**
-	 * style
-	 */
-	private String style = null;
-
-	public final void setStyle(final String aStyle) {
-		style = aStyle;
-	}
-
-	protected final String getStyle() {
-		return style;
-	}
-
 	private String action = null;
 
 	private String method = "get";
@@ -81,12 +42,13 @@ public class FormTag extends AbstractBodyHtmlTag {
 	}
 
 	@Override
-	protected void doCreate() {
-		setTagName("form");
+	protected final String getTagName() {
+		return "form";
+	}
 
-		addAttribute("id", getId());
-		addAttribute("class", getCss());
-		addAttribute("style", getStyle());
+	@Override
+	protected void doAppendAttributes() {
+		super.doAppendAttributes();
 
 		addAttribute("action", WebConstant.getUrl(getAction(), isAbsolute()));
 		addAttribute("method", getMethod());

@@ -7,7 +7,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import jp.azuki.core.lang.LoggingObject;
-import jp.azuki.core.lang.PrimitiveObject;
 
 /**
  * このクラスは、ビュー機能の実装を行うための基底クラスです。

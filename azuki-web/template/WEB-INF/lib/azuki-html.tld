@@ -8,10 +8,14 @@
 	<jsp-version>2.0</jsp-version>
 	<short-name>AzukiHtmlTag</short-name>
 	
+	<!-- ========================================================= -->
+	<!-- Anchor tag                                                -->
+	<!-- ========================================================= -->
 	<tag>
 		<name>a</name>
 		<tag-class>jp.azuki.web.tags.html.AnchorTag</tag-class>
 		<body-content>JSP</body-content>
+		<!--  -->
 		<attribute>
 			<name>href</name>
 			<required>true</required>
@@ -22,12 +26,32 @@
 			<required>false</required>
 			<rtexprvalue>false</rtexprvalue>
 		</attribute>
+		<!-- HTML tag attributes -->
+		<attribute>
+			<name>id</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<name>css</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<name>style</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
 	</tag>
 	
+	<!-- ========================================================= -->
+	<!-- Form tag                                                  -->
+	<!-- ========================================================= -->
 	<tag>
 		<name>form</name>
 		<tag-class>jp.azuki.web.tags.html.FormTag</tag-class>
 		<body-content>JSP</body-content>
+		<!--  -->
 		<attribute>
 			<name>action</name>
 			<required>true</required>
@@ -43,8 +67,27 @@
 			<required>false</required>
 			<rtexprvalue>false</rtexprvalue>
 		</attribute>
+		<!-- HTML tag attributes -->
+		<attribute>
+			<name>id</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<name>css</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<name>style</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
 	</tag>
 
+	<!-- ========================================================= -->
+	<!-- Image tag                                                 -->
+	<!-- ========================================================= -->
 	<tag>
 		<name>img</name>
 		<tag-class>jp.azuki.web.tags.html.ImageTag</tag-class>
@@ -69,8 +112,27 @@
 			<required>false</required>
 			<rtexprvalue>true</rtexprvalue>
 		</attribute>
+		<!-- HTML tag attributes -->
+		<attribute>
+			<name>id</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<name>css</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<name>style</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
 	</tag>
 
+	<!-- ========================================================= -->
+	<!-- Link tag                                                  -->
+	<!-- ========================================================= -->
 	<tag>
 		<name>link</name>
 		<tag-class>jp.azuki.web.tags.html.LinkTag</tag-class>
@@ -95,20 +157,9 @@
 			<required>false</required>
 			<rtexprvalue>false</rtexprvalue>
 		</attribute>
-	</tag>
-	
-	<tag>
-		<name>password</name>
-		<tag-class>jp.azuki.web.tags.html.PasswordTag</tag-class>
-		<body-content>empty</body-content>
-		<!--  -->
+		<!-- HTML tag attributes -->
 		<attribute>
 			<name>id</name>
-			<required>false</required>
-			<rtexprvalue>true</rtexprvalue>
-		</attribute>
-		<attribute>
-			<name>name</name>
 			<required>false</required>
 			<rtexprvalue>true</rtexprvalue>
 		</attribute>
@@ -122,32 +173,116 @@
 			<required>false</required>
 			<rtexprvalue>true</rtexprvalue>
 		</attribute>
-		<!--  -->
+	</tag>
+	
+	<!-- ========================================================= -->
+	<!-- Password tag                                              -->
+	<!-- ========================================================= -->
+	<tag>
+		<name>password</name>
+		<tag-class>jp.azuki.web.tags.html.PasswordTag</tag-class>
+		<body-content>empty</body-content>
+		<!-- Input tag attributes -->
+		<attribute>
+			<name>name</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<!-- HTML tag attributes -->
+		<attribute>
+			<name>id</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<name>css</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<name>style</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
 	</tag>
 
+	<!-- ========================================================= -->
+	<!-- Script tag                                                -->
+	<!-- ========================================================= -->
 	<tag>
 		<name>script</name>
 		<tag-class>jp.azuki.web.tags.html.ScriptTag</tag-class>
-		<body-content>empty</body-content>
+		<body-content>JSP</body-content>
 		<attribute>
 			<name>src</name>
 			<required>true</required>
 			<rtexprvalue>false</rtexprvalue>
 		</attribute>
+		<!-- HTML tag attributes -->
+		<attribute>
+			<name>id</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<name>css</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<name>style</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
 	</tag>
 
+	<!-- ========================================================= -->
+	<!-- Textarea tag                                              -->
+	<!-- ========================================================= -->
+	<tag>
+		<name>textarea</name>
+		<tag-class>jp.azuki.web.tags.html.TextareaTag</tag-class>
+		<body-content>JSP</body-content>
+		<!--  -->
+		<attribute>
+			<name>name</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<!-- HTML tag attributes -->
+		<attribute>
+			<name>id</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<name>css</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<name>style</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+	</tag>
+
+	<!-- ========================================================= -->
+	<!-- Textbox tag                                               -->
+	<!-- ========================================================= -->
 	<tag>
 		<name>textbox</name>
 		<tag-class>jp.azuki.web.tags.html.TextboxTag</tag-class>
 		<body-content>empty</body-content>
-		<!--  -->
+		<!-- Input tag attributes -->
 		<attribute>
-			<name>id</name>
+			<name>name</name>
 			<required>false</required>
 			<rtexprvalue>true</rtexprvalue>
 		</attribute>
+		<!-- HTML tag attributes -->
 		<attribute>
-			<name>name</name>
+			<name>id</name>
 			<required>false</required>
 			<rtexprvalue>true</rtexprvalue>
 		</attribute>
@@ -161,34 +296,6 @@
 			<required>false</required>
 			<rtexprvalue>true</rtexprvalue>
 		</attribute>
-		<!--  -->
 	</tag>
-	<tag>
-		<name>textarea</name>
-		<tag-class>jp.azuki.web.tags.html.TextareaTag</tag-class>
-		<body-content>empty</body-content>
-		<!--  -->
-		<attribute>
-			<name>id</name>
-			<required>false</required>
-			<rtexprvalue>true</rtexprvalue>
-		</attribute>
-		<attribute>
-			<name>name</name>
-			<required>false</required>
-			<rtexprvalue>true</rtexprvalue>
-		</attribute>
-		<attribute>
-			<name>css</name>
-			<required>false</required>
-			<rtexprvalue>true</rtexprvalue>
-		</attribute>
-		<attribute>
-			<name>style</name>
-			<required>false</required>
-			<rtexprvalue>true</rtexprvalue>
-		</attribute>
-		<!--  -->
-	</tag>
-	
+
 </taglib>

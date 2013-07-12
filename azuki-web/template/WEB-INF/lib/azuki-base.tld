@@ -26,7 +26,7 @@
 
 	<tag>
 		<name>print</name>
-		<tag-class>jp.azuki.web.tags.base.PrintTag</tag-class>
+		<tag-class>jp.azuki.web.tags.PrintTag</tag-class>
 		<body-content>empty</body-content>
 		<attribute>
 			<name>name</name>
@@ -38,12 +38,17 @@
 			<required>false</required>
 			<rtexprvalue>true</rtexprvalue>
 		</attribute>		
+		<attribute>
+			<name>scope</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+		</attribute>		
 	</tag>
 
 	<tag>
 		<name>label</name>
 		<tag-class>jp.azuki.web.tags.LabelTag</tag-class>
-		<body-content>empty</body-content>
+		<body-content>JSP</body-content>
 		<attribute>
 			<name>namespace</name>
 			<required>false</required>
@@ -59,7 +64,7 @@
 	<tag>
 		<name>message</name>
 		<tag-class>jp.azuki.web.tags.MessageTag</tag-class>
-		<body-content>empty</body-content>
+		<body-content>JSP</body-content>
 		<attribute>
 			<name>namespace</name>
 			<required>false</required>

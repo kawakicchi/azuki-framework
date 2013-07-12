@@ -38,8 +38,14 @@ public class AnchorTag extends AbstractBodyHtmlTag {
 	}
 
 	@Override
-	protected void doCreate() {
-		setTagName("a");
+	protected final String getTagName() {
+		return "a";
+	}
+
+	@Override
+	protected void doAppendAttributes() {
+		super.doAppendAttributes();
+
 		addAttribute("href", WebConstant.getUrl(getHref(), isAbsolute()));
 	}
 }

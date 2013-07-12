@@ -101,7 +101,7 @@ public class LabelTag extends AbstractBodyRenderingTag implements ParameterTagSu
 
 		if (null != lbl) {
 			String str = lbl.generate(parameter);
-			aRender.append(toEscapeString(str));
+			aRender.append(toStringEscapeHTML(str));
 		}
 	}
 

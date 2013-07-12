@@ -20,8 +20,49 @@ import jp.azuki.web.tags.AbstractTag;
  */
 public abstract class AbstractHtmlTag extends AbstractTag {
 
-	private String tagName;
+	/**
+	 * タグ属性
+	 */
 	private Map<String, String> attributes;
+
+	/**
+	 * id
+	 */
+	private String id = null;
+
+	/**
+	 * css
+	 */
+	private String css = null;
+
+	/**
+	 * style
+	 */
+	private String style = null;
+
+	public final void setId(final String aId) {
+		id = aId;
+	}
+
+	protected final String getId() {
+		return id;
+	}
+
+	public final void setCss(final String aCss) {
+		css = aCss;
+	}
+
+	protected final String getCss() {
+		return css;
+	}
+
+	public final void setStyle(final String aStyle) {
+		style = aStyle;
+	}
+
+	protected final String getStyle() {
+		return style;
+	}
 
 	/**
 	 * コンストラクタ
@@ -52,12 +93,14 @@ public abstract class AbstractHtmlTag extends AbstractTag {
 		attributes = new HashMap<String, String>();
 	}
 
-	protected final void setTagName(final String aName) {
-		tagName = aName;
-	}
-
-	protected final void addAttribute(final String aKey, final String aValue) {
-		attributes.put(aKey, aValue);
+	/**
+	 * タグ属性を追加する。
+	 * 
+	 * @param aName 属性名
+	 * @param aValue 属性値
+	 */
+	protected final void addAttribute(final String aName, final String aValue) {
+		attributes.put(aName, aValue);
 	}
 
 	@Override
@@ -67,7 +110,8 @@ public abstract class AbstractHtmlTag extends AbstractTag {
 
 	@Override
 	public int doEndTag() throws JspException {
-		doCreate();
+		doAppendAttributes();
+
 		StringBuffer s = new StringBuffer();
 		s.append("<");
 		writeTagName(s);
@@ -82,13 +126,19 @@ public abstract class AbstractHtmlTag extends AbstractTag {
 		return (Tag.EVAL_PAGE);
 	}
 
-	protected abstract void doCreate();
-
-	protected void writeTagName(final StringBuffer s) {
-		s.append(tagName);
+	protected void doAppendAttributes() {
+		addAttribute("id", getId());
+		addAttribute("class", getCss());
+		addAttribute("style", getStyle());
 	}
 
-	protected void writeAttributes(final StringBuffer s) {
+	protected abstract String getTagName();
+
+	protected final void writeTagName(final StringBuffer s) {
+		s.append(getTagName());
+	}
+
+	protected final void writeAttributes(final StringBuffer s) {
 		for (String key : attributes.keySet()) {
 			String value = attributes.get(key);
 			appendAttribute(key, value, s);

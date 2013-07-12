@@ -35,8 +35,14 @@ public class ScriptTag extends AbstractBodyHtmlTag {
 	}
 
 	@Override
-	protected void doCreate() {
-		setTagName("script");
+	protected final String getTagName() {
+		return "script";
+	}
+
+	@Override
+	protected void doAppendAttributes() {
+		super.doAppendAttributes();
+
 		addAttribute("src", WebConstant.getUrl(getSrc(), isAbsolute()));
 	}
 }

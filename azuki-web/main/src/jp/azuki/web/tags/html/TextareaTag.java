@@ -12,45 +12,6 @@ import jp.azuki.core.util.StringUtility;
 public class TextareaTag extends AbstractBodyHtmlTag {
 
 	/**
-	 * id
-	 */
-	private String id = null;
-
-	public final void setId(final String aId) {
-		id = aId;
-	}
-
-	protected final String getId() {
-		return id;
-	}
-
-	/**
-	 * css
-	 */
-	private String css = null;
-
-	public final void setCss(final String aCss) {
-		css = aCss;
-	}
-
-	protected final String getCss() {
-		return css;
-	}
-
-	/**
-	 * style
-	 */
-	private String style = null;
-
-	public final void setStyle(final String aStyle) {
-		style = aStyle;
-	}
-
-	protected final String getStyle() {
-		return style;
-	}
-
-	/**
 	 * name
 	 */
 	private String name = null;
@@ -64,17 +25,18 @@ public class TextareaTag extends AbstractBodyHtmlTag {
 	}
 
 	@Override
-	protected void doCreate() {
+	protected final String getTagName() {
+		return "textarea";
+	}
+
+	@Override
+	protected void doAppendAttributes() {
+		super.doAppendAttributes();
+
 		Object value = null;
 		if (StringUtility.isNotEmpty(getName())) {
 			value = getAttribute(getName());
 		}
-
-		setTagName("textarea");
-
-		addAttribute("id", getId());
-		addAttribute("class", getCss());
-		addAttribute("style", getStyle());
 
 		addAttribute("name", getName());
 

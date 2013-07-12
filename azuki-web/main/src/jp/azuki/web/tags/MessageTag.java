@@ -101,7 +101,7 @@ public class MessageTag extends AbstractBodyRenderingTag implements ParameterTag
 
 		if (null != msg) {
 			String str = msg.generate(parameter);
-			aReader.append(toEscapeString(str));
+			aReader.append(toStringEscapeHTML(str));
 		}
 	}
 

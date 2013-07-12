@@ -63,7 +63,8 @@ public abstract class AbstractBodyHtmlTag extends AbstractHtmlTag implements Bod
 
 	@Override
 	public int doEndTag() throws JspException {
-		doCreate();
+		doAppendAttributes();
+
 		StringBuffer s = new StringBuffer();
 		s.append("<");
 		writeTagName(s);
@@ -82,7 +83,7 @@ public abstract class AbstractBodyHtmlTag extends AbstractHtmlTag implements Bod
 		return (Tag.EVAL_PAGE);
 	}
 
-	protected void writeBody(final StringBuffer s) {
+	protected final void writeBody(final StringBuffer s) {
 		s.append(convertTextareaValue(bodyString));
 	}
 

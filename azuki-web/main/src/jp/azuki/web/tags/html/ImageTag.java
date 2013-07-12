@@ -12,16 +12,6 @@ import jp.azuki.web.constant.WebConstant;
 public class ImageTag extends AbstractHtmlTag {
 
 	/**
-	 * css
-	 */
-	private String css = null;
-
-	/**
-	 * style
-	 */
-	private String style = null;
-
-	/**
 	 * src
 	 */
 	private String src = null;
@@ -30,22 +20,6 @@ public class ImageTag extends AbstractHtmlTag {
 	 * absolute
 	 */
 	private boolean absolute = false;
-
-	public final void setCss(final String aCss) {
-		css = aCss;
-	}
-
-	protected final String getCss() {
-		return css;
-	}
-
-	public final void setStyle(final String aStyle) {
-		style = aStyle;
-	}
-
-	protected final String getStyle() {
-		return style;
-	}
 
 	/**
 	 * ソースを設定する。
@@ -88,10 +62,15 @@ public class ImageTag extends AbstractHtmlTag {
 		return source;
 	}
 
-	protected void doCreate() {
-		setTagName("img");
-		addAttribute("class", getCss());
-		addAttribute("style", getStyle());
+	@Override
+	protected final String getTagName() {
+		return "img";
+	}
+
+	@Override
+	protected void doAppendAttributes() {
+		super.doAppendAttributes();
+
 		addAttribute("src", getSource());
 	}
 }

@@ -61,8 +61,14 @@ public class LinkTag extends AbstractHtmlTag {
 	}
 
 	@Override
-	protected void doCreate() {
-		setTagName("link");
+	protected final String getTagName() {
+		return "link";
+	}
+
+	@Override
+	protected void doAppendAttributes() {
+		super.doAppendAttributes();
+
 		addAttribute("rel", getRel());
 		addAttribute("href", WebConstant.getUrl(getHref(), isAbsolute()));
 		addAttribute("type", getType());
