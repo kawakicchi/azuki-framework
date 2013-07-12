@@ -3,9 +3,6 @@ package jp.azuki.web.tags.logic;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.tagext.Tag;
 
-import jp.azuki.core.util.StringUtility;
-import jp.azuki.web.tags.AbstractTag;
-
 /**
  * このクラスは、条件制御を行うためのタグクラスです。
  * 
@@ -13,7 +10,7 @@ import jp.azuki.web.tags.AbstractTag;
  * @version 1.0.0 2013/01/23
  * @author Kawakicchi
  */
-public abstract class AbstractValueConditionTag extends AbstractTag {
+public abstract class AbstractValueConditionTag extends AbstractLogicTag {
 
 	/**
 	 * 名前
@@ -24,6 +21,11 @@ public abstract class AbstractValueConditionTag extends AbstractTag {
 	 * キー
 	 */
 	private String key;
+
+	/**
+	 * スコープ
+	 */
+	private String scope;
 
 	/**
 	 * コンストラクタ
@@ -86,15 +88,25 @@ public abstract class AbstractValueConditionTag extends AbstractTag {
 		return key;
 	}
 
+	/**
+	 * スコープを設定する。
+	 * 
+	 * @param aScope スコープ
+	 */
+	public final void setScope(final String aScope) {
+		scope = aScope;
+	}
+
+	/**
+	 * スコープを取得する。
+	 */
+	protected final String getScope() {
+		return scope;
+	}
+
 	@Override
 	public int doStartTag() throws JspException {
-		Object value = null;
-		if (StringUtility.isNotEmpty(getKey())) {
-			value = getRequestAttribute(getName(), getKey());
-		} else {
-			value = getRequestAttribute(getName());
-		}
-
+		Object value = getAttribute(getScope(), getName(), getKey());
 		if (isCondition(value)) {
 			return (Tag.EVAL_BODY_INCLUDE);
 		} else {

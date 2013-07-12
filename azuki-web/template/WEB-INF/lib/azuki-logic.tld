@@ -8,41 +8,39 @@
 	<jsp-version>2.0</jsp-version>
 	<short-name>AzukiLogicTag</short-name>
 
+	<!-- ========================================================= -->
+	<!-- IfNull tag                                                -->
+	<!-- ========================================================= -->
 	<tag>
-		<name>iterator</name>
-		<tag-class>jp.azuki.web.tags.logic.IteratorTag</tag-class>
+		<name>ifNull</name>
+		<tag-class>jp.azuki.web.tags.logic.IfNullTag</tag-class>
 		<body-content>JSP</body-content>
+		<!-- ValueCondition tag attributes -->
 		<attribute>
 			<name>name</name>
 			<required>true</required>
 			<rtexprvalue>true</rtexprvalue>
 		</attribute>
 		<attribute>
-			<name>put</name>
+			<name>key</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<name>scope</name>
 			<required>false</required>
 			<rtexprvalue>false</rtexprvalue>
 		</attribute>
 	</tag>
 
-	<tag>
-		<name>ifNull</name>
-		<tag-class>jp.azuki.web.tags.logic.IfNullTag</tag-class>
-		<body-content>JSP</body-content>
-		<attribute>
-			<name>name</name>
-			<required>true</required>
-			<rtexprvalue>true</rtexprvalue>
-		</attribute>
-		<attribute>
-			<name>key</name>
-			<required>false</required>
-			<rtexprvalue>true</rtexprvalue>
-		</attribute>
-	</tag>
+	<!-- ========================================================= -->
+	<!-- IfNotNull tag                                             -->
+	<!-- ========================================================= -->
 	<tag>
 		<name>ifNotNull</name>
 		<tag-class>jp.azuki.web.tags.logic.IfNotNullTag</tag-class>
 		<body-content>JSP</body-content>
+		<!-- ValueCondition tag attributes -->
 		<attribute>
 			<name>name</name>
 			<required>true</required>
@@ -53,12 +51,21 @@
 			<required>false</required>
 			<rtexprvalue>true</rtexprvalue>
 		</attribute>
+		<attribute>
+			<name>scope</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+		</attribute>
 	</tag>
 	
+	<!-- ========================================================= -->
+	<!-- IfEmpty tag                                               -->
+	<!-- ========================================================= -->
 	<tag>
 		<name>ifEmpty</name>
 		<tag-class>jp.azuki.web.tags.logic.IfEmptyTag</tag-class>
 		<body-content>JSP</body-content>
+		<!-- ValueCondition tag attributes -->
 		<attribute>
 			<name>name</name>
 			<required>true</required>
@@ -69,11 +76,21 @@
 			<required>false</required>
 			<rtexprvalue>true</rtexprvalue>
 		</attribute>
+		<attribute>
+			<name>scope</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+		</attribute>
 	</tag>
+
+	<!-- ========================================================= -->
+	<!-- IfNotEmpty tag                                            -->
+	<!-- ========================================================= -->
 	<tag>
 		<name>ifNotEmpty</name>
 		<tag-class>jp.azuki.web.tags.logic.IfNotEmptyTag</tag-class>
 		<body-content>JSP</body-content>
+		<!-- ValueCondition tag attributes -->
 		<attribute>
 			<name>name</name>
 			<required>true</required>
@@ -84,11 +101,21 @@
 			<required>false</required>
 			<rtexprvalue>true</rtexprvalue>
 		</attribute>
+		<attribute>
+			<name>scope</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+		</attribute>
 	</tag>
+
+	<!-- ========================================================= -->
+	<!-- IfTody tag                                                -->
+	<!-- ========================================================= -->
 	<tag>
 		<name>ifToday</name>
 		<tag-class>jp.azuki.web.tags.logic.IfTodayTag</tag-class>
 		<body-content>JSP</body-content>
+		<!-- ValueCondition tag attributes -->
 		<attribute>
 			<name>name</name>
 			<required>true</required>
@@ -99,11 +126,21 @@
 			<required>false</required>
 			<rtexprvalue>true</rtexprvalue>
 		</attribute>
+		<attribute>
+			<name>scope</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+		</attribute>
 	</tag>
+	
+	<!-- ========================================================= -->
+	<!-- IfNotTody tag                                             -->
+	<!-- ========================================================= -->
 	<tag>
 		<name>ifNotToday</name>
 		<tag-class>jp.azuki.web.tags.logic.IfNotTodayTag</tag-class>
 		<body-content>JSP</body-content>
+		<!-- ValueCondition tag attributes -->
 		<attribute>
 			<name>name</name>
 			<required>true</required>
@@ -114,12 +151,21 @@
 			<required>false</required>
 			<rtexprvalue>true</rtexprvalue>
 		</attribute>
+		<attribute>
+			<name>scope</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+		</attribute>
 	</tag>
 
+	<!-- ========================================================= -->
+	<!-- IfEqual tag                                               -->
+	<!-- ========================================================= -->
 	<tag>
 		<name>ifEqual</name>
 		<tag-class>jp.azuki.web.tags.logic.IfEqualTag</tag-class>
 		<body-content>JSP</body-content>
+		<!-- ValueEqual tag attributes -->
 		<attribute>
 			<name>srcName</name>
 			<required>true</required>
@@ -131,6 +177,11 @@
 			<rtexprvalue>true</rtexprvalue>
 		</attribute>
 		<attribute>
+			<name>srcScope</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+		</attribute>
+		<attribute>
 			<name>dstName</name>
 			<required>true</required>
 			<rtexprvalue>true</rtexprvalue>
@@ -140,11 +191,21 @@
 			<required>false</required>
 			<rtexprvalue>true</rtexprvalue>
 		</attribute>
+		<attribute>
+			<name>dstScope</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+		</attribute>
 	</tag>
+
+	<!-- ========================================================= -->
+	<!-- IfNotEqual tag                                            -->
+	<!-- ========================================================= -->
 	<tag>
 		<name>ifNotEqual</name>
 		<tag-class>jp.azuki.web.tags.logic.IfNotEqualTag</tag-class>
 		<body-content>JSP</body-content>
+		<!-- ValueEqual tag attributes -->
 		<attribute>
 			<name>srcName</name>
 			<required>true</required>
@@ -156,6 +217,11 @@
 			<rtexprvalue>true</rtexprvalue>
 		</attribute>
 		<attribute>
+			<name>srcScope</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+		</attribute>
+		<attribute>
 			<name>dstName</name>
 			<required>true</required>
 			<rtexprvalue>true</rtexprvalue>
@@ -164,6 +230,40 @@
 			<name>dstKey</name>
 			<required>false</required>
 			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<name>dstScope</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+		</attribute>
+	</tag>
+	
+	<!-- ========================================================= -->
+	<!-- Iterator tag                                              -->
+	<!-- ========================================================= -->
+	<tag>
+		<name>iterator</name>
+		<tag-class>jp.azuki.web.tags.logic.IteratorTag</tag-class>
+		<body-content>JSP</body-content>
+		<attribute>
+			<name>put</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+		</attribute>
+		<attribute>
+			<name>name</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<name>key</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<name>scope</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
 		</attribute>
 	</tag>
 	

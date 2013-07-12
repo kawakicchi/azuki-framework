@@ -2,8 +2,6 @@ package jp.azuki.web.tags.logic;
 
 import javax.servlet.jsp.tagext.IterationTag;
 
-import jp.azuki.web.tags.AbstractTag;
-
 /**
  * このクラスは、繰り返し処理を行うタグクラスです。
  * 
@@ -11,7 +9,7 @@ import jp.azuki.web.tags.AbstractTag;
  * @version 1.0.0 2013/07/12
  * @author Kawakicchi
  */
-public abstract class AbstractIteratorTag extends AbstractTag implements IterationTag {
+public abstract class AbstractIteratorTag extends AbstractLogicTag implements IterationTag {
 
 	/**
 	 * コンストラクタ

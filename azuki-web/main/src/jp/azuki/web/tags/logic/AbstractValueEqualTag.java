@@ -3,8 +3,6 @@ package jp.azuki.web.tags.logic;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.tagext.Tag;
 
-import jp.azuki.web.tags.AbstractTag;
-
 /**
  * このクラスは、条件制御を行うためのタグクラスです。
  * 
@@ -12,7 +10,7 @@ import jp.azuki.web.tags.AbstractTag;
  * @version 1.0.0 2013/01/23
  * @author Kawakicchi
  */
-public abstract class AbstractValueEqualTag extends AbstractTag {
+public abstract class AbstractValueEqualTag extends AbstractLogicTag {
 
 	/**
 	 * 名前
