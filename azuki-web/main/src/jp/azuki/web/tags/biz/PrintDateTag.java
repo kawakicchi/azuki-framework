@@ -4,7 +4,10 @@ import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.Date;
 
-import jp.azuki.web.tags.base.AbstractValuePrintTag;
+import javax.servlet.jsp.JspException;
+
+import jp.azuki.core.util.StringUtility;
+import jp.azuki.web.tags.AbstractPrintTag;
 
 /**
  * このクラスは、URLをレンダリングするタグクラスです。
@@ -13,10 +16,17 @@ import jp.azuki.web.tags.base.AbstractValuePrintTag;
  * @version 1.0.0 2012/10/18
  * @author Kawakicchi
  */
-public class PrintDateTag extends AbstractValuePrintTag {
+public final class PrintDateTag extends AbstractPrintTag {
+
+	/**
+	 * コンストラクタ
+	 */
+	public PrintDateTag() {
+		super(PrintDateTag.class);
+	}
 
 	@Override
-	protected final void doReadering(final Object aValue, final StringBuffer aBuffer) {
+	protected String doPrint(final Object aValue) throws JspException {
 		Calendar cln = null;
 		if (null == aValue) {
 
@@ -36,7 +46,9 @@ public class PrintDateTag extends AbstractValuePrintTag {
 
 		if (null != cln) {
 			String str = String.format("%04d年%02d月%02d日", cln.get(Calendar.YEAR), cln.get(Calendar.MONTH) + 1, cln.get(Calendar.DAY_OF_MONTH));
-			aBuffer.append(str);
+			return str;
+		} else {
+			return StringUtility.EMPTY;
 		}
 	}
 }

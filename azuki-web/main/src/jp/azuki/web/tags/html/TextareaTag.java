@@ -35,7 +35,7 @@ public class TextareaTag extends AbstractBodyHtmlTag {
 
 		Object value = null;
 		if (StringUtility.isNotEmpty(getName())) {
-			value = getAttribute(getName());
+			value = getRequestAttribute(getName());
 		}
 
 		addAttribute("name", getName());

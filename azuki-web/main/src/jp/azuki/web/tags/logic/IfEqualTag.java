@@ -1,14 +1,20 @@
 package jp.azuki.web.tags.logic;
 
-
 /**
- * このクラスは、値が<code>null</code>または空の場合に実装するタグクラスです。
+ * このクラスは、値が同じ場合にボディが実行されるタグクラスです。
  * 
  * @since 1.0.0
  * @version 1.0.0 2013/01/23
  * @author Kawakicchi
  */
-public class IfEqualTag extends ValueEqualTag {
+public final class IfEqualTag extends AbstractValueEqualTag {
+
+	/**
+	 * コンストラクタ
+	 */
+	public IfEqualTag() {
+		super(IfEqualTag.class);
+	}
 
 	@Override
 	protected boolean isEqual(final Object aSrc, final Object aDst) {

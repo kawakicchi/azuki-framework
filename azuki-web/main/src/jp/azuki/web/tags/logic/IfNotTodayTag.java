@@ -7,13 +7,20 @@ import java.util.Date;
 import jp.azuki.core.util.DateUtility;
 
 /**
- * このクラスは、値が今日の場合に実装するタグクラスです。
+ * このクラスは、値が今日以外の場合に実装するタグクラスです。
  * 
  * @since 1.0.0
  * @version 1.0.0 2013/01/23
  * @author Kawakicchi
  */
-public class IfNotTodayTag extends ValueConditionTag {
+public final class IfNotTodayTag extends AbstractValueConditionTag {
+
+	/**
+	 * コンストラクタ
+	 */
+	public IfNotTodayTag() {
+		super(IfNotTodayTag.class);
+	}
 
 	@Override
 	protected boolean isCondition(final Object aValue) {

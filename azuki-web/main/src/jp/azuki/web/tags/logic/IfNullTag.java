@@ -7,7 +7,14 @@ package jp.azuki.web.tags.logic;
  * @version 1.0.0 2013/01/23
  * @author Kawakicchi
  */
-public class IfNullTag extends ValueConditionTag {
+public final class IfNullTag extends AbstractValueConditionTag {
+
+	/**
+	 * コンストラクタ
+	 */
+	public IfNullTag() {
+		super(IfNullTag.class);
+	}
 
 	@Override
 	protected boolean isCondition(final Object aValue) {

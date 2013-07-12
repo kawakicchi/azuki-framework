@@ -4,7 +4,10 @@ import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.Date;
 
-import jp.azuki.web.tags.base.AbstractValuePrintTag;
+import javax.servlet.jsp.JspException;
+
+import jp.azuki.core.util.StringUtility;
+import jp.azuki.web.tags.AbstractPrintTag;
 
 /**
  * このクラスは、URLをレンダリングするタグクラスです。
@@ -13,10 +16,17 @@ import jp.azuki.web.tags.base.AbstractValuePrintTag;
  * @version 1.0.0 2012/10/18
  * @author Kawakicchi
  */
-public class PrintTimeTag extends AbstractValuePrintTag {
+public final class PrintTimeTag extends AbstractPrintTag {
+
+	/**
+	 * コンストラクタ
+	 */
+	public PrintTimeTag() {
+		super(PrintTimeTag.class);
+	}
 
 	@Override
-	protected final void doReadering(final Object aValue, final StringBuffer aBuffer) {
+	protected String doPrint(Object aValue) throws JspException {
 		Calendar cln = null;
 		if (null == aValue) {
 
@@ -36,7 +46,9 @@ public class PrintTimeTag extends AbstractValuePrintTag {
 
 		if (null != cln) {
 			String str = String.format("%02d時%02d分%02d秒", cln.get(Calendar.HOUR_OF_DAY), cln.get(Calendar.MINUTE), cln.get(Calendar.SECOND));
-			aBuffer.append(str);
+			return str;
+		} else {
+			return StringUtility.EMPTY;
 		}
 	}
 }

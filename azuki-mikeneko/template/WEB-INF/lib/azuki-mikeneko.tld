@@ -14,4 +14,31 @@
 		<body-content>empty</body-content>
 	</tag>
 
+	<tag>
+		<name>account</name>
+		<tag-class>jp.azuki.mikeneko.web.tags.AccountTag</tag-class>
+		<body-content>empty</body-content>
+		<attribute>
+			<name>absolute</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+	</tag>
+
+	<tag>
+		<name>alertMessage</name>
+		<tag-class>jp.azuki.mikeneko.web.tags.AlertMessageTag</tag-class>
+		<body-content>empty</body-content>
+	</tag>
+	<tag>
+		<name>pagination</name>
+		<tag-class>jp.azuki.mikeneko.web.tags.PaginationTag</tag-class>
+		<body-content>empty</body-content>
+	</tag>
+	<tag>
+		<name>backButton</name>
+		<tag-class>jp.azuki.mikeneko.web.tags.BackButtonTag</tag-class>
+		<body-content>empty</body-content>
+	</tag>
+
 </taglib>

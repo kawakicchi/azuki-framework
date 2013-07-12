@@ -3,7 +3,6 @@ package jp.azuki.web.tags.logic;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.tagext.Tag;
 
-import jp.azuki.core.util.StringUtility;
 import jp.azuki.web.tags.AbstractTag;
 
 /**
@@ -13,7 +12,7 @@ import jp.azuki.web.tags.AbstractTag;
  * @version 1.0.0 2013/01/23
  * @author Kawakicchi
  */
-public abstract class ValueEqualTag extends AbstractTag {
+public abstract class AbstractValueEqualTag extends AbstractTag {
 
 	/**
 	 * 名前
@@ -36,10 +35,20 @@ public abstract class ValueEqualTag extends AbstractTag {
 	private String dstKey;
 
 	/**
+	 * スコープ
+	 */
+	private String srcScope;
+
+	/**
+	 * スコープ
+	 */
+	private String dstScope;
+
+	/**
 	 * コンストラクタ
 	 */
-	public ValueEqualTag() {
-		super(ValueEqualTag.class);
+	public AbstractValueEqualTag() {
+		super(AbstractValueEqualTag.class);
 	}
 
 	/**
@@ -47,7 +56,7 @@ public abstract class ValueEqualTag extends AbstractTag {
 	 * 
 	 * @param aName 名前
 	 */
-	public ValueEqualTag(final String aName) {
+	public AbstractValueEqualTag(final String aName) {
 		super(aName);
 	}
 
@@ -56,7 +65,7 @@ public abstract class ValueEqualTag extends AbstractTag {
 	 * 
 	 * @param aClass クラス
 	 */
-	public ValueEqualTag(final Class<?> aClass) {
+	public AbstractValueEqualTag(final Class<?> aClass) {
 		super(aClass);
 	}
 
@@ -133,29 +142,45 @@ public abstract class ValueEqualTag extends AbstractTag {
 	}
 
 	/**
-	 * 値に対する条件結果を取得する。
+	 * スコープを設定する。
 	 * 
-	 * @param aSrc 値
-	 * @param aDst 値
-	 * @return 結果
+	 * @param aScope スコープ
 	 */
-	protected abstract boolean isEqual(final Object aSrc, final Object aDst);
+	public final void setSrcScope(final String aScope) {
+		srcScope = aScope;
+	}
+
+	/**
+	 * スコープを設定する。
+	 * 
+	 * @param aScope スコープ
+	 */
+	public final void setDstScope(final String aScope) {
+		dstScope = aScope;
+	}
+
+	/**
+	 * スコープを取得する。
+	 * 
+	 * @return スコープ
+	 */
+	protected final String getSrcScope() {
+		return srcScope;
+	}
+
+	/**
+	 * スコープを取得する。
+	 * 
+	 * @return スコープ
+	 */
+	protected final String getDstScope() {
+		return dstScope;
+	}
 
 	@Override
 	public int doStartTag() throws JspException {
-		Object src = null;
-		if (StringUtility.isNotEmpty(getSrcKey())) {
-			src = getAttribute(getSrcName(), getSrcKey());
-		} else {
-			src = getAttribute(getSrcName());
-		}
-		Object dst = null;
-		if (StringUtility.isNotEmpty(getDstKey())) {
-			dst = getAttribute(getDstName(), getDstKey());
-		} else {
-			dst = getAttribute(getDstName());
-		}
-
+		Object src = getAttribute(getSrcScope(), getSrcName(), getSrcKey());
+		Object dst = getAttribute(getDstScope(), getDstName(), getDstKey());
 		if (isEqual(src, dst)) {
 			return (Tag.EVAL_BODY_INCLUDE);
 		} else {
@@ -167,4 +192,13 @@ public abstract class ValueEqualTag extends AbstractTag {
 	public int doEndTag() throws JspException {
 		return (Tag.EVAL_PAGE);
 	}
+
+	/**
+	 * 値に対する条件を判定する。
+	 * 
+	 * @param aSrc 値
+	 * @param aDst 値
+	 * @return 結果
+	 */
+	protected abstract boolean isEqual(final Object aSrc, final Object aDst);
 }

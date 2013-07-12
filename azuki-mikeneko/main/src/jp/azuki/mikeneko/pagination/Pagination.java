@@ -1,0 +1,1 @@
+package jp.azuki.mikeneko.pagination;public class Pagination {}

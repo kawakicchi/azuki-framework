@@ -13,7 +13,7 @@ import jp.azuki.web.tags.AbstractTag;
  * @version 1.0.0 2013/01/23
  * @author Kawakicchi
  */
-public abstract class ValueConditionTag extends AbstractTag {
+public abstract class AbstractValueConditionTag extends AbstractTag {
 
 	/**
 	 * 名前
@@ -28,8 +28,8 @@ public abstract class ValueConditionTag extends AbstractTag {
 	/**
 	 * コンストラクタ
 	 */
-	public ValueConditionTag() {
-		super(ValueConditionTag.class);
+	public AbstractValueConditionTag() {
+		super(AbstractValueConditionTag.class);
 	}
 
 	/**
@@ -37,7 +37,7 @@ public abstract class ValueConditionTag extends AbstractTag {
 	 * 
 	 * @param aName 名前
 	 */
-	public ValueConditionTag(final String aName) {
+	public AbstractValueConditionTag(final String aName) {
 		super(aName);
 	}
 
@@ -46,7 +46,7 @@ public abstract class ValueConditionTag extends AbstractTag {
 	 * 
 	 * @param aClass クラス
 	 */
-	public ValueConditionTag(final Class<?> aClass) {
+	public AbstractValueConditionTag(final Class<?> aClass) {
 		super(aClass);
 	}
 
@@ -86,21 +86,13 @@ public abstract class ValueConditionTag extends AbstractTag {
 		return key;
 	}
 
-	/**
-	 * 値に対する条件結果を取得する。
-	 * 
-	 * @param aValue 値
-	 * @return 結果
-	 */
-	protected abstract boolean isCondition(final Object aValue);
-
 	@Override
 	public int doStartTag() throws JspException {
 		Object value = null;
 		if (StringUtility.isNotEmpty(getKey())) {
-			value = getAttribute(getName(), getKey());
+			value = getRequestAttribute(getName(), getKey());
 		} else {
-			value = getAttribute(getName());
+			value = getRequestAttribute(getName());
 		}
 
 		if (isCondition(value)) {
@@ -114,4 +106,12 @@ public abstract class ValueConditionTag extends AbstractTag {
 	public int doEndTag() throws JspException {
 		return (Tag.EVAL_PAGE);
 	}
+
+	/**
+	 * 値に対する条件結果を取得する。
+	 * 
+	 * @param aValue 値
+	 * @return 結果
+	 */
+	protected abstract boolean isCondition(final Object aValue);
 }

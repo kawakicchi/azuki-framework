@@ -9,7 +9,6 @@ import javax.servlet.jsp.tagext.IterationTag;
 import javax.servlet.jsp.tagext.Tag;
 
 import jp.azuki.core.util.StringUtility;
-import jp.azuki.web.tags.AbstractTag;
 
 /**
  * このクラスは、繰り返し処理を行うタグクラスです。
@@ -18,15 +17,25 @@ import jp.azuki.web.tags.AbstractTag;
  * @version 1.0.0 2013/01/19
  * @author Kawakicchi
  */
-public class IteratorTag extends AbstractTag implements IterationTag {
+public final class IteratorTag extends AbstractIteratorTag {
 
 	/**
-	 * name
+	 * 名前
 	 */
 	private String name;
 
 	/**
-	 * pub
+	 * キー
+	 */
+	private String key;
+
+	/**
+	 * スコープ
+	 */
+	private String scope;
+
+	/**
+	 * put
 	 */
 	private String put;
 
@@ -35,12 +44,58 @@ public class IteratorTag extends AbstractTag implements IterationTag {
 	 */
 	private Iterator<?> iterator;
 
+	/**
+	 * 名前を設定する。
+	 * 
+	 * @param aName 名前
+	 */
 	public final void setName(final String aName) {
 		name = aName;
 	}
 
+	/**
+	 * 名前を取得する。
+	 * 
+	 * @return 名前
+	 */
 	protected final String getName() {
 		return name;
+	}
+
+	/**
+	 * キーを設定する。
+	 * 
+	 * @param aKey キー
+	 */
+	public final void setKey(final String aKey) {
+		key = aKey;
+	}
+
+	/**
+	 * キーを取得する。
+	 * 
+	 * @return キー
+	 */
+	protected final String getKey() {
+		return key;
+	}
+
+	/**
+	 * スコープを設定する。
+	 * 
+	 * @param aScope スコープ
+	 */
+	public final void setScope(final String aScope) {
+		scope = aScope;
+	}
+
+	/**
+	 * スコープを取得する。
+	 * 
+	 * @return スコープ
+	 */
+	protected final String getScope() {
+		return scope;
 	}
 
 	public final void setPut(final String aPut) {
@@ -53,12 +108,12 @@ public class IteratorTag extends AbstractTag implements IterationTag {
 
 	@Override
 	public int doEndTag() throws JspException {
-		return (0);
+		return (Tag.EVAL_PAGE);
 	}
 
 	@Override
 	public int doStartTag() throws JspException {
-		Object obj = getPageContext().getRequest().getAttribute(getName());
+		Object obj = getAttribute(getScope(), getName(), getKey());
 		if (null == obj) {
 			return (Tag.SKIP_BODY);
 		}
@@ -77,9 +132,11 @@ public class IteratorTag extends AbstractTag implements IterationTag {
 
 		if (iterator.hasNext()) {
 			Object o = iterator.next();
+
 			if (StringUtility.isNotEmpty(getPut())) {
-				getPageContext().getRequest().setAttribute(getPut(), o);
+				setAttribute(getPut(), o);
 			}
+
 			return (Tag.EVAL_BODY_INCLUDE);
 		} else {
 			return (Tag.SKIP_BODY);
@@ -94,9 +151,11 @@ public class IteratorTag extends AbstractTag implements IterationTag {
 
 		if (iterator.hasNext()) {
 			Object o = iterator.next();
+
 			if (StringUtility.isNotEmpty(getPut())) {
-				getPageContext().getRequest().setAttribute(getPut(), o);
+				setAttribute(getPut(), o);
 			}
+
 			return (IterationTag.EVAL_BODY_AGAIN);
 		} else {
 			return (Tag.SKIP_BODY);

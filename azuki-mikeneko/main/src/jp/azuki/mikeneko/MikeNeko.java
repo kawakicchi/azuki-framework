@@ -1,1 +1,1 @@
-package jp.azuki.mikeneko;public class MikeNeko {}
+package jp.azuki.mikeneko;public class MikeNeko {	public static final String MIKENEKO_REQUEST_ATTRIBUTE_NAME = "__MIKENEKO_ATTRIBUTE__";	public static final String MIKENEKO_USER_SESSION_NAME = "__MIKENEKO_USER_SESSION__";}

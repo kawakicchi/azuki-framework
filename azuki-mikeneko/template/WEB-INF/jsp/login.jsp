@@ -12,7 +12,7 @@
 </head>
 <body style="margin: 0px;">
 
-	<azHtml:form action="login.do" method="post">
+	<azHtml:form action="/login.do" method="post">
 	<table style="width: 100%;">
 		<tr>
 			<td style="text-align: center; padding-top: 100px; padding-bottom: 40px;">

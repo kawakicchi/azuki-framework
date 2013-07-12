@@ -1,7 +1,9 @@
 package jp.azuki.web.tags.biz;
 
-import jp.azuki.web.tags.base.AbstractValuePrintTag;
+import javax.servlet.jsp.JspException;
 
+import jp.azuki.core.util.StringUtility;
+import jp.azuki.web.tags.AbstractPrintTag;
 
 /**
  * このクラスは、URLをレンダリングするタグクラスです。
@@ -10,10 +12,17 @@ import jp.azuki.web.tags.base.AbstractValuePrintTag;
  * @version 1.0.0 2012/10/18
  * @author Kawakicchi
  */
-public class PrintMoneyTag extends AbstractValuePrintTag {
+public final class PrintMoneyTag extends AbstractPrintTag {
+
+	/**
+	 * コンストラクタ
+	 */
+	public PrintMoneyTag() {
+		super(PrintMoneyTag.class);
+	}
 
 	@Override
-	protected final void doReadering(final Object aValue, final StringBuffer aBuffer) {
+	protected String doPrint(Object aValue) throws JspException {
 		Long value = null;
 		if (null == aValue) {
 
@@ -27,7 +36,9 @@ public class PrintMoneyTag extends AbstractValuePrintTag {
 
 		if (null != value) {
 			String str = String.format("%,3d円", value);
-			aBuffer.append(str);
+			return str;
+		} else {
+			return StringUtility.EMPTY;
 		}
 	}
 }

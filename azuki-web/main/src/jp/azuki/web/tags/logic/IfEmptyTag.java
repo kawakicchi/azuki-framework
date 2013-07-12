@@ -10,7 +10,14 @@ import java.util.Map;
  * @version 1.0.0 2013/01/23
  * @author Kawakicchi
  */
-public class IfEmptyTag extends ValueConditionTag {
+public final class IfEmptyTag extends AbstractValueConditionTag {
+
+	/**
+	 * コンストラクタ
+	 */
+	public IfEmptyTag() {
+		super(IfEmptyTag.class);
+	}
 
 	@Override
 	protected boolean isCondition(final Object aValue) {

@@ -8,7 +8,7 @@
 	<title>MikeNeko - AzukiFramework</title>
 
     <!-- CSS -->
-    <azHtml:link rel="stylesheet" href="css/bootstrap.css" type="text/css"/>
+    <azHtml:link rel="stylesheet" href="/css/bootstrap.css" type="text/css"/>
     <style type="text/css">
 
       /* Sticky footer styles
@@ -66,7 +66,7 @@
       }
 
     </style>
-    <azHtml:link rel="stylesheet" href="css/bootstrap-responsive.css" type="text/css"/>
+    <azHtml:link rel="stylesheet" href="/css/bootstrap-responsive.css" type="text/css"/>
 
 </head>
 <body style="margin: 0px;">
@@ -100,19 +100,19 @@
     <!-- Le javascript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
-    <azHtml:script src="js/jquery.js"></azHtml:script>
-    <azHtml:script src="js/bootstrap-transition.js"></azHtml:script>
-    <azHtml:script src="js/bootstrap-alert.js"></azHtml:script>
-    <azHtml:script src="js/bootstrap-modal.js"></azHtml:script>
-    <azHtml:script src="js/bootstrap-dropdown.js"></azHtml:script>
-    <azHtml:script src="js/bootstrap-scrollspy.js"></azHtml:script>
-    <azHtml:script src="js/bootstrap-tab.js"></azHtml:script>
-    <azHtml:script src="js/bootstrap-tooltip.js"></azHtml:script>
-    <azHtml:script src="js/bootstrap-popover.js"></azHtml:script>
-    <azHtml:script src="js/bootstrap-button.js"></azHtml:script>
-    <azHtml:script src="js/bootstrap-collapse.js"></azHtml:script>
-    <azHtml:script src="js/bootstrap-carousel.js"></azHtml:script>
-    <azHtml:script src="js/bootstrap-typeahead.js"></azHtml:script>
+    <azHtml:script src="/js/jquery.js"></azHtml:script>
+    <azHtml:script src="/js/bootstrap-transition.js"></azHtml:script>
+    <azHtml:script src="/js/bootstrap-alert.js"></azHtml:script>
+    <azHtml:script src="/js/bootstrap-modal.js"></azHtml:script>
+    <azHtml:script src="/js/bootstrap-dropdown.js"></azHtml:script>
+    <azHtml:script src="/js/bootstrap-scrollspy.js"></azHtml:script>
+    <azHtml:script src="/js/bootstrap-tab.js"></azHtml:script>
+    <azHtml:script src="/js/bootstrap-tooltip.js"></azHtml:script>
+    <azHtml:script src="/js/bootstrap-popover.js"></azHtml:script>
+    <azHtml:script src="/js/bootstrap-button.js"></azHtml:script>
+    <azHtml:script src="/js/bootstrap-collapse.js"></azHtml:script>
+    <azHtml:script src="/js/bootstrap-carousel.js"></azHtml:script>
+    <azHtml:script src="/js/bootstrap-typeahead.js"></azHtml:script>
 
 </body>
 </html>

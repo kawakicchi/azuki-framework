@@ -13,7 +13,14 @@ import jp.azuki.core.util.DateUtility;
  * @version 1.0.0 2013/01/23
  * @author Kawakicchi
  */
-public class IfTodayTag extends ValueConditionTag {
+public final class IfTodayTag extends AbstractValueConditionTag {
+
+	/**
+	 * コンストラクタ
+	 */
+	public IfTodayTag() {
+		super(IfTodayTag.class);
+	}
 
 	@Override
 	protected boolean isCondition(final Object aValue) {
