@@ -1,7 +1,7 @@
 package jp.azuki.web.action;
 
 import jp.azuki.core.lang.LoggingObject;
-import jp.azuki.web.constant.WebServiceException;
+import jp.azuki.web.WebServiceException;
 import jp.azuki.web.view.View;
 
 /**

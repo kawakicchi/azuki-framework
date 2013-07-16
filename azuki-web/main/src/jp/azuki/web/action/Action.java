@@ -1,6 +1,6 @@
 package jp.azuki.web.action;
 
-import jp.azuki.web.constant.WebServiceException;
+import jp.azuki.web.WebServiceException;
 import jp.azuki.web.view.View;
 
 /**

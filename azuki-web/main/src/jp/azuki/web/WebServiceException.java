@@ -1,4 +1,4 @@
-package jp.azuki.web.constant;
+package jp.azuki.web;
 
 import jp.azuki.core.lang.PrimitiveException;
 

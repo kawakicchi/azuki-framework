@@ -9,7 +9,7 @@ import jp.azuki.persistence.proterty.Property;
 import jp.azuki.persistence.proterty.PropertySupport;
 import jp.azuki.persistence.session.SessionSupport;
 import jp.azuki.persistence.store.Store;
-import jp.azuki.web.constant.WebServiceException;
+import jp.azuki.web.WebServiceException;
 import jp.azuki.web.view.View;
 
 /**

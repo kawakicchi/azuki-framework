@@ -7,7 +7,7 @@ import jp.azuki.persistence.database.DatabaseConnection;
 import jp.azuki.persistence.database.DatabaseConnectionManager;
 import jp.azuki.persistence.database.DatabaseConnectionSupport;
 import jp.azuki.persistence.database.DatabaseSource;
-import jp.azuki.web.constant.WebServiceException;
+import jp.azuki.web.WebServiceException;
 import jp.azuki.web.view.View;
 
 /**

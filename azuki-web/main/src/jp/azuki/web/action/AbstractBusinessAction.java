@@ -14,7 +14,7 @@ import jp.azuki.persistence.database.DatabaseConnectionSupport;
 import jp.azuki.persistence.proterty.Property;
 import jp.azuki.persistence.proterty.PropertyManager;
 import jp.azuki.persistence.proterty.PropertySupport;
-import jp.azuki.web.constant.WebServiceException;
+import jp.azuki.web.WebServiceException;
 import jp.azuki.web.view.View;
 
 /**
