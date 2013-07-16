@@ -1,0 +1,1 @@
+package jp.azuki.business.language;/** * このクラスは、言語情報を保持するクラスです。 *  * @since 1.0.0 * @version 1.0.0 2013/07/16 * @author Kawakicchi */public final class Language {	/**	 * コンストラクタ	 * <p>	 * インスタンス生成を禁止する。	 * </p>	 */	private Language() {	}}
