@@ -1,0 +1,1 @@
+package jp.azuki.analyzer;public class AzukiAnalyzer {}

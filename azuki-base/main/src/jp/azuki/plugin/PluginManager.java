@@ -30,14 +30,9 @@ public final class PluginManager extends AbstractManager {
 	private static final PluginManager INSTANCE = new PluginManager();
 
 	/**
-	 * plugin entity list
-	 */
-	private List<PluginEntity> pluginList;
-
-	/**
 	 * plugin list
 	 */
-	private List<Plugin> plugins;
+	private List<PluginEntity> plugins;
 
 	/**
 	 * コンストラクタ
@@ -47,14 +42,21 @@ public final class PluginManager extends AbstractManager {
 	 */
 	private PluginManager() {
 		super(PluginManager.class);
-		plugins = new ArrayList<Plugin>();
+		plugins = new ArrayList<PluginEntity>();
 	}
 
 	/**
 	 * 初期か処理を行います。
 	 */
-	public synchronized static void initialize() {
+	public static void initialize() {
 		INSTANCE.doInitialize();
+	}
+
+	/**
+	 * 解放処理を行います。
+	 */
+	public static void destroy() {
+		INSTANCE.doDestory();
 	}
 
 	/**
@@ -66,8 +68,7 @@ public final class PluginManager extends AbstractManager {
 	 * @throws ConfigurationFormatException 設定ファイルに問題がある場合
 	 * @throws IOException 入出力操作に起因する問題が発生した場合
 	 */
-	public synchronized static void load(final String file, final Context context) throws PluginServiceException, ConfigurationFormatException,
-			IOException {
+	public static void load(final String file, final Context context) throws PluginServiceException, ConfigurationFormatException, IOException {
 		INSTANCE.doLoad(context.getResourceAsStream(file), context);
 	}
 
@@ -80,22 +81,42 @@ public final class PluginManager extends AbstractManager {
 	 * @throws ConfigurationFormatException 設定ファイルに問題がある場合
 	 * @throws IOException 入出力操作に起因する問題が発生した場合
 	 */
-	public synchronized static void load(final InputStream stream, final Context context) throws PluginServiceException,
-			ConfigurationFormatException, IOException {
+	public static void load(final InputStream stream, final Context context) throws PluginServiceException, ConfigurationFormatException, IOException {
 		INSTANCE.doLoad(stream, context);
 	}
 
 	/**
-	 * 解放処理を行います。
+	 * プラグイン情報リストを取得する。
+	 * 
+	 * @return プラグイン情報リスト
 	 */
-	public synchronized static void destroy() {
-		INSTANCE.doDestory();
+	public static List<PluginEntity> getPluginList() {
+		return INSTANCE.doGetPluginList();
 	}
 
 	/**
 	 * 初期か処理を行います。
 	 */
 	private void doInitialize() {
+		synchronized (plugins) {
+
+		}
+	}
+
+	/**
+	 * 解放処理を行います。
+	 */
+	private void doDestory() {
+		synchronized (plugins) {
+			for (PluginEntity plugin : plugins) {
+				try {
+					plugin.getPlugin().destroy();
+				} catch (PluginServiceException ex) {
+					error(ex);
+				}
+			}
+			plugins.clear();
+		}
 	}
 
 	/**
@@ -109,85 +130,129 @@ public final class PluginManager extends AbstractManager {
 	 */
 	@SuppressWarnings("unchecked")
 	private void doLoad(final InputStream aStream, final Context aContext) throws PluginServiceException, ConfigurationFormatException, IOException {
-
-		try {
-			Digester digester = new Digester();
-			digester.addObjectCreate("azuki/plugin-list", ArrayList.class);
-			digester.addObjectCreate("azuki/plugin-list/plugin", PluginEntity.class);
-			digester.addSetProperties("azuki/plugin-list/plugin");
-			digester.addSetNext("azuki/plugin-list/plugin", "add");
-			pluginList = digester.parse(aStream);
-		} catch (SAXException ex) {
-			error(ex);
-			throw new PluginServiceException(ex);
-		} catch (IOException ex) {
-			error(ex);
-			throw ex;
-		}
-
-		try {
-			for (int i = 0; i < pluginList.size(); i++) {
-				PluginEntity p = pluginList.get(i);
-				Class<Plugin> clazz = (Class<Plugin>) Class.forName(p.getPlugin());
-				Plugin plugin = clazz.newInstance();
-				plugins.add(plugin);
+		synchronized (plugins) {
+			// Load plugin xml file.
+			List<PluginXmlEntity> pluginList;
+			try {
+				Digester digester = new Digester();
+				digester.addObjectCreate("azuki/plugin-list", ArrayList.class);
+				digester.addObjectCreate("azuki/plugin-list/plugin", PluginXmlEntity.class);
+				digester.addSetProperties("azuki/plugin-list/plugin");
+				digester.addSetNext("azuki/plugin-list/plugin", "add");
+				pluginList = digester.parse(aStream);
+			} catch (SAXException ex) {
+				error(ex);
+				throw new ConfigurationFormatException(ex);
+			} catch (IOException ex) {
+				error(ex);
+				throw ex;
 			}
-		} catch (ClassNotFoundException ex) {
-			error(ex);
-			throw new PluginServiceException(ex);
-		} catch (IllegalAccessException ex) {
-			error(ex);
-			throw new PluginServiceException(ex);
-		} catch (InstantiationException ex) {
-			error(ex);
-			throw new PluginServiceException(ex);
-		}
 
-		for (int i = 0; i < plugins.size(); i++) {
-			Plugin plugin = plugins.get(i);
-			if (plugin instanceof ContextSupport) {
-				((ContextSupport) plugin).setContext(aContext);
+			try {
+				for (int i = 0; i < pluginList.size(); i++) {
+					PluginXmlEntity p = pluginList.get(i);
+					Class<Plugin> clazz = (Class<Plugin>) Class.forName(p.getPlugin());
+					Plugin plugin = clazz.newInstance();
+
+					PluginEntity pe = new PluginEntity(plugin);
+					plugins.add(pe);
+				}
+			} catch (ClassNotFoundException ex) {
+				error(ex);
+				throw new PluginServiceException(ex);
+			} catch (IllegalAccessException ex) {
+				error(ex);
+				throw new PluginServiceException(ex);
+			} catch (InstantiationException ex) {
+				error(ex);
+				throw new PluginServiceException(ex);
 			}
-		}
-		for (int i = 0; i < plugins.size(); i++) {
-			Plugin plugin = plugins.get(i);
-			plugin.initialize();
-		}
-		for (int i = 0; i < plugins.size(); i++) {
-			Plugin plugin = plugins.get(i);
-			String config = pluginList.get(i).getConfig();
-			if (StringUtility.isNotEmpty(config)) {
-				InputStream stream = aContext.getResourceAsStream(config);
-				if (null != stream) {
-					plugin.load(stream);
-				} else {
-					error("Not found config file.[" + config + "]");
+
+			// Support context
+			for (int i = 0; i < plugins.size(); i++) {
+				Plugin plugin = plugins.get(i).getPlugin();
+				if (plugin instanceof ContextSupport) {
+					((ContextSupport) plugin).setContext(aContext);
+				}
+			}
+
+			// initialize
+			for (int i = 0; i < plugins.size(); i++) {
+				Plugin plugin = plugins.get(i).getPlugin();
+				plugin.initialize();
+			}
+
+			// load
+			for (int i = 0; i < plugins.size(); i++) {
+				Plugin plugin = plugins.get(i).getPlugin();
+				String config = pluginList.get(i).getConfig();
+				if (StringUtility.isNotEmpty(config)) {
+					InputStream stream = aContext.getResourceAsStream(config);
+					if (null != stream) {
+						plugin.load(stream);
+					} else {
+						error("Not found config file.[" + config + "]");
+					}
 				}
 			}
 		}
 	}
 
 	/**
-	 * 解放処理を行います。
+	 * プラグイン情報リストを取得する。
+	 * 
+	 * @return プラグイン情報リスト
 	 */
-	private void doDestory() {
-		for (Plugin plugin : plugins) {
-			try {
-				plugin.destroy();
-			} catch (PluginServiceException ex) {
-				error(ex);
-			}
-		}
+	private List<PluginEntity> doGetPluginList() {
+		return plugins;
 	}
 
 	/**
 	 * このクラスは、プラグイン情報を保持するエンティティクラスです。
 	 * 
 	 * @since 1.0.0
-	 * @version 1.0.0 12/06/14
+	 * @version 1.0.0 12/07/16
 	 * @author Kawakicchi
 	 */
 	public static class PluginEntity implements Entity {
+
+		/**
+		 * プラグイン
+		 */
+		private Plugin plugin;
+
+		/**
+		 * コンストラクタ
+		 * 
+		 * @param aPlugin プラグイン
+		 */
+		private PluginEntity(final Plugin aPlugin) {
+			plugin = aPlugin;
+		}
+
+		/**
+		 * プラグインを取得する。
+		 * 
+		 * @return プラグイン
+		 */
+		public Plugin getPlugin() {
+			return plugin;
+		}
+
+		@Override
+		public boolean isEmpty() {
+			return false;
+		}
+	}
+
+	/**
+	 * このクラスは、XMLプラグイン情報を保持するエンティティクラスです。
+	 * 
+	 * @since 1.0.0
+	 * @version 1.0.0 12/06/14
+	 * @author Kawakicchi
+	 */
+	public static class PluginXmlEntity implements Entity {
 
 		/**
 		 * プラグイン名
