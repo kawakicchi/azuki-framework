@@ -13,11 +13,6 @@ import jp.azuki.persistence.database.DatabaseConnectionSupport;
 import jp.azuki.persistence.proterty.Property;
 import jp.azuki.persistence.proterty.PropertyManager;
 import jp.azuki.persistence.proterty.PropertySupport;
-<<<<<<< HEAD
-=======
-import jp.azuki.web.WebServiceException;
-import jp.azuki.web.view.View;
->>>>>>> branch 'master' of https://github.com/kawakicchi/azuki-framework.git
 
 /**
  * このクラスは、ビジネス機能を実装するアクションクラスです。

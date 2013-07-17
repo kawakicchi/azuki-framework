@@ -18,11 +18,7 @@ import jp.azuki.persistence.session.SessionSupport;
 import jp.azuki.persistence.store.Store;
 import jp.azuki.web.WebServiceException;
 import jp.azuki.web.action.Action;
-<<<<<<< HEAD
 import jp.azuki.web.action.purser.ActionHttpServletPurser;
-=======
-import jp.azuki.web.purser.ActionHttpServletPurser;
->>>>>>> branch 'master' of https://github.com/kawakicchi/azuki-framework.git
 import jp.azuki.web.purser.DefaultHttpServletPurser;
 import jp.azuki.web.purser.HttpServletPurser;
 import jp.azuki.web.store.HttpSessionStore;
@@ -92,7 +88,6 @@ public abstract class AbstractActionMappingServlet extends AbstractServlet {
 		}
 
 		try {
-<<<<<<< HEAD
 			appendActionSupport(action, aReq, aRes);
 			View view = action.action();
 			if (null != view) {
@@ -133,11 +128,6 @@ public abstract class AbstractActionMappingServlet extends AbstractServlet {
 
 			// Parameter support (request parameter)
 			if (aAction instanceof ParameterSupport) {
-=======
-			// Create parameter
-			Parameter parameter;
-			{
->>>>>>> branch 'master' of https://github.com/kawakicchi/azuki-framework.git
 				Map<String, Object> params = new HashMap<String, Object>();
 				ActionHttpServletPurser aPurser = aAction.getClass().getAnnotation(ActionHttpServletPurser.class);
 				if (null != aPurser) {
@@ -155,50 +145,6 @@ public abstract class AbstractActionMappingServlet extends AbstractServlet {
 				Parameter parameter = new Parameter(params);
 				((ParameterSupport) aAction).setParameter(parameter);
 			}
-<<<<<<< HEAD
-=======
-			// Create Session
-			Store<String, Object> session = new HttpSessionStore(aReq.getSession(true));
->>>>>>> branch 'master' of https://github.com/kawakicchi/azuki-framework.git
-
-<<<<<<< HEAD
-=======
-			// ##### Action Support start #####
-			// Session support
-			if (action instanceof SessionSupport) {
-				((SessionSupport) action).setSession(session);
-			}
-			// Context support
-			if (action instanceof ContextSupport) {
-				((ContextSupport) action).setContext(getContext());
-			}
-			// Property support
-			if (action instanceof PropertySupport) {
-				Property property = PropertyManager.get(action.getClass());
-				if (null == property) {
-					property = PropertyManager.load(action.getClass(), getContext());
-				}
-				((PropertySupport) action).setProperty(property);
-			}
-			// Parameter support (request parameter)
-			if (action instanceof ParameterSupport) {
-				((ParameterSupport) action).setParameter(parameter);
-			}
-			// ##### Action Support end #####
-
-			View view = action.action();
-
-			if (null != view) {
-				view.view(aReq, aRes);
-			} else {
-				fatal("No return view.[" + action.getClass().getName() + "]");
-				throw new WebServiceException("No View.");
-			}
-
-		} catch (WebServiceException ex) {
-			fatal(ex);
-			aRes.sendError(500);
->>>>>>> branch 'master' of https://github.com/kawakicchi/azuki-framework.git
 		} catch (InstantiationException ex) {
 			throw new WebServiceException(ex);
 		} catch (IllegalAccessException ex) {
