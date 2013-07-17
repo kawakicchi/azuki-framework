@@ -1,8 +1,9 @@
-package jp.azuki.web.constant;
+package jp.azuki.web;
 
 import jp.azuki.core.lang.PrimitiveException;
 
 /**
+ * このクラスは、ウェブサービス層に起因する例外クラスです。
  * 
  * @since 1.0.0
  * @version 1.0.0 2013/02/21

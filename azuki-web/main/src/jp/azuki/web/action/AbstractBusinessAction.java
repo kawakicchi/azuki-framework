@@ -8,14 +8,11 @@ import jp.azuki.business.BusinessServiceException;
 import jp.azuki.business.logic.Logic;
 import jp.azuki.business.logic.LogicManager;
 import jp.azuki.core.util.StringUtility;
-import jp.azuki.persistence.PersistenceServiceException;
 import jp.azuki.persistence.context.ContextSupport;
 import jp.azuki.persistence.database.DatabaseConnectionSupport;
 import jp.azuki.persistence.proterty.Property;
 import jp.azuki.persistence.proterty.PropertyManager;
 import jp.azuki.persistence.proterty.PropertySupport;
-import jp.azuki.web.constant.WebServiceException;
-import jp.azuki.web.view.View;
 
 /**
  * このクラスは、ビジネス機能を実装するアクションクラスです。
@@ -42,7 +39,7 @@ public abstract class AbstractBusinessAction extends AbstractDatabaseAction {
 	/**
 	 * コンストラクタ
 	 * 
-	 * @param aName Name
+	 * @param aName 名前
 	 */
 	public AbstractBusinessAction(final String aName) {
 		super(aName);
@@ -52,7 +49,7 @@ public abstract class AbstractBusinessAction extends AbstractDatabaseAction {
 	/**
 	 * コンストラクタ
 	 * 
-	 * @param aClass Class
+	 * @param aClass クラス
 	 */
 	public AbstractBusinessAction(final Class<?> aClass) {
 		super(aClass);
@@ -60,33 +57,24 @@ public abstract class AbstractBusinessAction extends AbstractDatabaseAction {
 	}
 
 	@Override
-	protected final View doDatabaseAction() throws WebServiceException, PersistenceServiceException, SQLException {
-		View view = null;
-		try {
-			view = doBusinessAction();
-			for (String namespace : logics.keySet()) {
-				Map<String, Logic> ls = logics.get(namespace);
-				for (String name : ls.keySet()) {
-					ls.get(name).destroy();
-				}
-			}
-			logics = new HashMap<String, Map<String, Logic>>();
-		} catch (BusinessServiceException ex) {
-			throw new WebServiceException(ex);
-		}
-		return view;
+	protected void doBeforeAction() {
+		super.doBeforeAction();
+		// TODO Write doBeforeExecute code.
+
 	}
 
-	/**
-	 * アクションを実行する。
-	 * 
-	 * @return ビュー
-	 * @throws WebServiceException ウェブサービス層に起因する問題が発生した場合
-	 * @throws PersistenceServiceException 永続化層に起因する問題が発生した場合
-	 * @throws BusinessServiceException ビジネスサービス層に起因する問題が発生した場合
-	 * @throws SQLException SQL操作時に問題が発生した場合
-	 */
-	protected abstract View doBusinessAction() throws WebServiceException, PersistenceServiceException, BusinessServiceException, SQLException;
+	@Override
+	protected void doAfterAction() {
+		for (String namespace : logics.keySet()) {
+			Map<String, Logic> ls = logics.get(namespace);
+			for (String name : ls.keySet()) {
+				ls.get(name).destroy();
+			}
+		}
+		logics.clear();
+
+		super.doAfterAction();
+	}
 
 	/**
 	 * ロジックを取得する。
@@ -124,20 +112,7 @@ public abstract class AbstractBusinessAction extends AbstractDatabaseAction {
 			} else {
 				logic = LogicManager.create(aNamespace, aName);
 				if (null != logic) {
-					if (logic instanceof ContextSupport) {
-						((ContextSupport) logic).setContext(getContext());
-					}
-					if (logic instanceof PropertySupport) {
-						Property property = PropertyManager.get(logic.getClass());
-						if (null == property) {
-							property = PropertyManager.load(logic.getClass(), getContext());
-						}
-						((PropertySupport) logic).setProperty(property);
-					}
-					if (logic instanceof DatabaseConnectionSupport) {
-						((DatabaseConnectionSupport) logic).setConnection(getConnection());
-					}
-
+					doLogicSupport(logic);
 					logic.initialize();
 				}
 				ls.put(aName, logic);
@@ -147,5 +122,30 @@ public abstract class AbstractBusinessAction extends AbstractDatabaseAction {
 			throw new BusinessServiceException(ex);
 		}
 		return logic;
+	}
+
+	/**
+	 * ロジックにサポートを行う。
+	 * <p>
+	 * ロジックに新機能を追加したい場合、このメソッドをオーバーライドしスーパークラスの同メソッドを呼び出した後に追加機能をサポートすること。
+	 * </p>
+	 * 
+	 * @param aLogic ロジック
+	 * @throws SQLException SQL操作時に問題が発生した場合
+	 */
+	protected void doLogicSupport(final Logic aLogic) throws SQLException {
+		if (aLogic instanceof ContextSupport) {
+			((ContextSupport) aLogic).setContext(getContext());
+		}
+		if (aLogic instanceof PropertySupport) {
+			Property property = PropertyManager.get(aLogic.getClass());
+			if (null == property) {
+				property = PropertyManager.load(aLogic.getClass(), getContext());
+			}
+			((PropertySupport) aLogic).setProperty(property);
+		}
+		if (aLogic instanceof DatabaseConnectionSupport) {
+			((DatabaseConnectionSupport) aLogic).setConnection(getConnection());
+		}
 	}
 }

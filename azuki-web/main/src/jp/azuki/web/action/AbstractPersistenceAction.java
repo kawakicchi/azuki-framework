@@ -1,6 +1,5 @@
 package jp.azuki.web.action;
 
-import jp.azuki.persistence.PersistenceServiceException;
 import jp.azuki.persistence.context.Context;
 import jp.azuki.persistence.context.ContextSupport;
 import jp.azuki.persistence.parameter.Parameter;
@@ -9,8 +8,6 @@ import jp.azuki.persistence.proterty.Property;
 import jp.azuki.persistence.proterty.PropertySupport;
 import jp.azuki.persistence.session.SessionSupport;
 import jp.azuki.persistence.store.Store;
-import jp.azuki.web.constant.WebServiceException;
-import jp.azuki.web.view.View;
 
 /**
  * 
@@ -64,26 +61,6 @@ public abstract class AbstractPersistenceAction extends AbstractAction implement
 	public AbstractPersistenceAction(final Class<?> aClass) {
 		super(aClass);
 	}
-
-	@Override
-	protected final View doAction() throws WebServiceException {
-		View view = null;
-		try {
-			view = doPersistenceAction();
-		} catch (PersistenceServiceException ex) {
-			throw new WebServiceException(ex);
-		}
-		return view;
-	}
-
-	/**
-	 * アクションを実行する。
-	 * 
-	 * @return ビュー
-	 * @throws WebServiceException ウェブサービス層に起因する問題が発生した場合
-	 * @throws PersistenceServiceException 永続化層に起因する問題が発生した場合
-	 */
-	protected abstract View doPersistenceAction() throws WebServiceException, PersistenceServiceException;
 
 	@Override
 	public final void setSession(final Store<String, Object> aSession) {

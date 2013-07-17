@@ -1,11 +1,10 @@
-package jp.azuki.web.action.plugin;
+package jp.azuki.web.action;
 
 import java.io.IOException;
 import java.io.InputStream;
 
 import jp.azuki.plugin.AbstractPlugin;
 import jp.azuki.plugin.PluginServiceException;
-import jp.azuki.web.action.manager.ActionManager;
 
 /**
  * このクラスは、アクション機能をサポートするためのプラグインクラスです。

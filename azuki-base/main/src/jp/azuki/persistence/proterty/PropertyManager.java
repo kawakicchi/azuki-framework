@@ -57,7 +57,7 @@ public final class PropertyManager extends AbstractManager {
 	 * @param aContext コンテキスト
 	 * @return プロパティ情報
 	 */
-	public synchronized static Property load(final Class<?> aClass, final Context aContext) {
+	public static Property load(final Class<?> aClass, final Context aContext) {
 		return INSTANCE.doLoad(aClass, aContext);
 	}
 
@@ -66,37 +66,40 @@ public final class PropertyManager extends AbstractManager {
 	}
 
 	private Property doLoad(final Class<?> aClass, final Context aContext) {
-		Property property = doGet(aClass);
-		if (null == property) {
-			PropertyFile propertyFile = aClass.getAnnotation(PropertyFile.class);
-			if (null != propertyFile) {
-				String value = propertyFile.value();
-				if (StringUtility.isNotEmpty(value)) {
-					InputStream stream = aContext.getResourceAsStream(value);
-					if (null != stream) {
-						try {
-							Properties p = new Properties();
-							p.load(stream);
-							Map<String, Object> m = new HashMap<String, Object>();
-							for (Object key : p.keySet()) {
-								m.put(key.toString(), p.get(key));
+		Property property = null;
+		synchronized (properties) {
+			property = properties.get(aClass);
+			if (null == property) {
+				PropertyFile propertyFile = aClass.getAnnotation(PropertyFile.class);
+				if (null != propertyFile) {
+					String value = propertyFile.value();
+					if (StringUtility.isNotEmpty(value)) {
+						InputStream stream = aContext.getResourceAsStream(value);
+						if (null != stream) {
+							try {
+								Properties p = new Properties();
+								p.load(stream);
+								Map<String, Object> m = new HashMap<String, Object>();
+								for (Object key : p.keySet()) {
+									m.put(key.toString(), p.get(key));
+								}
+								property = new Property(m);
+							} catch (IOException ex) {
+								error(ex);
+								property = new Property();
 							}
-							property = new Property(m);
-						} catch (IOException ex) {
-							error(ex);
+						} else {
+							error("Not found property file.[" + value + "]");
 							property = new Property();
 						}
 					} else {
-						error("Not found property file.[" + value + "]");
 						property = new Property();
 					}
 				} else {
-					property = new Property();
-				}
-			} else {
 
+				}
+				properties.put(aClass, property);
 			}
-			properties.put(aClass, property);
 		}
 		return property;
 	}

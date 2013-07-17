@@ -2,13 +2,9 @@ package jp.azuki.web.action;
 
 import java.sql.SQLException;
 
-import jp.azuki.persistence.PersistenceServiceException;
 import jp.azuki.persistence.database.DatabaseConnection;
 import jp.azuki.persistence.database.DatabaseConnectionManager;
-import jp.azuki.persistence.database.DatabaseConnectionSupport;
 import jp.azuki.persistence.database.DatabaseSource;
-import jp.azuki.web.constant.WebServiceException;
-import jp.azuki.web.view.View;
 
 /**
  * このクラスは、データベース機能を実装するアクションクラスです。
@@ -17,7 +13,7 @@ import jp.azuki.web.view.View;
  * @version 1.0.0 2013/02/13
  * @author Kawakicchi
  */
-public abstract class AbstractDatabaseAction extends AbstractPersistenceAction implements DatabaseConnectionSupport {
+public abstract class AbstractDatabaseAction extends AbstractPersistenceAction {
 
 	/**
 	 * データベースソース
@@ -30,11 +26,6 @@ public abstract class AbstractDatabaseAction extends AbstractPersistenceAction i
 	private DatabaseConnection myConnection;
 
 	/**
-	 * チェーンコネクション
-	 */
-	private DatabaseConnection chainConnection;
-
-	/**
 	 * コンストラクタ
 	 */
 	public AbstractDatabaseAction() {
@@ -44,7 +35,7 @@ public abstract class AbstractDatabaseAction extends AbstractPersistenceAction i
 	/**
 	 * コンストラクタ
 	 * 
-	 * @param aName Name
+	 * @param aName 名前
 	 */
 	public AbstractDatabaseAction(final String aName) {
 		super(aName);
@@ -53,53 +44,39 @@ public abstract class AbstractDatabaseAction extends AbstractPersistenceAction i
 	/**
 	 * コンストラクタ
 	 * 
-	 * @param aClass Class
+	 * @param aClass クラス
 	 */
 	public AbstractDatabaseAction(final Class<?> aClass) {
 		super(aClass);
 	}
 
 	@Override
-	protected final View doPersistenceAction() throws WebServiceException, PersistenceServiceException {
-		View result = null;
+	protected void doBeforeAction() {
+		super.doBeforeAction();
+		// TODO Write doBeforeExecute code.
+
+	}
+
+	@Override
+	protected void doAfterAction() {
 		try {
-			result = doDatabaseAction();
 			if (null != myConnection) {
 				myConnection.getConnection().commit();
 			}
 		} catch (SQLException ex) {
-			throw new WebServiceException(ex);
-		} finally {
-			if (null != source && null != myConnection) {
-				try {
-					source.returnConnection(myConnection);
-				} catch (SQLException ex) {
-					warn(ex);
-				}
-				myConnection = null;
-				source = null;
+			fatal(ex);
+		}
+		if (null != source && null != myConnection) {
+			try {
+				source.returnConnection(myConnection);
+			} catch (SQLException ex) {
+				warn(ex);
 			}
+			myConnection = null;
+			source = null;
 		}
-		return result;
-	}
 
-	/**
-	 * アクションを実行する。
-	 * 
-	 * @return ビュー
-	 * @throws WebServiceException ウェブサービス層に起因する問題が発生した場合
-	 * @throws PersistenceServiceException 永続化層に起因する問題が発生した場合
-	 * @throws SQLException SQL操作時に問題が発生した場合
-	 */
-	protected abstract View doDatabaseAction() throws WebServiceException, PersistenceServiceException, SQLException;
-
-	@Override
-	public final void setConnection(final DatabaseConnection aConnection) {
-		if (null == chainConnection) {
-			chainConnection = aConnection;
-		} else {
-			warn("exist connection.");
-		}
+		super.doAfterAction();
 	}
 
 	/**
@@ -109,9 +86,6 @@ public abstract class AbstractDatabaseAction extends AbstractPersistenceAction i
 	 * @throws SQL実行時に問題が発生した場合
 	 */
 	protected final DatabaseConnection getConnection() throws SQLException {
-		if (null != chainConnection) {
-			return chainConnection;
-		}
 		if (null == myConnection) {
 			info("Create my connection.");
 			source = DatabaseConnectionManager.getSource();

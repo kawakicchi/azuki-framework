@@ -16,13 +16,9 @@ import jp.azuki.persistence.proterty.PropertyManager;
 import jp.azuki.persistence.proterty.PropertySupport;
 import jp.azuki.persistence.session.SessionSupport;
 import jp.azuki.persistence.store.Store;
+import jp.azuki.web.WebServiceException;
 import jp.azuki.web.action.Action;
-import jp.azuki.web.action.annotation.ActionAfterFilter;
-import jp.azuki.web.action.annotation.ActionBeforeFilter;
-import jp.azuki.web.action.annotation.ActionHttpServletPurser;
-import jp.azuki.web.action.context.ActionContext;
-import jp.azuki.web.action.filter.Filter;
-import jp.azuki.web.constant.WebServiceException;
+import jp.azuki.web.action.purser.ActionHttpServletPurser;
 import jp.azuki.web.purser.DefaultHttpServletPurser;
 import jp.azuki.web.purser.HttpServletPurser;
 import jp.azuki.web.store.HttpSessionStore;
@@ -85,20 +81,55 @@ public abstract class AbstractActionMappingServlet extends AbstractServlet {
 	 * @throws IOException IO操作時に問題が発生した場合
 	 */
 	protected final void doTask(final HttpServletRequest aReq, final HttpServletResponse aRes) throws ServletException, IOException {
-
 		Action action = createAction(aReq, aRes);
-
 		if (null == action) {
 			aRes.sendError(404);
 			return;
 		}
 
 		try {
-			Parameter parameter;
-			{
+			appendActionSupport(action, aReq, aRes);
+			View view = action.action();
+			if (null != view) {
+				view.view(aReq, aRes);
+			} else {
+				fatal("No return view.[" + action.getClass().getName() + "]");
+				throw new WebServiceException("No View.");
+			}
+
+		} catch (WebServiceException ex) {
+			fatal(ex);
+			aRes.sendError(500);
+		}
+	}
+
+	protected void appendActionSupport(final Action aAction, final HttpServletRequest aReq, final HttpServletResponse aRes)
+			throws WebServiceException {
+		try {
+			// Session support
+			if (aAction instanceof SessionSupport) {
+				Store<String, Object> session = new HttpSessionStore(aReq.getSession(true));
+				((SessionSupport) aAction).setSession(session);
+			}
+
+			// Context support
+			if (aAction instanceof ContextSupport) {
+				((ContextSupport) aAction).setContext(getContext());
+			}
+
+			// Property support
+			if (aAction instanceof PropertySupport) {
+				Property property = PropertyManager.get(aAction.getClass());
+				if (null == property) {
+					property = PropertyManager.load(aAction.getClass(), getContext());
+				}
+				((PropertySupport) aAction).setProperty(property);
+			}
+
+			// Parameter support (request parameter)
+			if (aAction instanceof ParameterSupport) {
 				Map<String, Object> params = new HashMap<String, Object>();
-				// purser
-				ActionHttpServletPurser aPurser = action.getClass().getAnnotation(ActionHttpServletPurser.class);
+				ActionHttpServletPurser aPurser = aAction.getClass().getAnnotation(ActionHttpServletPurser.class);
 				if (null != aPurser) {
 					Class<? extends HttpServletPurser>[] classes = aPurser.value();
 					for (Class<? extends HttpServletPurser> clazz : classes) {
@@ -111,183 +142,14 @@ public abstract class AbstractActionMappingServlet extends AbstractServlet {
 					Map<String, Object> m = purser.purse(aReq, aRes);
 					params.putAll(m);
 				}
-				parameter = new Parameter(params);
+				Parameter parameter = new Parameter(params);
+				((ParameterSupport) aAction).setParameter(parameter);
 			}
-			ActionContext actionContext = new ActionContext(aReq, aRes);
-			Store<String, Object> session = new HttpSessionStore(aReq.getSession(true));
 
-			// ##### Action Support start #####
-			// Session support
-			if (action instanceof SessionSupport) {
-				((SessionSupport) action).setSession(session);
-			}
-			// Context support
-			if (action instanceof ContextSupport) {
-				((ContextSupport) action).setContext(getContext());
-			}
-			// Property support
-			if (action instanceof PropertySupport) {
-				Property property = PropertyManager.get(action.getClass());
-				if (null == property) {
-					property = PropertyManager.load(action.getClass(), getContext());
-				}
-				((PropertySupport) action).setProperty(property);
-			}
-			// Parameter support (request parameter)
-			if (action instanceof ParameterSupport) {
-				((ParameterSupport) action).setParameter(parameter);
-			}
-			// ##### Action Support end #####
-
-			View view = null;
-			do {
-				view = doBeforeFilter(action, parameter, session, actionContext);
-				if (null != view) {
-					break;
-				}
-
-				view = action.action();
-				if (null == view) {
-					fatal("No return view.[" + action.getClass().getName() + "]");
-					throw new WebServiceException("No View.");
-				}
-
-				View bufView = doAfterFilter(action, parameter, session, actionContext);
-				if (null != bufView) {
-					view = bufView;
-				}
-			} while (false);
-			view.view(aReq, aRes);
-
-		} catch (WebServiceException ex) {
-			fatal(ex);
-			aRes.sendError(500);
 		} catch (InstantiationException ex) {
-			fatal(ex);
-			aRes.sendError(500);
+			throw new WebServiceException(ex);
 		} catch (IllegalAccessException ex) {
-			fatal(ex);
-			aRes.sendError(500);
-		} catch (ServletException ex) {
-			fatal(ex);
-			aRes.sendError(500);
-		} catch (IOException ex) {
-			fatal(ex);
-			aRes.sendError(500);
+			throw new WebServiceException(ex);
 		}
-	}
-
-	/**
-	 * アクション実行後フィルターを実行する。
-	 * 
-	 * @param aAction アクション
-	 * @param aParameter パラメーター情報
-	 * @param aSession セッション情報
-	 * @param aContext コンテキスト情報
-	 * @return ビューまたは、<code>null</code>を返す。
-	 * @throws IllegalAccessException {@link IllegalAccessException}
-	 * @throws InstantiationException {@link InstantiationException}
-	 * @throws WebServiceException {@link WebServiceException}
-	 */
-	private View doAfterFilter(final Action aAction, final Parameter aParameter, final Store<String, Object> aSession, final ActionContext aContext)
-			throws IllegalAccessException, InstantiationException, WebServiceException {
-		View view = null;
-		ActionAfterFilter aFilter = aAction.getClass().getAnnotation(ActionAfterFilter.class);
-		if (null != aFilter) {
-			Class<? extends Filter>[] filterClasses = aFilter.value();
-			if (null != filterClasses) {
-				for (Class<? extends Filter> clazz : filterClasses) {
-					Filter filter = clazz.newInstance();
-
-					// ##### Action Support start #####
-					// Session support
-					if (filter instanceof SessionSupport) {
-						((SessionSupport) filter).setSession(aSession);
-					}
-					// Context support
-					if (filter instanceof ContextSupport) {
-						((ContextSupport) filter).setContext(getContext());
-					}
-					// Property support
-					if (filter instanceof PropertySupport) {
-						Property property = PropertyManager.get(clazz);
-						if (null == property) {
-							property = PropertyManager.load(clazz, getContext());
-						}
-						((PropertySupport) filter).setProperty(property);
-					}
-					// Parameter support (request parameter)
-					if (filter instanceof ParameterSupport) {
-						((ParameterSupport) filter).setParameter(aParameter);
-					}
-					// ##### Action Support start #####
-
-					filter.filter();
-
-					if (null != filter.getView()) {
-						view = filter.getView();
-						break;
-					}
-				}
-			}
-		}
-		return view;
-	}
-
-	/**
-	 * アクション実行前フィルターを実行する。
-	 * 
-	 * @param aAction アクション
-	 * @param aParameter パラメーター情報
-	 * @param aSession セッション情報
-	 * @param aContext コンテキスト情報
-	 * @return ビューまたは、<code>null</code>を返す。
-	 * @throws IllegalAccessException {@link IllegalAccessException}
-	 * @throws InstantiationException {@link InstantiationException}
-	 * @throws WebServiceException {@link WebServiceException}
-	 */
-	private View doBeforeFilter(final Action aAction, final Parameter aParameter, final Store<String, Object> aSession, final ActionContext aContext)
-			throws IllegalAccessException, InstantiationException, WebServiceException {
-		View view = null;
-		ActionBeforeFilter aFilter = aAction.getClass().getAnnotation(ActionBeforeFilter.class);
-		if (null != aFilter) {
-			Class<? extends Filter>[] filterClasses = aFilter.value();
-			if (null != filterClasses) {
-				for (Class<? extends Filter> clazz : filterClasses) {
-					Filter filter = clazz.newInstance();
-
-					// ##### Action Support start #####
-					// Session support
-					if (filter instanceof SessionSupport) {
-						((SessionSupport) filter).setSession(aSession);
-					}
-					// Context support
-					if (filter instanceof ContextSupport) {
-						((ContextSupport) filter).setContext(getContext());
-					}
-					// Property support
-					if (filter instanceof PropertySupport) {
-						Property property = PropertyManager.get(clazz);
-						if (null == property) {
-							property = PropertyManager.load(clazz, getContext());
-						}
-						((PropertySupport) filter).setProperty(property);
-					}
-					// Parameter support (request parameter)
-					if (filter instanceof ParameterSupport) {
-						((ParameterSupport) filter).setParameter(aParameter);
-					}
-					// ##### Action Support end #####
-
-					filter.filter();
-
-					if (null != filter.getView()) {
-						view = filter.getView();
-						break;
-					}
-				}
-			}
-		}
-		return view;
 	}
 }

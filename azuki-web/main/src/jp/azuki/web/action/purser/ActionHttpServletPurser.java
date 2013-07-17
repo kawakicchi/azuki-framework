@@ -1,4 +1,4 @@
-package jp.azuki.web.action.annotation;
+package jp.azuki.web.action.purser;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -7,6 +7,7 @@ import java.lang.annotation.Target;
 
 import jp.azuki.web.purser.DefaultHttpServletPurser;
 import jp.azuki.web.purser.HttpServletPurser;
+
 
 /**
  * このアノテーションは、アクションに引き渡すパラメータを解析するパーサーを設定するアノテーションです。

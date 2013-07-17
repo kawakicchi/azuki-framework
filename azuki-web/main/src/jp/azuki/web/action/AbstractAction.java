@@ -1,7 +1,7 @@
 package jp.azuki.web.action;
 
 import jp.azuki.core.lang.LoggingObject;
-import jp.azuki.web.constant.WebServiceException;
+import jp.azuki.web.WebServiceException;
 import jp.azuki.web.view.View;
 
 /**
@@ -50,13 +50,35 @@ public abstract class AbstractAction extends LoggingObject implements Action {
 
 	@Override
 	public final View action() throws WebServiceException {
-		return doAction();
+		View view;
+		view = doAction();
+		return view;
 	}
 
 	/**
 	 * 初期か処理を行う。
 	 */
 	protected abstract void doInitialize();
+
+	/**
+	 * アクション実行直前の処理を行う。
+	 * <p>
+	 * アクション実行直前に処理を行いたい場合、このメソッドをオーバーライドしスーパークラスの同メソッドを呼び出した後で処理を記述すること。
+	 * </p>
+	 */
+	protected void doBeforeAction() {
+
+	}
+
+	/**
+	 * アクション実行直後の処理を行う。
+	 * <p>
+	 * アクション実行直後に処理を行いたい場合、このメソッドをオーバーライドしスーパークラスの同メソッドを呼び出した後で処理を記述すること。
+	 * </p>
+	 */
+	protected void doAfterAction() {
+
+	}
 
 	/**
 	 * 解放処理を行う。
