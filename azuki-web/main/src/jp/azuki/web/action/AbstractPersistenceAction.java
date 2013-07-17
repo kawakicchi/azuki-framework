@@ -8,6 +8,11 @@ import jp.azuki.persistence.proterty.Property;
 import jp.azuki.persistence.proterty.PropertySupport;
 import jp.azuki.persistence.session.SessionSupport;
 import jp.azuki.persistence.store.Store;
+<<<<<<< HEAD
+=======
+import jp.azuki.web.WebServiceException;
+import jp.azuki.web.view.View;
+>>>>>>> branch 'master' of https://github.com/kawakicchi/azuki-framework.git
 
 /**
  * 

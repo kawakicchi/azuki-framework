@@ -5,6 +5,11 @@ import java.sql.SQLException;
 import jp.azuki.persistence.database.DatabaseConnection;
 import jp.azuki.persistence.database.DatabaseConnectionManager;
 import jp.azuki.persistence.database.DatabaseSource;
+<<<<<<< HEAD
+=======
+import jp.azuki.web.WebServiceException;
+import jp.azuki.web.view.View;
+>>>>>>> branch 'master' of https://github.com/kawakicchi/azuki-framework.git
 
 /**
  * このクラスは、データベース機能を実装するアクションクラスです。

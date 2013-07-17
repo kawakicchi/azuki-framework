@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+<<<<<<< HEAD
 import jp.azuki.business.manager.AbstractManager;
 import jp.azuki.core.util.StringUtility;
 import jp.azuki.persistence.context.Context;
@@ -136,6 +137,131 @@ public final class ActionManager extends AbstractManager {
 			} catch (ClassNotFoundException ex) {
 				error(ex);
 			}
+=======
+import jp.azuki.core.lang.LoggingObject;
+import jp.azuki.core.util.StringUtility;
+import jp.azuki.persistence.context.Context;
+import jp.azuki.persistence.entity.Entity;
+
+import org.apache.commons.digester3.Digester;
+import org.xml.sax.SAXException;
+
+/**
+ * このクラスは、アクションの管理を行うマネージャークラスです。
+ * 
+ * @since 1.0.0
+ * @version 1.0.0 2013/01/04
+ * @author Kawakicchi
+ */
+public final class ActionManager extends LoggingObject {
+
+	/**
+	 * Instance
+	 */
+	private static final ActionManager INSTANCE = new ActionManager();
+
+	/**
+	 * action map
+	 */
+	private Map<String, Class<? extends Action>> actions;
+
+	/**
+	 * コンストラクタ
+	 * <p>
+	 * インスタンス生成を禁止する。
+	 * </p>
+	 */
+	private ActionManager() {
+		super(ActionManager.class);
+		actions = new HashMap<String, Class<? extends Action>>();
+	}
+
+	/**
+	 * 初期化処理を行う。
+	 */
+	public synchronized static void initialize() {
+		INSTANCE.doInitialize();
+	}
+
+	/**
+	 * 解放処理を行う。
+	 */
+	public synchronized static void destroy() {
+		INSTANCE.doDestroy();
+	}
+
+	/**
+	 * アクション設定をロードする。
+	 * 
+	 * @param aStream 設定ストリーム
+	 * @param aContext コンテキスト
+	 * @throws IOException　IO操作時に問題が発生した場合
+	 */
+	public synchronized static void load(final InputStream aStream, final Context aContext) throws IOException {
+		INSTANCE.doLoad(aStream, aContext);
+	}
+
+	/**
+	 * アクションを生成する。
+	 * 
+	 * @param aName アクション名
+	 * @return アクション
+	 */
+	public static final Action create(final String aName) {
+		return INSTANCE.doCreate(aName);
+	}
+
+	/**
+	 * 初期化処理を行う。
+	 */
+	private void doInitialize() {
+
+	}
+
+	/**
+	 * 解放処理を行う。
+	 */
+	private void doDestroy() {
+
+	}
+
+	/**
+	 * アクション設定をロードする。
+	 * 
+	 * @param aStream 設定ストリーム
+	 * @param aContext コンテキスト
+	 * @throws IOException IO操作時に問題が発生した場合
+	 */
+	@SuppressWarnings("unchecked")
+	private void doLoad(final InputStream aStream, final Context aContext) throws IOException {
+		List<ActionEntity> as = null;
+		try {
+			Digester digester = new Digester();
+			digester.addObjectCreate("azuki/action-list", ArrayList.class);
+			digester.addObjectCreate("azuki/action-list/action", ActionEntity.class);
+			digester.addSetProperties("azuki/action-list/action");
+			digester.addSetNext("azuki/action-list/action", "add");
+			as = digester.parse(aStream);
+		} catch (SAXException ex) {
+			error(ex);
+			throw new IOException(ex);
+		} catch (IOException ex) {
+			error(ex);
+			throw ex;
+		}
+
+		try {
+			for (ActionEntity entity : as) {
+				if (actions.containsKey(entity.getName())) {
+					error("Duplicate action name.[" + entity.getName() + "]");
+					continue;
+				}
+				Class<? extends Action> clazz = (Class<? extends Action>) Class.forName(entity.getAction());
+				actions.put(entity.getName(), clazz);
+			}
+		} catch (ClassNotFoundException ex) {
+			error(ex);
+>>>>>>> branch 'master' of https://github.com/kawakicchi/azuki-framework.git
 		}
 	}
 

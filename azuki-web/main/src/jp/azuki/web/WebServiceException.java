@@ -3,7 +3,10 @@ package jp.azuki.web;
 import jp.azuki.core.lang.PrimitiveException;
 
 /**
+<<<<<<< HEAD
  * このクラスは、ウェブサービス層に起因する例外クラスです。
+=======
+>>>>>>> branch 'master' of https://github.com/kawakicchi/azuki-framework.git
  * 
  * @since 1.0.0
  * @version 1.0.0 2013/02/21
