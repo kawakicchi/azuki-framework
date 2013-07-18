@@ -15,13 +15,6 @@ import jp.azuki.persistence.ConfigurationFormatException;
 public interface Plugin {
 
 	/**
-	 * プラグイン名を取得する。
-	 * 
-	 * @return プラグイン名
-	 */
-	public String getName();
-
-	/**
 	 * 初期化処理を行う。
 	 * 
 	 * @throws PluginServiceException プラグイン機能に起因する問題が発生した場合

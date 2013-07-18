@@ -32,24 +32,19 @@ public abstract class AbstractPlugin extends LoggingObject implements Plugin, Co
 	/**
 	 * コンストラクタ
 	 * 
-	 * @param name Name
+	 * @param aName 名前
 	 */
-	public AbstractPlugin(final String name) {
-		super(name);
+	public AbstractPlugin(final String aName) {
+		super(aName);
 	}
 
 	/**
 	 * コンストラクタ
 	 * 
-	 * @param clazz Class
+	 * @param clazz クラス
 	 */
-	public AbstractPlugin(final Class<?> clazz) {
-		super(clazz);
-	}
-
-	@Override
-	public String getName() {
-		return this.getClass().getSimpleName();
+	public AbstractPlugin(final Class<?> aClass) {
+		super(aClass);
 	}
 
 	@Override

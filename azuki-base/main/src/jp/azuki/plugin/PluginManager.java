@@ -154,7 +154,9 @@ public final class PluginManager extends AbstractManager {
 					Class<Plugin> clazz = (Class<Plugin>) Class.forName(p.getPlugin());
 					Plugin plugin = clazz.newInstance();
 
-					PluginEntity pe = new PluginEntity(plugin);
+					PluginEntity pe = new PluginEntity();
+					pe.name = p.getName();
+					pe.plugin = plugin;
 					plugins.add(pe);
 				}
 			} catch (ClassNotFoundException ex) {
@@ -217,6 +219,11 @@ public final class PluginManager extends AbstractManager {
 	public static class PluginEntity implements Entity {
 
 		/**
+		 * プラグイン名
+		 */
+		private String name;
+
+		/**
 		 * プラグイン
 		 */
 		private Plugin plugin;
@@ -224,10 +231,17 @@ public final class PluginManager extends AbstractManager {
 		/**
 		 * コンストラクタ
 		 * 
-		 * @param aPlugin プラグイン
 		 */
-		private PluginEntity(final Plugin aPlugin) {
-			plugin = aPlugin;
+		private PluginEntity() {
+		}
+
+		/**
+		 * プラグイン名を取得する。
+		 * 
+		 * @return
+		 */
+		public String getName() {
+			return name;
 		}
 
 		/**

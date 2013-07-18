@@ -19,6 +19,16 @@ import javax.servlet.http.HttpServletResponse;
 public final class JSPView extends AbstractView {
 
 	/**
+	 * Character encoding
+	 */
+	private String characterEncoding;
+
+	/**
+	 * Base path
+	 */
+	private String basePath;
+
+	/**
 	 * JSP path
 	 */
 	private String path;
@@ -34,6 +44,8 @@ public final class JSPView extends AbstractView {
 	 * @param aJspPath JSP path
 	 */
 	public JSPView(final String aJspPath) {
+		characterEncoding = "UTF-8";
+		basePath = "/WEB-INF/jsp";
 		path = aJspPath;
 		attributes = null;
 	}
@@ -45,19 +57,31 @@ public final class JSPView extends AbstractView {
 	 * @param aAttributes Attributes
 	 */
 	public JSPView(final String aJspPath, final Map<String, Object> aAttributes) {
+		characterEncoding = "UTF-8";
+		basePath = "/WEB-INF/jsp";
 		path = aJspPath;
 		attributes = new HashMap<String, Object>(aAttributes);
 	}
 
+	public void setCharacterEncoding(final String aEncoding) {
+		characterEncoding = aEncoding;
+	}
+
+	public void setBasePath(final String aPath) {
+		basePath = aPath;
+	}
+
 	@Override
 	protected final void doView(final HttpServletRequest aReq, final HttpServletResponse aRes) throws ServletException, IOException {
+		aRes.setCharacterEncoding(characterEncoding);
+
 		if (null != attributes) {
 			for (String key : attributes.keySet()) {
 				aReq.setAttribute(key, attributes.get(key));
 			}
 		}
 
-		StringBuffer s = new StringBuffer("/WEB-INF/jsp");
+		StringBuffer s = new StringBuffer(basePath);
 		if (!path.startsWith("/")) {
 			s.append("/");
 		}

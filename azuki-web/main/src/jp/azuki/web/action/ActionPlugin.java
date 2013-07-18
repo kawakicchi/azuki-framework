@@ -13,11 +13,13 @@ import jp.azuki.plugin.PluginServiceException;
  * @version 1.0.0 2013/02/18
  * @author Kawakicchi
  */
-public class ActionPlugin extends AbstractPlugin {
+public final class ActionPlugin extends AbstractPlugin {
 
-	@Override
-	public String getName() {
-		return null;
+	/**
+	 * コンストラクタ
+	 */
+	public ActionPlugin() {
+		super(ActionPlugin.class);
 	}
 
 	@Override
