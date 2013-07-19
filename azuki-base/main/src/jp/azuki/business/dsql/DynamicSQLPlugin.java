@@ -1,7 +1,6 @@
 package jp.azuki.business.dsql;
 
 import java.io.IOException;
-import java.io.InputStream;
 
 import jp.azuki.plugin.AbstractPlugin;
 import jp.azuki.plugin.PluginServiceException;
@@ -33,8 +32,8 @@ public final class DynamicSQLPlugin extends AbstractPlugin {
 	}
 
 	@Override
-	protected void doLoad(final InputStream aStream) throws PluginServiceException, IOException {
-		DynamicSQLManager.load(aStream, getContext());
+	protected void doLoad() throws PluginServiceException, IOException {
+		DynamicSQLManager.load(getConfiguration().getResourceAsStream(), getContext());
 	}
 
 }

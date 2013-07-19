@@ -1,7 +1,6 @@
 package jp.azuki.persistence.database;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.Properties;
 
 import jp.azuki.persistence.PersistenceServiceException;
@@ -35,10 +34,10 @@ public final class DatabasePlugin extends AbstractPlugin {
 	}
 
 	@Override
-	protected void doLoad(final InputStream aStream) throws PluginServiceException, IOException {
+	protected void doLoad() throws PluginServiceException, IOException {
 		try {
 			Properties p = new Properties();
-			p.load(aStream);
+			p.load(getConfiguration().getResourceAsStream());
 			DatabaseConnectionManager.load(p);
 		} catch (ClassNotFoundException ex) {
 			throw new PluginServiceException(ex);

@@ -1,7 +1,6 @@
 package jp.azuki.web.constant;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.Properties;
 
 import jp.azuki.plugin.AbstractPlugin;
@@ -27,9 +26,9 @@ public class WebConstantPlugin extends AbstractPlugin {
 	}
 
 	@Override
-	protected void doLoad(final InputStream stream) throws PluginServiceException, IOException {
+	protected void doLoad() throws PluginServiceException, IOException {
 		Properties properties = new Properties();
-		properties.load(stream);
+		properties.load(getConfiguration().getResourceAsStream());
 		WebConstant.load(properties);
 	}
 

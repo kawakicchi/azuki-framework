@@ -1,7 +1,6 @@
 package jp.azuki.business.message;
 
 import java.io.IOException;
-import java.io.InputStream;
 
 import jp.azuki.business.BusinessServiceException;
 import jp.azuki.persistence.ConfigurationFormatException;
@@ -35,9 +34,9 @@ public final class MessagePlugin extends AbstractPlugin {
 	}
 
 	@Override
-	protected void doLoad(final InputStream aStream) throws PluginServiceException, ConfigurationFormatException, IOException {
+	protected void doLoad() throws PluginServiceException, ConfigurationFormatException, IOException {
 		try {
-			MessageManager.load(aStream, getContext());
+			MessageManager.load(getConfiguration().getResourceAsStream(), getContext());
 		} catch (BusinessServiceException ex) {
 			throw new PluginServiceException(ex);
 		}

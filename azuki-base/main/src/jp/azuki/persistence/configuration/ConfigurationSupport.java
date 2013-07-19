@@ -1,0 +1,1 @@
+package jp.azuki.persistence.configuration;/** * このインターフェースは、コンフィグレーション機能のサポートを行うためのインターフェースです。 *  * @since 1.0.0 * @version 1.0.0 2013/07/19 * @author Kawakicchi */public interface ConfigurationSupport {	/**	 * コンフィグレーション情報を設定する。	 * 	 * @param aConfiguration コンフィグレーション情報	 */	public void setConfiguration(final Configuration aConfiguration);}

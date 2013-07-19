@@ -1,1 +1,1 @@
-package jp.azuki.analyzer;public class AzukiAnalyzer {}
+package jp.azuki.analyzer;/** * このクラスは、AzukiFrameworkの解析クラスです。 *  * @since 1.0.0 * @version 1.0.0 2013/07/19 * @author Kawakicchi */public class AzukiAnalyzer {	/**	 * メイン関数	 * 	 * @param args 引数	 */	public static void main(final String[] args) {	}	/**	 * コンストラクタ	 */	public AzukiAnalyzer() {	}}

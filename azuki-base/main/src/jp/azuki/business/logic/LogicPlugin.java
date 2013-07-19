@@ -1,7 +1,6 @@
 package jp.azuki.business.logic;
 
 import java.io.IOException;
-import java.io.InputStream;
 
 import jp.azuki.business.BusinessServiceException;
 import jp.azuki.plugin.AbstractPlugin;
@@ -34,9 +33,9 @@ public final class LogicPlugin extends AbstractPlugin {
 	}
 
 	@Override
-	protected void doLoad(final InputStream stream) throws PluginServiceException, IOException {
+	protected void doLoad() throws PluginServiceException, IOException {
 		try {
-			LogicManager.load(stream, getContext());
+			LogicManager.load(getConfiguration().getResourceAsStream(), getContext());
 		} catch (BusinessServiceException ex) {
 			throw new PluginServiceException(ex);
 		}

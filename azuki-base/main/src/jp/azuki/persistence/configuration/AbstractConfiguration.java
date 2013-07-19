@@ -1,0 +1,1 @@
+package jp.azuki.persistence.configuration;/** * このクラスは、コンフィグレーション機能の実装を行うための基底クラスです。 *  * @since 1.0.0 * @version 1.0.0 2013/07/19 * @author Kawakicchi */public abstract class AbstractConfiguration implements Configuration {}

@@ -1,10 +1,11 @@
 package jp.azuki.plugin;
 
 import java.io.IOException;
-import java.io.InputStream;
 
 import jp.azuki.core.lang.LoggingObject;
 import jp.azuki.persistence.ConfigurationFormatException;
+import jp.azuki.persistence.configuration.Configuration;
+import jp.azuki.persistence.configuration.ConfigurationSupport;
 import jp.azuki.persistence.context.Context;
 import jp.azuki.persistence.context.ContextSupport;
 
@@ -15,12 +16,17 @@ import jp.azuki.persistence.context.ContextSupport;
  * @version 1.0.0 12/06/07
  * @author Kawakicchi
  */
-public abstract class AbstractPlugin extends LoggingObject implements Plugin, ContextSupport {
+public abstract class AbstractPlugin extends LoggingObject implements Plugin, ContextSupport, ConfigurationSupport {
 
 	/**
 	 * コンテキスト情報
 	 */
 	private Context context;
+
+	/**
+	 * コンフィグレーション情報
+	 */
+	private Configuration configuration;
 
 	/**
 	 * コンストラクタ
@@ -62,15 +68,29 @@ public abstract class AbstractPlugin extends LoggingObject implements Plugin, Co
 	}
 
 	@Override
+	public final void setConfiguration(final Configuration aConfiguration) {
+		configuration = aConfiguration;
+	}
+
+	/**
+	 * コンフィグレーション情報を取得する。
+	 * 
+	 * @return コンフィグレーション情報
+	 */
+	protected final Configuration getConfiguration() {
+		return configuration;
+	}
+
+	@Override
 	public final void initialize() throws PluginServiceException {
 		debug(this.getClass().getSimpleName() + ".initialize()");
 		doInitialize();
 	}
 
 	@Override
-	public final void load(final InputStream aStream) throws PluginServiceException, ConfigurationFormatException, IOException {
+	public final void load() throws PluginServiceException, ConfigurationFormatException, IOException {
 		debug(this.getClass().getSimpleName() + ".load()");
-		doLoad(aStream);
+		doLoad();
 	}
 
 	@Override
@@ -89,12 +109,11 @@ public abstract class AbstractPlugin extends LoggingObject implements Plugin, Co
 	/**
 	 * 設定情報をロードする。
 	 * 
-	 * @param aStream 設定ストリーム
 	 * @throws PluginServiceException プラグイン機能に起因する問題が発生した場合
 	 * @throws ConfigurationFormatException 設定ファイルに問題がある場合
 	 * @throws IOException IO操作時に問題が発生した場合
 	 */
-	protected abstract void doLoad(final InputStream aStream) throws PluginServiceException, ConfigurationFormatException, IOException;
+	protected abstract void doLoad() throws PluginServiceException, ConfigurationFormatException, IOException;
 
 	/**
 	 * 解放処理を行う。

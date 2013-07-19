@@ -11,10 +11,19 @@ import jp.azuki.web.constant.WebConstant;
  */
 public class FormTag extends AbstractBodyHtmlTag {
 
+	/**
+	 * Action
+	 */
 	private String action = null;
 
+	/**
+	 * Method
+	 */
 	private String method = "get";
 
+	/**
+	 * URL absolute
+	 */
 	private boolean absolute = false;
 
 	public final void setAction(final String aAction) {

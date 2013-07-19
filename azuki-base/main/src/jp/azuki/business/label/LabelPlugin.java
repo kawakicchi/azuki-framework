@@ -1,7 +1,6 @@
 package jp.azuki.business.label;
 
 import java.io.IOException;
-import java.io.InputStream;
 
 import jp.azuki.business.BusinessServiceException;
 import jp.azuki.persistence.ConfigurationFormatException;
@@ -35,9 +34,9 @@ public final class LabelPlugin extends AbstractPlugin {
 	}
 
 	@Override
-	protected void doLoad(final InputStream aStream) throws PluginServiceException, ConfigurationFormatException, IOException {
+	protected void doLoad() throws PluginServiceException, ConfigurationFormatException, IOException {
 		try {
-			LabelManager.load(aStream, getContext());
+			LabelManager.load(getConfiguration().getResourceAsStream(), getContext());
 		} catch (BusinessServiceException ex) {
 			throw new PluginServiceException(ex);
 		}

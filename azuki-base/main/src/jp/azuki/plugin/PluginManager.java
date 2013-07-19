@@ -8,6 +8,9 @@ import java.util.List;
 import jp.azuki.business.manager.AbstractManager;
 import jp.azuki.core.util.StringUtility;
 import jp.azuki.persistence.ConfigurationFormatException;
+import jp.azuki.persistence.configuration.Configuration;
+import jp.azuki.persistence.configuration.ConfigurationSupport;
+import jp.azuki.persistence.configuration.InputStreamConfiguration;
 import jp.azuki.persistence.context.Context;
 import jp.azuki.persistence.context.ContextSupport;
 import jp.azuki.persistence.entity.Entity;
@@ -156,6 +159,7 @@ public final class PluginManager extends AbstractManager {
 
 					PluginEntity pe = new PluginEntity();
 					pe.name = p.getName();
+					pe.config = p.getConfig();
 					pe.plugin = plugin;
 					plugins.add(pe);
 				}
@@ -170,11 +174,22 @@ public final class PluginManager extends AbstractManager {
 				throw new PluginServiceException(ex);
 			}
 
-			// Support context
+			// Support
 			for (int i = 0; i < plugins.size(); i++) {
 				Plugin plugin = plugins.get(i).getPlugin();
+				// Support context
 				if (plugin instanceof ContextSupport) {
 					((ContextSupport) plugin).setContext(aContext);
+				}
+				// Support configuration
+				if (plugin instanceof ConfigurationSupport) {
+					String config = plugins.get(i).config;
+					if (StringUtility.isNotEmpty(config)) {
+						Configuration configuration = new InputStreamConfiguration(aContext.getResourceAsStream(config));
+						((ConfigurationSupport) plugin).setConfiguration(configuration);
+					} else {
+						warn("Not setting config file.[" + plugins.get(i).getName() + "]");
+					}
 				}
 			}
 
@@ -187,15 +202,7 @@ public final class PluginManager extends AbstractManager {
 			// load
 			for (int i = 0; i < plugins.size(); i++) {
 				Plugin plugin = plugins.get(i).getPlugin();
-				String config = pluginList.get(i).getConfig();
-				if (StringUtility.isNotEmpty(config)) {
-					InputStream stream = aContext.getResourceAsStream(config);
-					if (null != stream) {
-						plugin.load(stream);
-					} else {
-						error("Not found config file.[" + config + "]");
-					}
-				}
+				plugin.load();
 			}
 		}
 	}
@@ -227,6 +234,11 @@ public final class PluginManager extends AbstractManager {
 		 * プラグイン
 		 */
 		private Plugin plugin;
+
+		/**
+		 * config
+		 */
+		private String config;
 
 		/**
 		 * コンストラクタ
